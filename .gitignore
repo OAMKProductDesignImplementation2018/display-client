@@ -1,0 +1,5 @@
+# Build products
+build*
+
+# Platform-specific
+.directory
