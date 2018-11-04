@@ -8,5 +8,6 @@
         <file>ToDoNotes.qml</file>
         <file>DefaultDisplay.qml</file>
         <file>DebugButton.qml</file>
+        <file>WebcamFeed.qml</file>
     </qresource>
 </RCC>

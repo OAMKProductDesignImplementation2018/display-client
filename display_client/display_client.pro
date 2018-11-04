@@ -1,4 +1,4 @@
-QT += quick
+QT += quick multimedia multimediawidgets
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -14,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         src/main.cpp \
-        src/testclass.cpp
+        src/testclass.cpp \
+        src/camera.cpp
 
 RESOURCES += \
         qml/qml.qrc
@@ -31,4 +32,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    src/testclass.h
+    src/testclass.h \
+    src/camera.h

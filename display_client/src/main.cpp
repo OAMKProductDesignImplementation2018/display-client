@@ -3,6 +3,7 @@
 #include <QThreadPool>
 
 #include "testclass.h"
+#include "camera.h"
 
 int main(int argc, char *argv[])
 {

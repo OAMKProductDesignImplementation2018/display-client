@@ -60,6 +60,17 @@ Window {
             }
         }
 
+        // Camera feed for debugging
+        WebcamFeed {
+            id: webcamFeed
+
+            width: 800
+            height: 600
+
+            anchors.left: quitButton.right
+            anchors.top: parent.top
+        }
+
         DataDisplay {
             anchors.fill: parent
         }
