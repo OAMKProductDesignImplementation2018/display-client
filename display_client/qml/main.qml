@@ -42,6 +42,10 @@ Window {
             }
         }
 
+        WebcamFeed {
+            anchors.fill: parent
+        }
+
         Item {
             id: debugButtons
             z: 1
@@ -204,10 +208,6 @@ Window {
                     dataUpdate.updateUI()
                 }
             }
-        }
-
-        WebcamFeed {
-            anchors.fill: parent
         }
 
         Item {

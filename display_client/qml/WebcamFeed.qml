@@ -9,6 +9,9 @@ Item {
     Camera {
         id: webcam
 
+        captureMode: Camera.CaptureStillImage
+        position: Camera.FrontFace
+
         imageCapture {
             onImageSaved: {
                 captureImage.moveImage(path)
