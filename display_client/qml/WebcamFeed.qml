@@ -16,8 +16,11 @@ Item {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: webcam.imageCapture.capture();
+    Timer {
+        // For the sake of debugging, interval is set to 5 seconds, change this to proper interval later
+        interval: 5000
+        running: true
+        repeat: true
+        onTriggered: webcam.imageCapture.capture()
     }
 }

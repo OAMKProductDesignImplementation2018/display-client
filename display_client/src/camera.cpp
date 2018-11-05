@@ -15,8 +15,8 @@ void Camera::removeAllImages() {
         return;
 
     // Find all captured pictures
-    QStringList pictureList = pathToPictures.entryList(QStringList() << "*.jpg" << "*.JPG", QDir::Files);
-    for (auto pictureName : pictureList) {
+    const QStringList pictureList = pathToPictures.entryList(QStringList() << "*.jpg" << "*.JPG", QDir::Files);
+    for (const auto &pictureName : pictureList) {
         // Get file and remove it
         QFile image(pathToPictures.path() + "/" + pictureName);
         if (image.isOpen())
@@ -44,8 +44,8 @@ void Camera::moveImage(const QString path) {
         ++itr;
     } while (newImagePath.exists());
 
-    // Since QML saves the picture to default location (user/Pictures @ win10)
-    // move the file inside application directory by renaming its path
+    // Since QML saves the picture to default location (user/Pictures @ win10),
+    // move the picture inside application directory by renaming its path
     auto currentImagePath = QDir(path);
     if (!currentImagePath.rename(path, newImagePath.absoluteFilePath()))
         qDebug() << "Rename failed! Image is stored in the default location (" << path << ").";
