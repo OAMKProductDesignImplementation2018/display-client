@@ -2,7 +2,6 @@ import QtQuick 2.0
 
 Item {
     Rectangle {
-        id: debugBox
         anchors.fill: parent
 
         border.color: "#000000"
@@ -11,7 +10,7 @@ Item {
         Text {
             anchors.centerIn: parent
             font.pixelSize: 24
-            text: "Schedule Item"
+            text: "Advertisement Item"
             horizontalAlignment: Text.AlignHCenter
         }
     }

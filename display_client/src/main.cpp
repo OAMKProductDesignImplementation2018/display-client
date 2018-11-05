@@ -2,8 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QThreadPool>
 
-#include "testclass.h"
 #include "camera.h"
+#include "dataupdate.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     // Register C++ classes for QML
-    qmlRegisterType<TestClass>("TestClass", 0, 1, "TestClass");
+    qmlRegisterType<DataUpdate>("DataUpdate", 0, 1, "DataUpdate");
 
     // Use QQmlApplicationEngine for
     QQmlApplicationEngine engine;

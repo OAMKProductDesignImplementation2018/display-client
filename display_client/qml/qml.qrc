@@ -1,13 +1,15 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>DataDisplay.qml</file>
+        <file>DisplayBase.qml</file>
         <file>Schedule.qml</file>
         <file>FoodMenu.qml</file>
         <file>News.qml</file>
         <file>ToDoNotes.qml</file>
-        <file>DefaultDisplay.qml</file>
+        <file>DisplayDefault.qml</file>
         <file>DebugButton.qml</file>
         <file>WebcamFeed.qml</file>
+        <file>DisplayPersonal.qml</file>
+        <file>Advertisement.qml</file>
     </qresource>
 </RCC>
