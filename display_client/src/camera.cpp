@@ -35,7 +35,6 @@ void Camera::moveImage(const QString path) {
     int itr = 1;
     do {
         if (itr > MAX_IMAGE_COUNT) {
-            qDebug() << "time for clean up";
             removeAllImages();
             itr = 1;
         }
