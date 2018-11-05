@@ -18,8 +18,7 @@ HEADERS += \
 
 SOURCES += \
     src/main.cpp \
-    src/camera.cpp
-    src/main.cpp \
+    src/camera.cpp \
     src/dataupdate.cpp \
 
 RESOURCES += \
