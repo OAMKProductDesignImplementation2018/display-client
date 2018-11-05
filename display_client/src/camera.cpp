@@ -5,7 +5,8 @@ Camera::Camera() {
 }
 
 Camera::~Camera() {
-    qDebug() << "todo: remove images";
+    // Remove all captured pictures when program is closed
+    removeAllImages();
 }
 
 void Camera::removeAllImages() {
