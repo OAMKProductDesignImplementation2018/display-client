@@ -35,6 +35,7 @@ void Camera::moveImage(const QString path) {
     auto newImagePath = QFileInfo();
     int itr = 1;
     do {
+        // Don't fill harddrive with pictures
         if (itr > MAX_IMAGE_COUNT) {
             removeAllImages();
             itr = 1;
@@ -44,7 +45,7 @@ void Camera::moveImage(const QString path) {
         ++itr;
     } while (newImagePath.exists());
 
-    // Since QML saves the picture to default location (user/Pictures @ win10),
+    // Since QML saves the pictures to default location (user/Pictures @ win10),
     // move the picture inside application directory by renaming its path
     auto currentImagePath = QDir(path);
     if (!currentImagePath.rename(path, newImagePath.absoluteFilePath()))
