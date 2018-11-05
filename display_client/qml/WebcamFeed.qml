@@ -2,6 +2,10 @@ import QtQuick 2.0
 import QtMultimedia 5.9
 
 Item {
+    Connections {
+        target: captureImage
+    }
+
     Camera {
         id: webcam
 
@@ -9,10 +13,18 @@ Item {
             onImageCaptured: {
                 previewImage.source = preview
             }
+            onImageSaved: {
+                captureImage.moveImage(path)
+            }
         }
     }
 
-    VideoOutput {
+    MouseArea {
+        anchors.fill: parent
+        onClicked: webcam.imageCapture.capture();
+    }
+
+    /*VideoOutput {
         id: videoOutput
         source: webcam
         focus: visible
@@ -20,14 +32,12 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: webcam.imageCapture.capture();
+            onClicked: captureImage.
+            //onClicked: webcam.imageCapture.capture();
         }
-    }
+    }*/
 
     Image {
         id: previewImage
-
-        width: videoOutput.width
-        height: videoOutput.height
     }
 }

@@ -3,6 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Window 2.2
 
 import DataUpdate 0.1
+import CaptureImage 0.1
 
 Window {
     id: mainWindowRoot
@@ -23,6 +24,7 @@ Window {
 
         // Qt Classes
         DataUpdate { id: dataUpdate }
+        CaptureImage { id: captureImage }
 
         // QML Components
         Component { id: defaultView; DisplayDefault { } }

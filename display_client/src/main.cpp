@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 
     // Register C++ classes for QML
     qmlRegisterType<DataUpdate>("DataUpdate", 0, 1, "DataUpdate");
+    qmlRegisterType<Camera>("CaptureImage", 0, 1, "CaptureImage");
 
     // Use QQmlApplicationEngine for
     QQmlApplicationEngine engine;
