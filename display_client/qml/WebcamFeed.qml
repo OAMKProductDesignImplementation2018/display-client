@@ -9,6 +9,7 @@ Item {
     Camera {
         id: webcam
 
+        deviceId: (QtMultimedia.defaultCamera.deviceId !== "") ? QtMultimedia.defaultCamera.deviceId : QtMultimedia.availableCameras[0].deviceId;
         captureMode: Camera.CaptureStillImage
         position: Camera.FrontFace
 
