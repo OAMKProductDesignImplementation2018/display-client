@@ -44,3 +44,26 @@ void DataUpdate::setNewsVisible(bool value) {
     _newsVisible = value;
     emit newsVisibleChanged(value);
 }
+
+QString DataUpdate::getDisplayState() {
+    return _displayState;
+}
+
+void DataUpdate::setDisplayState(QString state) {
+    _displayState = state;
+    emit displayStateChanged(_displayState);
+}
+
+
+
+
+
+// Debug functions
+
+void DataUpdate::debugDisplayStateDefault() {
+    setDisplayState("Default");
+}
+
+void DataUpdate::debugDisplayStatePersonal() {
+    setDisplayState("Personal");
+}

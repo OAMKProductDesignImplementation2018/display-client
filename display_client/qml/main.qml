@@ -91,7 +91,7 @@ Window {
                 }
 
                 onButtonPressed: {
-                    baseUI.pop(null)
+                    dataUpdate.debugDisplayStateDefault()
                 }
             }
 
@@ -110,7 +110,7 @@ Window {
                 }
 
                 onButtonPressed: {
-                    baseUI.push(baseUI.displayPersonal)
+                    dataUpdate.debugDisplayStatePersonal()
                 }
             }
 
@@ -210,48 +210,8 @@ Window {
             }
         }
 
-        Item {
-            id: displayBase
+        DisplayBase {
             anchors.fill: parent
-
-            StackView {
-                id: baseUI
-                anchors.fill: parent
-                initialItem: displayDefault
-
-                Component { id: _displayDefault; DisplayDefault { } }
-                Component { id: _displayPersonal; DisplayPersonal { } }
-
-                property DisplayDefault displayDefault: _displayDefault.createObject()
-                property DisplayPersonal displayPersonal: _displayPersonal.createObject()
-
-                delegate: StackViewDelegate {
-                    function transitionFinished(properties)
-                    {
-                        properties.exitItem.opacity = 1
-                    }
-
-                    pushTransition: StackViewTransition {
-                        PropertyAnimation {
-                            target: enterItem
-                            property: "opacity"
-                            from: 0
-                            to: 1
-                            duration: 500
-                            easing.type: Easing.OutQuad
-                        }
-
-                        PropertyAnimation {
-                            target: exitItem
-                            property: "opacity"
-                            from: 1
-                            to: 0
-                            duration: 500
-                            easing.type: Easing.OutQuad
-                        }
-                    }
-                }
-            }
         }
     }
 }

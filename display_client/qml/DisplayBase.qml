@@ -1,28 +1,39 @@
 import QtQuick 2.0
 
 Item {
-    state: "Default"
+    id: displayBase
+
+    state: dataUpdate.displayState
+
+    Component { id: displayDefault; DisplayDefault { } }
+    Component { id: displayPersonal; DisplayPersonal { } }
+
+    Connections {
+        target: dataUpdate
+        onDisplayStateChanged: {
+            state = dataUpdate.displayState
+        }
+    }
 
     Loader {
-        id: baseUILoader
-
+        id: displayLoader
         anchors.fill: parent
-        sourceComponent: defaultView
+        sourceComponent: displayDefault
     }
 
     states: [
         State {
             name: "Default"
             PropertyChanges {
-                target: baseUILoader
-                sourceComponent: defaultView
+                target: displayLoader
+                sourceComponent: displayDefault
             }
         },
         State {
             name: "Personal"
             PropertyChanges {
-                target: baseUILoader
-                sourceComponent: personalView
+                target: displayLoader
+                sourceComponent: displayPersonal
             }
         }
     ]

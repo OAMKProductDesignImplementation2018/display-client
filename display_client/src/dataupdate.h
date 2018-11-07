@@ -2,6 +2,7 @@
 #define DATAUPDATE_H
 
 #include <QObject>
+#include <QString>
 
 class DataUpdate : public QObject {
     Q_OBJECT
@@ -42,18 +43,37 @@ public:
     bool getNewsVisible();
     void setNewsVisible(bool value);
 
+    Q_PROPERTY (QString displayState
+                MEMBER _displayState
+                READ getDisplayState
+                WRITE setDisplayState
+                NOTIFY displayStateChanged)
+    QString getDisplayState();
+    void setDisplayState(QString state);
+
+
+    // Debug functions
+
+    Q_INVOKABLE void debugDisplayStateDefault();
+    Q_INVOKABLE void debugDisplayStatePersonal();
+
+
 signals:
 
     void scheduleVisibleChanged(bool value);
     void foodMenuVisibleChanged(bool value);
     void notesVisibleChanged(bool value);
     void newsVisibleChanged(bool value);
+    void displayStateChanged(QString state);
 
 private:
     bool _scheduleVisible = true;
     bool _foodMenuVisible = true;
     bool _notesVisible = true;
     bool _newsVisible = true;
+
+    QString _displayState = "Default";
+
 };
 
 #endif // DATAUPDATE_H
