@@ -1,6 +1,7 @@
 import QtQuick 2.0
 
 Item {
+    id: root
 
     Rectangle {
         anchors.fill: parent
@@ -8,36 +9,89 @@ Item {
         border.color: "#000000"
     }
 
-    Schedule {
-        id: personalSchedule
-        x: 50
-        y: 50
-        width: 800
-        height: 480
-        visible: dataUpdate.scheduleVisible
+    Connections {
+        target: dataUpdate
+        onScheduleVisibleChanged: {
+
+        }
+
+        onFoodMenuVisibleChanged: {
+
+        }
+
+        onNotesVisibleChanged: {
+
+        }
+
+        onNewsVisibleChanged: {
+
+        }
     }
 
-    FoodMenu {
-        x: 50
-        y: 550
-        width: 400
-        height: 480
-        visible: dataUpdate.foodMenuVisible
+    Item {
+        id: topItem
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        anchors.top: parent.top
+        anchors.topMargin: (!dataUpdate.foodMenuVisible && !dataUpdate.notesVisible && !dataUpdate.newsVisible) ? 500 : dataUpdate.scheduleVisible ? 50 : 0
+        height: dataUpdate.scheduleVisible ? 480 : 0
+
+        Schedule {
+            id: personalSchedule
+            anchors.fill: parent
+            visible: dataUpdate.scheduleVisible
+        }
     }
 
-    News {
-        x: 50
-        y: 1050
-        width: 800
-        height: 300
-        visible: dataUpdate.newsVisible
+    Item {
+        id: centerItem
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        anchors.top: topItem.bottom
+        anchors.topMargin: 20
+        height: (dataUpdate.foodMenuVisible || dataUpdate.notesVisible) ? 480 : 0
+
+        FoodMenu {
+            id: personalFoodMenu
+            anchors.left: parent.left
+            anchors.right: parent.horizontalCenter
+            anchors.rightMargin: 10
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            visible: dataUpdate.foodMenuVisible
+        }
+
+        ToDoNotes {
+            id: personalNotes
+            anchors.left: parent.horizontalCenter
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            visible: dataUpdate.notesVisible
+        }
     }
 
-    ToDoNotes {
-        x: 480
-        y: 550
-        width: 370
-        height: 480
-        visible: dataUpdate.notesVisible
+    Item {
+        id: bottomItem
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 50
+        anchors.top: centerItem.bottom
+        anchors.topMargin: dataUpdate.foodMenuVisible || dataUpdate.notesVisible ? 20 : 0
+        height: dataUpdate.newsVisible ? 480 : 0
+
+        News {
+            id: personalNews
+            anchors.fill: parent
+            visible: dataUpdate.newsVisible
+        }
     }
 }

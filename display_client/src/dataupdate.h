@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QStringList>
 
 class DataUpdate : public QObject {
     Q_OBJECT
@@ -52,6 +53,48 @@ public:
     void setDisplayState(QString state);
 
 
+    Q_PROPERTY (QStringList scheduleMonday
+                MEMBER _scheduleMon
+                READ getScheduleMonday
+                WRITE setScheduleMonday
+                NOTIFY scheduleChanged)
+    QStringList getScheduleMonday();
+    void setScheduleMonday(QStringList scheduleMonday);
+
+    Q_PROPERTY (QStringList scheduleTuesday
+                MEMBER _scheduleTue
+                READ getScheduleTuesday
+                WRITE setScheduleTuesday
+                NOTIFY scheduleChanged)
+    QStringList getScheduleTuesday();
+    void setScheduleTuesday(QStringList scheduleTuesday);
+
+    Q_PROPERTY (QStringList scheduleWednesday
+                MEMBER _scheduleWed
+                READ getScheduleWednesday
+                WRITE setScheduleWednesday
+                NOTIFY scheduleChanged)
+    QStringList getScheduleWednesday();
+    void setScheduleWednesday(QStringList scheduleWednesday);
+
+    Q_PROPERTY (QStringList scheduleThursday
+                MEMBER _scheduleThu
+                READ getScheduleThursday
+                WRITE setScheduleThursday
+                NOTIFY scheduleChanged)
+    QStringList getScheduleThursday();
+    void setScheduleThursday(QStringList scheduleThursday);
+
+    Q_PROPERTY (QStringList scheduleFriday
+                MEMBER _scheduleFri
+                READ getScheduleFriday
+                WRITE setScheduleFriday
+                NOTIFY scheduleChanged)
+    QStringList getScheduleFriday();
+    void setScheduleFriday(QStringList scheduleFriday);
+
+
+
     // Debug functions
 
     Q_INVOKABLE void debugDisplayStateDefault();
@@ -66,6 +109,9 @@ signals:
     void newsVisibleChanged(bool value);
     void displayStateChanged(QString state);
 
+    void scheduleChanged();
+
+
 private:
     bool _scheduleVisible = true;
     bool _foodMenuVisible = true;
@@ -73,6 +119,12 @@ private:
     bool _newsVisible = true;
 
     QString _displayState = "Default";
+
+    QStringList _scheduleMon;
+    QStringList _scheduleTue;
+    QStringList _scheduleWed;
+    QStringList _scheduleThu;
+    QStringList _scheduleFri;
 
 };
 

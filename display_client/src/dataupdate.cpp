@@ -58,6 +58,49 @@ void DataUpdate::setDisplayState(QString state) {
 
 
 
+
+QStringList DataUpdate::getScheduleMonday() {
+    return _scheduleMon;
+}
+
+void DataUpdate::setScheduleMonday(QStringList monday) {
+    _scheduleMon = monday;
+}
+
+
+QStringList DataUpdate::getScheduleTuesday() {
+    return _scheduleTue;
+}
+
+void DataUpdate::setScheduleTuesday(QStringList tuesday) {
+    _scheduleTue = tuesday;
+}
+
+QStringList DataUpdate::getScheduleWednesday() {
+    return _scheduleWed;
+}
+
+void DataUpdate::setScheduleWednesday(QStringList wednesday) {
+    _scheduleWed = wednesday;
+}
+
+QStringList DataUpdate::getScheduleThursday() {
+    return _scheduleThu;
+}
+
+void DataUpdate::setScheduleThursday(QStringList thursday) {
+    _scheduleWed = thursday;
+}
+
+QStringList DataUpdate::getScheduleFriday() {
+    return _scheduleFri;
+}
+
+void DataUpdate::setScheduleFriday(QStringList friday) {
+    _scheduleWed = friday;
+}
+
+
 // Debug functions
 
 void DataUpdate::debugDisplayStateDefault() {
