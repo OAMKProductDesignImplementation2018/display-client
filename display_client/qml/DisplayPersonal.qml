@@ -35,7 +35,9 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 50
         anchors.top: parent.top
-        anchors.topMargin: (!dataUpdate.foodMenuVisible && !dataUpdate.notesVisible && !dataUpdate.newsVisible) ? 500 : dataUpdate.scheduleVisible ? 50 : 0
+        anchors.topMargin: (!dataUpdate.foodMenuVisible &&
+                            !dataUpdate.notesVisible &&
+                            !dataUpdate.newsVisible) ? 500 : dataUpdate.scheduleVisible ? 50 : 0
         height: dataUpdate.scheduleVisible ? 480 : 0
 
         Schedule {
@@ -58,8 +60,8 @@ Item {
         FoodMenu {
             id: personalFoodMenu
             anchors.left: parent.left
-            anchors.right: parent.horizontalCenter
-            anchors.rightMargin: 10
+            anchors.right: dataUpdate.notesVisible ? parent.horizontalCenter : parent.right
+            anchors.rightMargin: dataUpdate.notesVisible ? 10 : 0
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             visible: dataUpdate.foodMenuVisible
@@ -67,8 +69,8 @@ Item {
 
         ToDoNotes {
             id: personalNotes
-            anchors.left: parent.horizontalCenter
-            anchors.leftMargin: 10
+            anchors.left: dataUpdate.foodMenuVisible ? parent.horizontalCenter : parent.left
+            anchors.leftMargin: dataUpdate.foodMenuVisible ? 10 : 0
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
