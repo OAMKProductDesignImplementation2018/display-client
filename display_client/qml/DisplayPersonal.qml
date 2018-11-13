@@ -63,7 +63,7 @@ Item {
         anchors.rightMargin: 50
         anchors.top: parent.top
         anchors.topMargin: dataUpdate.scheduleVisible ? 85 : 0
-        height: dataUpdate.scheduleVisible ? (!dataUpdate.foodMenuVisible && !dataUpdate.newsVisible) ? 1312 : 900 : 0
+        height: dataUpdate.scheduleVisible ? (!dataUpdate.foodMenuVisible && !dataUpdate.newsVisible) ? 1312 : 760 : 0
 
         Schedule {
             id: personalSchedule
@@ -82,7 +82,7 @@ Item {
         anchors.bottomMargin: 50
         anchors.top: topItem.bottom
         anchors.topMargin: dataUpdate.foodMenuVisible || dataUpdate.newsVisible ? 20 : 0
-        height: dataUpdate.newsVisible ? 480 : 0
+        height: dataUpdate.newsVisible || dataUpdate.foodMenuVisible ? 480 : 0
 
         FoodMenu {
             id: personalFoodMenu
