@@ -115,6 +115,9 @@ public:
     Q_INVOKABLE void debugDisplayStateDefault();
     Q_INVOKABLE void debugDisplayStatePersonal();
 
+    Q_INVOKABLE void debugFunction();
+    Q_INVOKABLE void debugFunction2();
+
 
 signals:
 
@@ -128,6 +131,9 @@ signals:
 
     void firstNameChanged();
     void lastNameChanged();
+
+    void foodMenuClear();
+    void foodMenuAdd(QString type, QString name);
 
 
 private:

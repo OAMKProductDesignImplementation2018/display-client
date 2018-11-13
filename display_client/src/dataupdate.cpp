@@ -130,3 +130,11 @@ void DataUpdate::debugDisplayStateDefault() {
 void DataUpdate::debugDisplayStatePersonal() {
     setDisplayState("Personal");
 }
+
+void DataUpdate::debugFunction() {
+    emit foodMenuClear();
+}
+
+void DataUpdate::debugFunction2() {
+    emit foodMenuAdd("Lunch", "Oolated Squiggs");
+}
