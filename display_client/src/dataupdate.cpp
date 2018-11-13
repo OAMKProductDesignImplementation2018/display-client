@@ -1,7 +1,10 @@
 #include "dataupdate.h"
 #include <QDebug>
 
-DataUpdate::DataUpdate(QObject *parent) : QObject(parent) { }
+DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
+    _firstName = "Averell";
+    _lastName = "Dalton";
+}
 
 
 void DataUpdate::updateUI() {
@@ -98,6 +101,23 @@ QStringList DataUpdate::getScheduleFriday() {
 
 void DataUpdate::setScheduleFriday(QStringList friday) {
     _scheduleWed = friday;
+}
+
+
+QString DataUpdate::firstName() {
+    return _firstName;
+}
+
+void DataUpdate::setFirstName(QString name) {
+    _firstName = name;
+}
+
+QString DataUpdate::lastName() {
+    return _lastName;
+}
+
+void DataUpdate::setLastName(QString name) {
+    _lastName = name;
 }
 
 

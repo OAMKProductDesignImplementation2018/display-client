@@ -23,14 +23,16 @@ Item {
     property var friday: dataUpdate.scheduleFriday
 
     Row {
-        x: root.width / 6
+        id: daysRoot
+        anchors.left: timesRoot.right
+        anchors.right: parent.right
 
         Repeater {
             model: days
             Rectangle {
-                width: root.width / 6
-                height: root.height / 14
-                color: "#0066FF"
+                width: daysRoot.width / 5
+                height: root.height / 18
+                color: "#00CCFF"
                 border.color: "#000000"
 
                 Text {
@@ -42,16 +44,20 @@ Item {
     }
 
     Column {
-        y: root.height / 14
+        id: timesRoot
+        x: 0
+        anchors.top: daysRoot.bottom
+        anchors.bottom: parent.bottom
+        width: root.width / 9
 
         Repeater {
             model: times
 
             Rectangle {
-                color: "#00AAFF"
+                color: "#00CCFF"
                 border.color: "#000000"
-                width: root.width / 6
-                height: root.height / 14
+                width: root.width / 9
+                height: timesRoot.height / 13
 
                 Text {
                     anchors.centerIn: parent
@@ -63,18 +69,22 @@ Item {
     }
 
     Row {
-        x: root.width / 6
-        y: root.height / 14
+        id: tableRoot
+        // x: root.width / 6
+        // y: root.height / 14
+        anchors.left: timesRoot.right
+        anchors.right: parent.right
+        anchors.top: daysRoot.bottom
+        anchors.bottom: parent.bottom
 
         Column {
             Repeater {
                 model: 13
-
                 Rectangle {
                     color: "#F8F8FA"
                     border.color: "#000000"
-                    width: root.width / 6
-                    height: root.height / 14
+                    width: tableRoot.width / 5
+                    height: tableRoot.height / 13
 
                     Text {
                         anchors.centerIn: parent
@@ -91,8 +101,8 @@ Item {
                 Rectangle {
                     color: "#F8F8FA"
                     border.color: "#000000"
-                    width: root.width / 6
-                    height: root.height / 14
+                    width: tableRoot.width / 5
+                    height: tableRoot.height / 13
 
                     Text {
                         anchors.centerIn: parent
@@ -108,8 +118,8 @@ Item {
                 Rectangle {
                     color: "#F8F8FA"
                     border.color: "#000000"
-                    width: root.width / 6
-                    height: root.height / 14
+                    width: tableRoot.width / 5
+                    height: tableRoot.height / 13
 
                     Text {
                         anchors.centerIn: parent
@@ -125,8 +135,8 @@ Item {
                 Rectangle {
                     color: "#F8F8FA"
                     border.color: "#000000"
-                    width: root.width / 6
-                    height: root.height / 14
+                    width: tableRoot.width / 5
+                    height: tableRoot.height / 13
 
                     Text {
                         anchors.centerIn: parent
@@ -142,8 +152,8 @@ Item {
                 Rectangle {
                     color: "#F8F8FA"
                     border.color: "#000000"
-                    width: root.width / 6
-                    height: root.height / 14
+                    width: tableRoot.width / 5
+                    height: tableRoot.height / 13
 
                     Text {
                         anchors.centerIn: parent

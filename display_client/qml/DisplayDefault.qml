@@ -3,35 +3,69 @@ import QtQuick 2.0
 Item {
     Rectangle {
         anchors.fill: parent
-        color: "#B0B0B0"
         border.color: "#000000"
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#EAEAEA" }
+            GradientStop { position: 1.0; color: "#8A8A8A" }
+
+        }
     }
 
-    Schedule {
-        x: 50
-        y: 50
-        width: 800
+    Item {
+        id: topItem
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        height: 540
+
+        Schedule {
+            anchors.fill: parent
+        }
+    }
+
+    Item {
+        id: centerItem
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        anchors.top: topItem.bottom
+        anchors.topMargin: 20
         height: 480
+
+        FoodMenu {
+            anchors.left: parent.left
+            anchors.right: parent.horizontalCenter
+            anchors.rightMargin: 10
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
+
+        News {
+            anchors.left: parent.horizontalCenter
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+        }
     }
 
-    FoodMenu {
-        x: 50
-        y: 550
-        width: 400
-        height: 480
-    }
+    Item {
+        id: bottomItem
+        anchors.left: parent.left
+        anchors.leftMargin: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 50
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 50
+        anchors.top: centerItem.bottom
+        anchors.topMargin: 20
 
-    Advertisement {
-        x: 480
-        y: 550
-        width: 370
-        height: 480
-    }
-
-    News {
-        x: 50
-        y: 1050
-        width: 800
-        height: 300
+        Advertisement {
+            anchors.fill: parent
+        }
     }
 }

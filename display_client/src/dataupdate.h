@@ -94,6 +94,21 @@ public:
     void setScheduleFriday(QStringList scheduleFriday);
 
 
+    Q_PROPERTY (QString firstName
+                READ firstName
+                WRITE setFirstName
+                NOTIFY firstNameChanged)
+    QString firstName();
+    void setFirstName(QString firstName);
+
+    Q_PROPERTY (QString lastName
+                READ lastName
+                WRITE setLastName
+                NOTIFY lastNameChanged)
+    QString lastName();
+    void setLastName(QString lastName);
+
+
 
     // Debug functions
 
@@ -111,6 +126,9 @@ signals:
 
     void scheduleChanged();
 
+    void firstNameChanged();
+    void lastNameChanged();
+
 
 private:
     bool _scheduleVisible = true;
@@ -125,6 +143,9 @@ private:
     QStringList _scheduleWed;
     QStringList _scheduleThu;
     QStringList _scheduleFri;
+
+    QString _firstName;
+    QString _lastName;
 
 };
 
