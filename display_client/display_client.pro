@@ -1,4 +1,4 @@
-QT += quick multimedia multimediawidgets
+QT += quick multimedia multimediawidgets network
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -15,11 +15,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     src/dataupdate.h \
     src/camera.h \
+    src/networkmanager.h \
+    src/jsonhandler.h
 
 SOURCES += \
     src/main.cpp \
     src/camera.cpp \
     src/dataupdate.cpp \
+    src/networkmanager.cpp \
+    src/jsonhandler.cpp
 
 RESOURCES += \
     qml/qml.qrc

@@ -15,6 +15,20 @@ Item {
         }
     }
 
+    DebugButton {
+        x: 0
+        y: 0
+        z: 2
+        width: 40
+        height: 24
+
+        color: "#FF0000"
+
+        onButtonPressed: {
+            networkManager.debugFunction()
+        }
+    }
+
     Loader {
         id: displayLoader
         anchors.fill: parent

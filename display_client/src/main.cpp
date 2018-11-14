@@ -4,6 +4,7 @@
 
 #include "camera.h"
 #include "dataupdate.h"
+#include "networkmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,7 @@ int main(int argc, char *argv[])
     // Register C++ classes for QML
     qmlRegisterType<DataUpdate>("DataUpdate", 0, 1, "DataUpdate");
     qmlRegisterType<Camera>("CaptureImage", 0, 1, "CaptureImage");
+    qmlRegisterType<NetworkManager>("NetworkManager", 0, 1, "NetworkManager");
 
     // Use QQmlApplicationEngine for
     QQmlApplicationEngine engine;

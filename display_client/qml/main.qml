@@ -2,8 +2,9 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.2
 
-import DataUpdate 0.1
 import CaptureImage 0.1
+import DataUpdate 0.1
+import NetworkManager 0.1
 
 Window {
     id: mainWindowRoot
@@ -23,8 +24,9 @@ Window {
         anchors.fill: parent
 
         // Qt Classes
-        DataUpdate { id: dataUpdate }
         CaptureImage { id: captureImage }
+        DataUpdate { id: dataUpdate }
+        NetworkManager { id: networkManager }
 
         // QML Components
         Component { id: defaultView; DisplayDefault { } }
