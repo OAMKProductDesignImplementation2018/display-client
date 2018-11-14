@@ -13,13 +13,37 @@ Item {
     }
 
     Item {
+        id: greeterBar
+
+        x: 50
+        y: 50
+        width: parent.width - 100
+        height: 40
+
+        Text {
+            y: 0
+            anchors.centerIn: parent
+            text: "13:45"
+            font.pixelSize: 28
+        }
+
+        Text {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 21
+            text: "13.11.2018"
+            color: "#000000"
+        }
+    }
+
+    Item {
         id: topItem
         anchors.left: parent.left
         anchors.leftMargin: 50
         anchors.right: parent.right
         anchors.rightMargin: 50
-        anchors.top: parent.top
-        anchors.topMargin: 50
+        anchors.top: greeterBar.bottom
+        anchors.topMargin: 2
         height: 540
 
         Schedule {

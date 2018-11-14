@@ -33,7 +33,7 @@ Item {
                 width: daysRoot.width / 5
                 height: root.height / 18
                 color: "#00CCFF"
-                border.color: "#000000"
+                border.color: "#5A5A5A"
 
                 Text {
                     anchors.centerIn: parent
@@ -55,7 +55,7 @@ Item {
 
             Rectangle {
                 color: "#00CCFF"
-                border.color: "#000000"
+                border.color: "#5A5A5A"
                 width: root.width / 9
                 height: timesRoot.height / 13
 
@@ -82,7 +82,7 @@ Item {
                 model: 13
                 Rectangle {
                     color: "#F8F8FA"
-                    border.color: "#000000"
+                    border.color: "#9A9A9A"
                     width: tableRoot.width / 5
                     height: tableRoot.height / 13
 
@@ -100,7 +100,7 @@ Item {
 
                 Rectangle {
                     color: "#F8F8FA"
-                    border.color: "#000000"
+                    border.color: "#9A9A9A"
                     width: tableRoot.width / 5
                     height: tableRoot.height / 13
 
@@ -117,7 +117,7 @@ Item {
 
                 Rectangle {
                     color: "#F8F8FA"
-                    border.color: "#000000"
+                    border.color: "#9A9A9A"
                     width: tableRoot.width / 5
                     height: tableRoot.height / 13
 
@@ -134,7 +134,7 @@ Item {
 
                 Rectangle {
                     color: "#F8F8FA"
-                    border.color: "#000000"
+                    border.color: "#9A9A9A"
                     width: tableRoot.width / 5
                     height: tableRoot.height / 13
 
@@ -151,7 +151,7 @@ Item {
 
                 Rectangle {
                     color: "#F8F8FA"
-                    border.color: "#000000"
+                    border.color: "#9A9A9A"
                     width: tableRoot.width / 5
                     height: tableRoot.height / 13
 

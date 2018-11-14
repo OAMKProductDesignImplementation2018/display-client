@@ -9,49 +9,39 @@ Item {
 
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#FAFAFA" }
-            GradientStop { position: 1.0; color: "#f5deb3" }
-
-        }
-    }
-
-    Connections {
-        target: dataUpdate
-        onScheduleVisibleChanged: {
-
-        }
-
-        onFoodMenuVisibleChanged: {
-
-        }
-
-        onNotesVisibleChanged: {
-
-        }
-
-        onNewsVisibleChanged: {
+            GradientStop { position: 1.0; color: "#b3def5" }
 
         }
     }
 
     Item {
-        id: greeterText
+        id: greeterBar
 
         x: 50
         y: 50
         width: parent.width - 100
-        height: 50
+        height: 40
 
         Text {
             anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: 21
             text: "Hello, " + dataUpdate.firstName + "!"
         }
 
         Text {
+            y: 0
+            anchors.centerIn: parent
+            text: "13:45"
+            font.pixelSize: 28
+        }
+
+        Text {
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: 21
-            text: "13.11.2018" + "   " +  "13:45"
-            color: "#FF0000"
+            text: "13.11.2018"
+            color: "#000000"
         }
     }
 
@@ -61,9 +51,9 @@ Item {
         anchors.leftMargin: 50
         anchors.right: parent.right
         anchors.rightMargin: 50
-        anchors.top: parent.top
-        anchors.topMargin: dataUpdate.scheduleVisible ? 85 : 0
-        height: dataUpdate.scheduleVisible ? (!dataUpdate.foodMenuVisible && !dataUpdate.newsVisible) ? 1312 : 760 : 0
+        anchors.top: greeterBar.bottom
+        anchors.topMargin: 2
+        height: dataUpdate.scheduleVisible ? (!dataUpdate.foodMenuVisible && !dataUpdate.newsVisible) ? 1270 : 760 : 0
 
         Schedule {
             id: personalSchedule
@@ -81,7 +71,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 50
         anchors.top: topItem.bottom
-        anchors.topMargin: dataUpdate.foodMenuVisible || dataUpdate.newsVisible ? 20 : 0
+        anchors.topMargin: dataUpdate.scheduleVisible ? 20 : 0
         height: dataUpdate.newsVisible || dataUpdate.foodMenuVisible ? 480 : 0
 
         FoodMenu {
