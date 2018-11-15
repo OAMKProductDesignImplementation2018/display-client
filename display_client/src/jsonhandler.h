@@ -17,7 +17,6 @@ public:
     ~JSONHandler();
 
     void parseJSON(const QJsonObject data);
-    QJsonArray convertJsonObjectIntoArray(const QJsonObject object) const;
 
 private:
     DataUpdate *dataUpdater;

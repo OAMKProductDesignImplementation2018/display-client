@@ -22,7 +22,7 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::debugFunction() {
-    request.setUrl(QUrl("http://jsonplaceholder.typicode.com/todos/1"));
+    request.setUrl(QUrl("https://jsonplaceholder.typicode.com/todos/1"));
     networkManager->get(request);
 }
 
