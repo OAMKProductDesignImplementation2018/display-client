@@ -1,5 +1,8 @@
 #include "networkmanager.h"
 
+#include <QJsonDocument>
+#include <QJsonObject>
+
 NetworkManager::NetworkManager()
 {
     networkManager = new QNetworkAccessManager();
@@ -12,6 +15,7 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager() {
     delete networkManager;
+    delete jsonHandler;
 }
 
 void NetworkManager::debugFunction() {
@@ -25,7 +29,21 @@ void NetworkManager::managerDone(QNetworkReply *reply) {
         return;
     }
 
+    // Set answer into QString
     QString answer = reply->readAll();
 
-    qDebug() << answer;
+    // Cast it to QJsonDocument
+    const auto jsonDocument = QJsonDocument::fromJson(answer.toUtf8());
+    if (jsonDocument.isNull()) {
+        qDebug() << "Document is empty!";
+        return;
+    }
+
+    if (!jsonDocument.isObject()) {
+        qDebug() << "Document is not a JSON object!";
+        return;
+    }
+
+    // Send it as QJsonObject
+    jsonHandler->parseJSON(jsonDocument.object());
 }

@@ -207,7 +207,8 @@ Window {
                 }
 
                 onButtonPressed: {
-                    dataUpdate.updateUI()
+                    //dataUpdate.updateUI()
+                    networkManager.debugFunction()
                 }
             }
         }

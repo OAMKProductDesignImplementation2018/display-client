@@ -2,7 +2,11 @@
 #define JSONHANDLER_H
 
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QObject>
+
+#include "dataupdate.h"
 
 class JSONHandler : public QObject
 {
@@ -10,7 +14,13 @@ class JSONHandler : public QObject
 
 public:
     JSONHandler();
+    ~JSONHandler();
 
+    void parseJSON(const QJsonObject data);
+    QJsonArray convertJsonObjectIntoArray(const QJsonObject object) const;
+
+private:
+    DataUpdate *dataUpdater;
 };
 
 #endif // JSONHANDLER_H
