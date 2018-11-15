@@ -3,6 +3,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include <QCoreApplication>
+#include <QFile>
+
 NetworkManager::NetworkManager()
 {
     networkManager = new QNetworkAccessManager();
@@ -31,6 +34,21 @@ void NetworkManager::managerDone(QNetworkReply *reply) {
 
     // Set answer into QString
     QString answer = reply->readAll();
+
+
+
+    // For debugging
+    QString path = QCoreApplication::applicationDirPath() + "/CameraImages/samplejson.txt";
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        qDebug() << "fail";
+    else
+        answer = file.readAll();
+
+    file.close();
+
+
+
 
     // Cast it to QJsonDocument
     const auto jsonDocument = QJsonDocument::fromJson(answer.toUtf8());

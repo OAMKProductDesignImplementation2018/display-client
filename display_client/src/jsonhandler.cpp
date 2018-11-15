@@ -1,5 +1,8 @@
 #include "jsonhandler.h"
 
+#include <QFile>
+#include <QCoreApplication>
+
 JSONHandler::JSONHandler() {
     dataUpdater = new DataUpdate();
 }
@@ -9,11 +12,27 @@ JSONHandler::~JSONHandler() {
 }
 
 void JSONHandler::parseJSON(const QJsonObject data) {
-    // Convert object into array
-    QJsonArray jsonArray = convertJsonObjectIntoArray(data);
 
-    qDebug() << jsonArray;
-    qDebug() << jsonArray[2].toString();
+    // Loops JSON data through and prints each key and value to debug window
+    for (const auto &key : data.keys())
+    {
+        if (data.value(key).isArray())
+        {
+            for (const auto key2 : data.value(key).toArray())
+            {
+                QJsonObject key2object = key2.toObject();
+                for (const auto &key2key : key2object.keys())
+                {
+                    qDebug() << "Sub-key: " << key2key << ", value: " << key2object.value(key2key).toString();
+                }
+            }
+        }
+        else
+            qDebug() << "Key: " << key << ", value: " << data.value(key).toString();
+    }
+
+    // To print certain value by its key
+    qDebug() << data.value("lastName").toString();
 }
 
 QJsonArray JSONHandler::convertJsonObjectIntoArray(const QJsonObject object) const {
