@@ -1,6 +1,7 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
 
+#include <QFile>
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -24,6 +25,9 @@ private:
     QNetworkRequest request;
 
     JSONHandler *jsonHandler;
+
+    // To close the image after sending it
+    QFile *sentImage;
 
 private slots:
     void managerDone(QNetworkReply *reply);

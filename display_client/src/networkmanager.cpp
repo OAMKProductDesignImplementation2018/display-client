@@ -11,6 +11,8 @@ NetworkManager::NetworkManager()
     networkManager = new QNetworkAccessManager();
     jsonHandler = new JSONHandler();
 
+    sentImage = nullptr;
+
     QObject::connect(networkManager, SIGNAL(finished(QNetworkReply*)),
         this, SLOT(managerDone(QNetworkReply*)));
 }
@@ -18,6 +20,8 @@ NetworkManager::NetworkManager()
 NetworkManager::~NetworkManager() {
     delete networkManager;
     delete jsonHandler;
+
+    delete sentImage;
 }
 
 void NetworkManager::debugFunction() {
@@ -40,7 +44,7 @@ void NetworkManager::debugPostMethod() {
     }
 
     // Get the newest picture
-    const auto image = new QFile(pathToPictures.path() + "/" + pictureList.at(pictureList.size() - 1));
+    sentImage = new QFile(pathToPictures.path() + "/" + pictureList.at(pictureList.size() - 1));
 
     // Send image in QHttpMultiPart
     const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
@@ -49,9 +53,9 @@ void NetworkManager::debugPostMethod() {
     QHttpPart imagePart;
     imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
     imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
-    image->open(QIODevice::ReadOnly);
-    imagePart.setBodyDevice(image);
-    image->setParent(multipart);
+    sentImage->open(QIODevice::ReadOnly);
+    imagePart.setBodyDevice(sentImage);
+    sentImage->setParent(multipart);
 
     multipart->append(imagePart);
 
@@ -63,6 +67,12 @@ void NetworkManager::managerDone(QNetworkReply *reply) {
     if (reply->error()) {
         qDebug() << "Error: " << reply->errorString();
         return;
+    }
+
+    // Close the file after finished signal
+    if (sentImage != nullptr) {
+        sentImage->close();
+        delete sentImage;
     }
 
     // Set answer into QString
