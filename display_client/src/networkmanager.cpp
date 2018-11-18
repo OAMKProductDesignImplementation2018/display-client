@@ -13,8 +13,8 @@ NetworkManager::NetworkManager()
 
     sentImage = nullptr;
 
-    QObject::connect(networkManager, SIGNAL(finished(QNetworkReply*)),
-        this, SLOT(managerDone(QNetworkReply*)));
+    QObject::connect(networkManager, &QNetworkAccessManager::finished,
+        this, &NetworkManager::managerDone);
 }
 
 NetworkManager::~NetworkManager() {
