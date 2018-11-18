@@ -17,6 +17,7 @@ public:
     ~NetworkManager();
 
     Q_INVOKABLE void debugFunction();
+    Q_INVOKABLE void debugPostMethod();
 
 private:
     QNetworkAccessManager *networkManager;

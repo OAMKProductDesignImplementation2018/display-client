@@ -16,7 +16,7 @@ public:
     Camera();
     ~Camera();
 
-    QString getPathToSavedPictures() const;
+    static QString getPathToSavedPictures();
     void removeAllImages();
 
 public slots:

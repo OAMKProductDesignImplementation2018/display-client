@@ -52,6 +52,6 @@ void Camera::moveImage(const QString path) {
         qDebug() << "Rename failed! Image is stored in the default location (" << path << ").";
 }
 
-QString Camera::getPathToSavedPictures() const {
+QString Camera::getPathToSavedPictures() {
     return QCoreApplication::applicationDirPath() + "/" + directoryName;
 }

@@ -13,7 +13,7 @@ JSONHandler::~JSONHandler() {
 
 void JSONHandler::parseJSON(const QJsonObject data) {
 
-    // To print certain value by its key
+    // Person's information
     qDebug() << "First name: " << data.value("firstName").toString();
     qDebug() << "Last name: " << data.value("lastName").toString();
     qDebug() << "Group ID: " << data.value("groupID").toString();
