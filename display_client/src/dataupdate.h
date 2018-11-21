@@ -1,6 +1,7 @@
 #ifndef DATAUPDATE_H
 #define DATAUPDATE_H
 
+#include <QMap>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -118,6 +119,8 @@ public:
     Q_INVOKABLE void debugFunction();
     Q_INVOKABLE void debugFunction2();
 
+public slots:
+    void jsonDataReceived(QMap<QString, QString>);
 
 signals:
 

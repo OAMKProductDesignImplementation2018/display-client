@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QMap>
 #include <QObject>
 
 #include "dataupdate.h"
@@ -21,6 +22,9 @@ public:
 
     static JSONHandler* getInstance();
     static JSONHandler *_instance;
+
+signals:
+    void jsonDataSent(QMap<QString, QString>);
 
 private:
 

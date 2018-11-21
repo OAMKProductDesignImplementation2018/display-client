@@ -64,6 +64,8 @@ void NetworkManager::debugPostMethod() {
 
     request.setUrl(QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger"));
     networkManager->post(request, multipart);
+
+    qDebug() << "Request sent";
 }
 
 void NetworkManager::managerDone(QNetworkReply *reply) {

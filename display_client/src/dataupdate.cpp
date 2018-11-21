@@ -1,9 +1,13 @@
 #include "dataupdate.h"
+#include "jsonhandler.h"
 #include <QDebug>
 
 DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
     _firstName = "Averell";
     _lastName = "Dalton";
+
+    QObject::connect(JSONHandler::getInstance(), SIGNAL(jsonDataSent(QMap<QString, QString>)),
+                     this, SLOT(jsonDataReceived(QMap<QString, QString>)));
 }
 
 
@@ -118,6 +122,14 @@ QString DataUpdate::lastName() {
 
 void DataUpdate::setLastName(QString name) {
     _lastName = name;
+}
+
+
+
+// Public slots
+
+void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
+    qDebug() << map;
 }
 
 

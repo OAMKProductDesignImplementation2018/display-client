@@ -1,7 +1,7 @@
 #include "jsonhandler.h"
 
-#include <QFile>
 #include <QCoreApplication>
+#include <QFile>
 
 JSONHandler::JSONHandler() { }
 JSONHandler::~JSONHandler() { }
@@ -16,43 +16,61 @@ JSONHandler* JSONHandler::getInstance() {
 void JSONHandler::parseJSON(const QJsonObject data) {
 
     // Person's information
-    qDebug() << "First name: " << data.value("firstName").toString();
-    qDebug() << "Last name: " << data.value("lastName").toString();
-    qDebug() << "Group ID: " << data.value("groupID").toString();
+
+    QMap<QString, QString> map;
+
+    map["firstName"] = data.value("firstName").toString();
+    map["lastName"] = data.value("lastName").toString();
+    map["groupID"] = data.value("groupID").toString();
+
+    emit jsonDataSent(map);
+    map.clear();
 
     // Schedule
-    for (const auto schelude : data.value("schedule").toArray())
-    {
+    for (const auto schelude : data.value("schedule").toArray()) {
         QJsonObject scheludeObj = schelude.toObject();
-        qDebug() << "Schedule for day " << scheludeObj.value("day").toString() << ":";
-        qDebug() << "Course: " << scheludeObj.value("name").toString();
-        qDebug() << "Teacher: " << scheludeObj.value("teacher").toString();
-        qDebug() << "Room: " << scheludeObj.value("room").toString();
-        qDebug() << "Starts at: " << scheludeObj.value("start").toString();
-        qDebug() << "Ends at: " << scheludeObj.value("end").toString();
+
+        map["sDay"] = scheludeObj.value("day").toString();
+        map["sName"] = scheludeObj.value("name").toString();
+        map["sTeacher"] = scheludeObj.value("teacher").toString();
+        map["sRoom"] = scheludeObj.value("room").toString();
+        map["sStart"] = scheludeObj.value("start").toString();
+        map["sEnd"] = scheludeObj.value("end").toString();
+
+        emit jsonDataSent(map);
+        map.clear();
     }
 
     // Food menu
-    for (const auto foodMenu : data.value("foodMenu").toArray())
-    {
+    for (const auto foodMenu : data.value("foodMenu").toArray()) {
         QJsonObject menuObj = foodMenu.toObject();
-        qDebug() << "Food type is " << menuObj.value("type").toString();
+        QString keyName = "fName";
+        int iterator = 0;
+
+        map["fType"] = menuObj.value("type").toString();
 
         // Foods for menu type
-        for (const auto foods : menuObj.value("menuItems").toArray())
-        {
-            qDebug() << "Food: " << foods.toObject().value("name").toString();
+        for (const auto foods : menuObj.value("menuItems").toArray()) {
+            map["fName" + QString::number(iterator)] = foods.toObject().value("name").toString();
+
+            iterator++;
         }
+
+        emit jsonDataSent(map);
+        map.clear();
     }
 
     // Notes
-    for (const auto notes : data.value("notes").toArray())
-    {
+    for (const auto notes : data.value("notes").toArray()) {
         QJsonObject noteObj = notes.toObject();
-        qDebug() << "Note title: " << noteObj.value("title").toString();
-        qDebug() << "Note content: " << noteObj.value("contents").toString();
-        qDebug() << "Note day: " << noteObj.value("day").toString();
-        qDebug() << "Note starts at: " << noteObj.value("start").toString();
-        qDebug() << "Note ends at: " << noteObj.value("end").toString();
+
+        map["nTitle"] = noteObj.value("title").toString();
+        map["nContents"] = noteObj.value("contents").toString();
+        map["nDay"] = noteObj.value("day").toString();
+        map["nStart"] = noteObj.value("start").toString();
+        map["nEnd"] = noteObj.value("end").toString();
+
+        emit jsonDataSent(map);
+        map.clear();
     }
 }
