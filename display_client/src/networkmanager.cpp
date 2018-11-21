@@ -9,7 +9,7 @@
 NetworkManager::NetworkManager()
 {
     networkManager = new QNetworkAccessManager();
-    jsonHandler = new JSONHandler();
+    jsonHandler = JSONHandler::getInstance();
 
     sentImage = nullptr;
 
@@ -24,7 +24,6 @@ NetworkManager::NetworkManager()
 NetworkManager::~NetworkManager() {
     delete networkManager;
     delete jsonHandler;
-
     delete sentImage;
 }
 

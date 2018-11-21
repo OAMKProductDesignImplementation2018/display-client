@@ -11,6 +11,7 @@
 class JSONHandler : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(JSONHandler)
 
 public:
     JSONHandler();
@@ -18,8 +19,11 @@ public:
 
     void parseJSON(const QJsonObject data);
 
+    static JSONHandler* getInstance();
+    static JSONHandler *_instance;
+
 private:
-    DataUpdate *dataUpdater;
+
 };
 
 #endif // JSONHANDLER_H

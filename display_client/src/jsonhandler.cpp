@@ -3,12 +3,14 @@
 #include <QFile>
 #include <QCoreApplication>
 
-JSONHandler::JSONHandler() {
-    dataUpdater = new DataUpdate();
-}
+JSONHandler::JSONHandler() { }
+JSONHandler::~JSONHandler() { }
 
-JSONHandler::~JSONHandler() {
-    delete dataUpdater;
+JSONHandler* JSONHandler::_instance = nullptr;
+JSONHandler* JSONHandler::getInstance() {
+    if(!_instance)
+        _instance = new JSONHandler();
+    return _instance;
 }
 
 void JSONHandler::parseJSON(const QJsonObject data) {
