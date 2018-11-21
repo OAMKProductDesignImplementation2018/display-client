@@ -15,6 +15,10 @@ NetworkManager::NetworkManager()
 
     QObject::connect(networkManager, &QNetworkAccessManager::finished,
         this, &NetworkManager::managerDone);
+
+    qDebug() << "OpenSSL-version:";
+    qDebug() << QSslSocket::sslLibraryVersionString();
+    qDebug() << "- should be 1.0.2p";
 }
 
 NetworkManager::~NetworkManager() {
