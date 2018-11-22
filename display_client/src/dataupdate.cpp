@@ -124,12 +124,66 @@ void DataUpdate::setLastName(QString name) {
     _lastName = name;
 }
 
+QString DataUpdate::groupID() {
+    return _groupID;
+}
+
+void DataUpdate::setGroupID(QString groupID) {
+    _groupID = groupID;
+}
+
+
 
 
 // Public slots
 
 void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
-    qDebug() << map;
+    // qDebug() << map;
+    if (map.contains("target")) {
+        if (map.value("target") == "personData") {
+            if (map.contains("firstName"))
+                setFirstName(map.value("firstName"));
+            if (map.contains("lastName"))
+                setLastName(map.value("lastName"));
+            if (map.contains("groupID"))
+                setGroupID(map.value("groupID"));
+        }
+
+        else if (map.value("target") == "scheduleData") {
+            if (map.contains("sDay"))
+                qDebug() << map.value("sDay");
+            if (map.contains("sName"))
+                qDebug() << map.value("sName");
+            if (map.contains("sTeacher"))
+                qDebug() << map.value("sTeacher");
+            if (map.contains("sRoom"))
+                qDebug() << map.value("sRoom");
+            if (map.contains("sStart"))
+                qDebug() << map.value("sStart");
+            if (map.contains("sEnd"))
+                qDebug() << map.value("sEnd");
+        }
+
+        else if (map.value("target") == "foodData") {
+            if (map.contains("fType")) {
+                qDebug() << map.value("fType");
+                qDebug() << map.values("fName");
+            }
+        }
+
+        else if (map.value("target") == "notesData") {
+            if (map.contains("nTitle"))
+                qDebug() << map.value("nTitle");
+            if (map.contains("nContents"))
+                qDebug() << map.value("nContents");
+            if (map.contains("nDay"))
+                qDebug() << map.value("nDay");
+            if (map.contains("nStart"))
+                qDebug() << map.value("nStart");
+            if (map.contains("nEnd"))
+                qDebug() << map.value("nEnd");
+        }
+    }
 }
 
 

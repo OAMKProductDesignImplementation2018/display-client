@@ -109,6 +109,12 @@ public:
     QString lastName();
     void setLastName(QString lastName);
 
+    Q_PROPERTY (QString groupID
+                READ groupID
+                WRITE setGroupID
+                NOTIFY groupIDChanged)
+    QString groupID();
+    void setGroupID(QString groupID);
 
 
     // Debug functions
@@ -134,6 +140,7 @@ signals:
 
     void firstNameChanged();
     void lastNameChanged();
+    void groupIDChanged();
 
     void foodMenuClear();
     void foodMenuAdd(QString type, QString name);
@@ -155,6 +162,7 @@ private:
 
     QString _firstName;
     QString _lastName;
+    QString _groupID;
 
 };
 
