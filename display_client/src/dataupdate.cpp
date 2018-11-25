@@ -172,8 +172,15 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
 
         else if (map.value("target") == "foodData") {
             if (map.contains("fType")) {
-                qDebug() << map.value("fType");
-                qDebug() << map.values("fName");
+                QString foods;
+                for (const auto &foodName : map.values("fName")) {
+                    // Append food name to QString
+                    foods.append(foodName);
+                    // Add comma if current food is not the last value
+                    if (!map.values("fName").at(map.values("fName").size() - 1).contains(foodName))
+                        foods.append(", ");
+                }
+                emit foodMenuAdd(map.value("fType"), foods);
             }
         }
 

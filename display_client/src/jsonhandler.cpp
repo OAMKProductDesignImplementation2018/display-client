@@ -46,7 +46,6 @@ void JSONHandler::parseJSON(const QJsonObject data) {
     // Food menu
     for (const auto foodMenu : data.value("foodMenu").toArray()) {
         QJsonObject menuObj = foodMenu.toObject();
-        QString keyName = "fName";
 
         map["target"] = "foodData";
         map["fType"] = menuObj.value("type").toString();

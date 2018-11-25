@@ -52,7 +52,7 @@ Item {
 
     ListModel {
         id: menuListModel
-        ListElement {
+        /*ListElement {
             type: "Vegetable lunch"
             name: "Chili sin carnea"
         }
@@ -70,7 +70,7 @@ Item {
         ListElement {
             type: "Lunch"
             name: "Ryed herring"
-        }
+        }*/
 
     }
 
