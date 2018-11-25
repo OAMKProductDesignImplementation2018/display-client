@@ -83,10 +83,10 @@ void NetworkManager::managerDone(QNetworkReply *reply) {
     }
 
     // Set answer into QString
-    QString answer = reply->readAll();
+    QByteArray answer = reply->readAll();
 
     // Cast it to QJsonDocument
-    const auto jsonDocument = QJsonDocument::fromJson(answer.toUtf8());
+    const auto jsonDocument = QJsonDocument::fromJson(answer);
     if (jsonDocument.isNull()) {
         qDebug() << "Document is empty!";
         return;
