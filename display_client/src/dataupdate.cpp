@@ -138,15 +138,21 @@ void DataUpdate::setGroupID(QString groupID) {
 // Public slots
 
 void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
-    // qDebug() << map;
+
     if (map.contains("target")) {
         if (map.value("target") == "personData") {
-            if (map.contains("firstName"))
+            if (map.contains("firstName")) {
                 setFirstName(map.value("firstName"));
-            if (map.contains("lastName"))
+                emit firstNameChanged();
+            }
+            if (map.contains("lastName")) {
                 setLastName(map.value("lastName"));
-            if (map.contains("groupID"))
+                emit lastNameChanged();
+            }
+            if (map.contains("groupID")) {
                 setGroupID(map.value("groupID"));
+                emit groupIDChanged();
+            }
         }
 
         else if (map.value("target") == "scheduleData") {
