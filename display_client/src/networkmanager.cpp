@@ -69,15 +69,17 @@ void NetworkManager::debugPostMethod() {
 }
 
 void NetworkManager::managerDone(QNetworkReply *reply) {
-    if (reply->error()) {
-        qDebug() << "Error: " << reply->errorString();
-        return;
-    }
 
     // Close the file after finished signal
     if (sentImage != nullptr) {
         sentImage->close();
         delete sentImage;
+    }
+
+    // Check for errors
+    if (reply->error()) {
+        qDebug() << "Error: " << reply->errorString();
+        return;
     }
 
     // Set answer into QString
