@@ -22,6 +22,21 @@ Item {
     property var thursday: dataUpdate.scheduleThursday
     property var friday: dataUpdate.scheduleFriday
 
+    property int cellWidth: tableRoot.width / 5
+    property int cellHeight: tableRoot.height / 13
+
+    property int mondayX: tableRoot.x
+    property int tuesdayX: tableRoot.x + cellWidth
+    property int wednesdayX: tableRoot.x + cellWidth * 2
+    property int thursdayX: tableRoot.x + cellWidth * 3
+    property int fridayX: tableRoot.x + cellWidth * 4
+
+    // Convenience variables for positioning the events
+    property int fifteenMinutes: cellHeight / 4
+    property int thirtyMinutes: cellHeight / 2
+    property int hour: cellHeight
+
+
     Row {
         id: daysRoot
         anchors.left: timesRoot.right
@@ -70,94 +85,22 @@ Item {
 
     Row {
         id: tableRoot
-        // x: root.width / 6
-        // y: root.height / 14
         anchors.left: timesRoot.right
-        anchors.right: parent.right
         anchors.top: daysRoot.bottom
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
 
-        Column {
-            Repeater {
-                model: 13
-                Rectangle {
-                    color: "#F8F8FA"
-                    border.color: "#9A9A9A"
-                    width: tableRoot.width / 5
-                    height: tableRoot.height / 13
+        Repeater {
+            model: 5
 
-                    Text {
-                        anchors.centerIn: parent
-                        text: monday[index] ? monday[index] : ""
-                    }
-                }
-            }
-        }
-
-        Column {
-            Repeater {
-                model: 13
-
-                Rectangle {
-                    color: "#F8F8FA"
-                    border.color: "#9A9A9A"
-                    width: tableRoot.width / 5
-                    height: tableRoot.height / 13
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: tuesday[index] ? tuesday[index] : ""
-                    }
-                }
-            }
-        }
-        Column {
-            Repeater {
-                model: 13
-
-                Rectangle {
-                    color: "#F8F8FA"
-                    border.color: "#9A9A9A"
-                    width: tableRoot.width / 5
-                    height: tableRoot.height / 13
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: wednesday[index] ? wednesday[index] : ""
-                    }
-                }
-            }
-        }
-        Column {
-            Repeater {
-                model: 13
-
-                Rectangle {
-                    color: "#F8F8FA"
-                    border.color: "#9A9A9A"
-                    width: tableRoot.width / 5
-                    height: tableRoot.height / 13
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: thursday[index] ? thursday[index] : ""
-                    }
-                }
-            }
-        }
-        Column {
-            Repeater {
-                model: 13
-
-                Rectangle {
-                    color: "#F8F8FA"
-                    border.color: "#9A9A9A"
-                    width: tableRoot.width / 5
-                    height: tableRoot.height / 13
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: friday[index] ? friday[index] : ""
+            Column {
+                Repeater {
+                    model: 13
+                    Rectangle {
+                        width: tableRoot.width / 5      // Don't use cellHeight or cellWidth,
+                        height: tableRoot.height / 13   // they won't round properly
+                        color: "#FAFAFA"
+                        border.color: "#000000"
                     }
                 }
             }
