@@ -3,6 +3,10 @@ import QtQuick 2.0
 Item {
     id: root
 
+    property var days: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    property int firstHour: 8 // i.e. schedule starts at 8; Maybe link to Q_PROPERTY ?
+
+
     Connections {
         target: dataUpdate
 
@@ -10,20 +14,19 @@ Item {
         // tableRoot.createEvent(...)
     }
 
-    Rectangle {
-        id: debugBox
-        anchors.fill: parent
+    DebugButton {
+        x: -50
+        y: 0
+        width: 30
+        height: 30
 
-        border.color: "#000000"
         color: "#00000000"
+        borderColor: "#404040"
+
+        onButtonPressed: {
+            tableRoot.createEvent("Wed", 17, 30, 19, 00, "Course name", "Teacher", "Room")
+        }
     }
-
-    property var times: ["8-9", "9-10", "10-11", "11-12",
-                            "12-13", "13-14", "14-15", "15-16",
-                            "16-17", "17-18", "18-19", "19-20", "20-21"]
-    property var days: ["Mon", "Tue", "Wed", "Thu", "Fri"]
-
-    property int firstHour: 8 // i.e. schedule starts at 8)
 
     Row {
         id: daysRoot
@@ -46,21 +49,6 @@ Item {
         }
     }
 
-    DebugButton {
-        x: 0
-        y: 0
-        width: 40
-        height: 20
-
-        color: "#FF0000"
-
-        onButtonPressed: {
-            tableRoot.createEvent("Wed", 17, 30, 19, 00, "Course name", "Teacher", "Room")
-        }
-    }
-
-
-
     Column {
         id: timesRoot
         x: 0
@@ -69,7 +57,7 @@ Item {
         width: root.width / 9
 
         Repeater {
-            model: times
+            model: 13 // times
 
             Rectangle {
                 color: "#00CCFF"
@@ -80,7 +68,7 @@ Item {
                 Text {
                     anchors.centerIn: parent
                     color: "#000000"
-                    text: modelData
+                    text: (index + firstHour) + "-" + (index + firstHour + 1) // modelData
                 }
             }
         }
@@ -108,7 +96,7 @@ Item {
                                                     "roomName": room
                                                 })
 
-            if (!sprite) {
+            if (sprite === null) {
                     // Error Handling
                     console.log("Error creating object");
                 }
@@ -116,7 +104,7 @@ Item {
 
         function getX(day) {
             var ret
-            if (day === "Mon") { ret = 0 + 1 }
+            if (day === "Mon") { ret = 0 }
             else if (day === "Tue") { ret = (tableRoot.width / 5) }
             else if (day === "Wed") { ret = (tableRoot.width / 5) * 2 }
             else if (day === "Thu") { ret = (tableRoot.width / 5) * 3 }
@@ -128,7 +116,6 @@ Item {
         function getY(startH, startM) {
             var ret
             ret = ((startH - firstHour) + (startM / 60)) * tableRoot.height / 13
-
 
             return ret
         }
@@ -159,6 +146,5 @@ Item {
                 }
             }
         }
-
     }
 }
