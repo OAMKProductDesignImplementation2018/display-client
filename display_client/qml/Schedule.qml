@@ -3,6 +3,13 @@ import QtQuick 2.0
 Item {
     id: root
 
+    Connections {
+        target: dataUpdate
+
+        // onNewScheduleEvent: {
+        // tableRoot.createEvent(...)
+    }
+
     Rectangle {
         id: debugBox
         anchors.fill: parent
@@ -16,26 +23,7 @@ Item {
                             "16-17", "17-18", "18-19", "19-20", "20-21"]
     property var days: ["Mon", "Tue", "Wed", "Thu", "Fri"]
 
-    property var monday: dataUpdate.scheduleMonday
-    property var tuesday: dataUpdate.scheduleTuesday
-    property var wednesday: dataUpdate.scheduleWednesday
-    property var thursday: dataUpdate.scheduleThursday
-    property var friday: dataUpdate.scheduleFriday
-
-    property int cellWidth: tableRoot.width / 5
-    property int cellHeight: tableRoot.height / 13
-
-    property int mondayX: tableRoot.x
-    property int tuesdayX: tableRoot.x + cellWidth
-    property int wednesdayX: tableRoot.x + cellWidth * 2
-    property int thursdayX: tableRoot.x + cellWidth * 3
-    property int fridayX: tableRoot.x + cellWidth * 4
-
-    // Convenience variables for positioning the events
-    property int fifteenMinutes: cellHeight / 4
-    property int thirtyMinutes: cellHeight / 2
-    property int hour: cellHeight
-
+    property int firstHour: 8 // i.e. schedule starts at 8)
 
     Row {
         id: daysRoot
@@ -57,6 +45,21 @@ Item {
             }
         }
     }
+
+    DebugButton {
+        x: 0
+        y: 0
+        width: 40
+        height: 20
+
+        color: "#FF0000"
+
+        onButtonPressed: {
+            tableRoot.createEvent("Wed", 17, 30, 19, 00, "Course name", "Teacher", "Room")
+        }
+    }
+
+
 
     Column {
         id: timesRoot
@@ -83,27 +86,79 @@ Item {
         }
     }
 
-    Row {
+    Item {
         id: tableRoot
+
         anchors.left: timesRoot.right
-        anchors.top: daysRoot.bottom
         anchors.right: parent.right
+        anchors.top: daysRoot.bottom
         anchors.bottom: parent.bottom
 
-        Repeater {
-            model: 5
+        function createEvent(day, startH, startM, endH, endM,
+                             name, teacher, room)
+        {
+            var component = Qt.createComponent("ComponentEvent.qml")
+            var sprite = component.createObject(tableRoot,
+                                                {   "x": getX(day),
+                                                    "y": getY(startH, startM),
+                                                    "width": tableRoot.width / 5,
+                                                    "height": getHeight(startH, startM, endH, endM),
+                                                    "courseName": name,
+                                                    "teacherName": teacher,
+                                                    "roomName": room
+                                                })
 
-            Column {
-                Repeater {
-                    model: 13
-                    Rectangle {
-                        width: tableRoot.width / 5      // Don't use cellHeight or cellWidth,
-                        height: tableRoot.height / 13   // they won't round properly
-                        color: "#FAFAFA"
-                        border.color: "#000000"
+            if (!sprite) {
+                    // Error Handling
+                    console.log("Error creating object");
+                }
+        }
+
+        function getX(day) {
+            var ret
+            if (day === "Mon") { ret = 0 + 1 }
+            else if (day === "Tue") { ret = (tableRoot.width / 5) }
+            else if (day === "Wed") { ret = (tableRoot.width / 5) * 2 }
+            else if (day === "Thu") { ret = (tableRoot.width / 5) * 3 }
+            else if (day === "Fri") { ret = (tableRoot.width / 5) * 4 }
+
+            return ret
+        }
+
+        function getY(startH, startM) {
+            var ret
+            ret = ((startH - firstHour) + (startM / 60)) * tableRoot.height / 13
+
+
+            return ret
+        }
+
+        function getHeight(startH, startM, endH, endM) {
+            var ret
+            var start = ((startH - firstHour) + (startM / 60)) * tableRoot.height / 13
+            var end = ((endH - firstHour) + (endM / 60)) * tableRoot.height / 13
+            ret = end - start
+
+            return ret
+        }
+
+        Row {
+            Repeater {
+                model: 5
+
+                Column {
+                    Repeater {
+                        model: 13
+                        Rectangle {
+                            width: tableRoot.width / 5
+                            height: tableRoot.height / 13
+                            color: "#FAFAFA"
+                            border.color: "#000000"
+                        }
                     }
                 }
             }
         }
+
     }
 }

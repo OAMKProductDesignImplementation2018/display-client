@@ -11,5 +11,6 @@
         <file>WebcamFeed.qml</file>
         <file>DisplayPersonal.qml</file>
         <file>Advertisement.qml</file>
+        <file>ComponentEvent.qml</file>
     </qresource>
 </RCC>
