@@ -202,12 +202,11 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "Signal test"
+                    text: "Einstein test"
                     font.pixelSize: 16
                 }
 
                 onButtonPressed: {
-                    //dataUpdate.updateUI()
                     networkManager.debugFunction()
                 }
             }

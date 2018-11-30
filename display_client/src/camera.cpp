@@ -17,6 +17,10 @@ void Camera::removeAllImages() {
     // Find all captured pictures
     const QStringList pictureList = pathToPictures.entryList(QStringList() << "*.jpg" << "*.JPG", QDir::Files);
     for (const auto &pictureName : pictureList) {
+        // Skip Einstein's picture
+        if (pictureName.contains("einstein", Qt::CaseInsensitive))
+            continue;
+
         // Get file and remove it
         QFile image(pathToPictures.path() + "/" + pictureName);
         if (image.isOpen())

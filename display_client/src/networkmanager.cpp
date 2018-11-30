@@ -27,9 +27,37 @@ NetworkManager::~NetworkManager() {
     delete sentImage;
 }
 
+// Sends Einstein's image to face detection API
 void NetworkManager::debugFunction() {
-    request.setUrl(QUrl("https://jsonplaceholder.typicode.com/todos/1"));
-    networkManager->get(request);
+    const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
+    if (!pathToPictures.exists()) {
+        qDebug() << "Picture directory does not exist!";
+        return;
+    }
+
+    sentImage = new QFile(pathToPictures.path() + "/einstein.jpg");
+    if (!sentImage->exists()) {
+        qDebug() << "Einstein's picture does not exist!";
+        return;
+    }
+
+    // Send image in QHttpMultiPart
+    const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+    // Append image to multipart as QHttpPart
+    QHttpPart imagePart;
+    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
+    sentImage->open(QIODevice::ReadOnly);
+    imagePart.setBodyDevice(sentImage);
+    sentImage->setParent(multipart);
+
+    multipart->append(imagePart);
+
+    request.setUrl(QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger"));
+    networkManager->post(request, multipart);
+
+    qDebug() << "Request sent";
 }
 
 void NetworkManager::debugPostMethod() {
@@ -40,7 +68,16 @@ void NetworkManager::debugPostMethod() {
     }
 
     // Find all captured pictures
-    const QStringList pictureList = pathToPictures.entryList(QStringList() << "*.jpg" << "*.JPG", QDir::Files);
+    QStringList pictureList = pathToPictures.entryList(QStringList() << "*.jpg" << "*.JPG", QDir::Files);
+
+    // Remove Einstein from pictureList (Einstein is sent in different function)
+    for (auto itr = 0; itr < pictureList.size(); ++itr) {
+        if (pictureList.at(itr).contains("einstein.jpg")) {
+            pictureList.removeAt(itr);
+        }
+    }
+
+    // Check if there's any pictures
     if (pictureList.isEmpty()) {
         qDebug() << "Picture directory is empty!";
         return;
@@ -69,14 +106,13 @@ void NetworkManager::debugPostMethod() {
 }
 
 void NetworkManager::managerDone(QNetworkReply *reply) {
-
     // Close the file after finished signal
     if (sentImage != nullptr) {
         sentImage->close();
         delete sentImage;
     }
 
-    // Check for errors
+    // Check for network errors
     if (reply->error()) {
         qDebug() << "Error: " << reply->errorString();
         return;
@@ -98,5 +134,5 @@ void NetworkManager::managerDone(QNetworkReply *reply) {
     }
 
     // Send it as QJsonObject
-    jsonHandler->parseJSON(jsonDocument.object());
+    jsonHandler->checkPersonData(jsonDocument.object());
 }

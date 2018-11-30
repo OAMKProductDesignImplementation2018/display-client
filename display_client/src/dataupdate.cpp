@@ -149,10 +149,6 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
                 setLastName(map.value("lastName"));
                 emit lastNameChanged();
             }
-            if (map.contains("groupID")) {
-                setGroupID(map.value("groupID"));
-                emit groupIDChanged();
-            }
         }
 
         else if (map.value("target") == "scheduleData") {
