@@ -113,7 +113,8 @@ void NetworkManager::postEinsteinImage() {
 }
 
 void NetworkManager::getSchedule(const QString scheduleUrl) {
-    qDebug() << "Schedule: " << scheduleUrl;
+    request.setUrl(QUrl(scheduleUrl));
+    apiSchedule->get(request);
 }
 
 void NetworkManager::azureReply(QNetworkReply *reply) {
@@ -130,7 +131,7 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
     }
 
     // Set answer into QString
-    QByteArray answer = reply->readAll();
+    const QByteArray answer = reply->readAll();
 
     // Cast it to QJsonDocument
     const auto jsonDocument = QJsonDocument::fromJson(answer);
@@ -149,5 +150,26 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
 }
 
 void NetworkManager::scheduleReply(QNetworkReply *reply) {
+    // Check for network errors
+    if (reply->error()) {
+        qDebug() << "Error: " << reply->errorString();
+    }
 
+    // Read reply
+    const QByteArray answer = reply->readAll();
+
+    // Cast it to QJsonDocument
+    const auto jsonDocument = QJsonDocument::fromJson(answer);
+    if (jsonDocument.isNull()) {
+        qDebug() << "Document is empty!";
+        return;
+    }
+
+    if (!jsonDocument.isArray()) {
+        qDebug() << "Document is not a JSON array!";
+        return;
+    }
+
+    // Send it as QJsonArray
+    jsonHandler->parseScheduleData(jsonDocument.array());
 }
