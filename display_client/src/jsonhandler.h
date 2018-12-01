@@ -22,6 +22,8 @@ public:
     void checkPersonData(const QJsonObject data);
     // Parses person's data from JSON if person was recognized
     void parsePersonData(const QJsonObject data);
+    // Parses schedule from JSON
+    void parseScheduleData(const QJsonArray data);
 
     static JSONHandler* getInstance();
     static JSONHandler *_instance;
@@ -42,6 +44,13 @@ private:
     const QString scheduleRoom = "room";
     const QString scheduleStart = "start";
     const QString scheduleEnd = "end";
+
+    // From schedule API
+    const QString scheduleRawName = "varaus";
+    const QString scheduleRawStart = "alku"; // in unix time
+    const QString scheduleRawEnd = "loppu"; // in unix time
+    const QString scheduleRawTeacher = "opettaja";
+    const QString scheduleRawRoom = "tila";
 
     const QString foodMenu = "foodMenu";
     const QString foodMenuItems = "menuItems";

@@ -1,6 +1,7 @@
 #include "jsonhandler.h"
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QFile>
 
 JSONHandler::JSONHandler() { }
@@ -68,5 +69,28 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
 
         emit jsonDataSent(map);
         map.clear();
+    }
+}
+
+void JSONHandler::parseScheduleData(const QJsonArray data) {
+    // Loop through array
+    for (const auto val : data) {
+        const QJsonObject obj = val.toObject();
+
+        qDebug() << "Item: " << obj.value(scheduleRawRoom).toString();
+        qDebug() << "Room is: " << obj.value(scheduleRawRoom).toString();
+        qDebug() << "Teacher is: " << obj.value(scheduleRawTeacher).toString();
+
+        // Convert unix time fields to "readable" date
+        QDateTime startDate = QDateTime();
+        QDateTime endDate = QDateTime();
+
+        unsigned int rawStart = obj.value(scheduleRawStart).toString().toUInt();
+        unsigned int rawEnd = obj.value(scheduleRawEnd).toString().toUInt();
+        startDate.setTime_t(rawStart);
+        endDate.setTime_t(rawEnd);
+
+        qDebug() << "Start time: " << startDate;
+        qDebug() << "End time: " << endDate;
     }
 }
