@@ -8,13 +8,14 @@
 
 NetworkManager::NetworkManager()
 {
-    networkManager = new QNetworkAccessManager();
+    apiAzure = new QNetworkAccessManager();
+
     jsonHandler = JSONHandler::getInstance();
 
     sentImage = nullptr;
 
-    QObject::connect(networkManager, &QNetworkAccessManager::finished,
-        this, &NetworkManager::managerDone);
+    QObject::connect(apiAzure, &QNetworkAccessManager::finished,
+        this, &NetworkManager::azureReply);
 
     qDebug() << "OpenSSL-version:";
     qDebug() << QSslSocket::sslLibraryVersionString();
@@ -22,13 +23,13 @@ NetworkManager::NetworkManager()
 }
 
 NetworkManager::~NetworkManager() {
-    delete networkManager;
+    delete apiAzure;
     delete jsonHandler;
     delete sentImage;
 }
 
 // Sends Einstein's image to face detection API
-void NetworkManager::debugFunction() {
+void NetworkManager::postEinsteinImage() {
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
         qDebug() << "Picture directory does not exist!";
@@ -55,12 +56,12 @@ void NetworkManager::debugFunction() {
     multipart->append(imagePart);
 
     request.setUrl(QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger"));
-    networkManager->post(request, multipart);
+    apiAzure->post(request, multipart);
 
     qDebug() << "Request sent";
 }
 
-void NetworkManager::debugPostMethod() {
+void NetworkManager::postImage() {
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
         qDebug() << "Picture directory does not exist!";
@@ -70,7 +71,7 @@ void NetworkManager::debugPostMethod() {
     // Find all captured pictures
     QStringList pictureList = pathToPictures.entryList(QStringList() << "*.jpg" << "*.JPG", QDir::Files);
 
-    // Remove Einstein from pictureList (Einstein is sent in different function)
+    // Remove Einstein from pictureList array (Einstein is sent in different function)
     for (auto itr = 0; itr < pictureList.size(); ++itr) {
         if (pictureList.at(itr).contains("einstein.jpg")) {
             pictureList.removeAt(itr);
@@ -100,12 +101,12 @@ void NetworkManager::debugPostMethod() {
     multipart->append(imagePart);
 
     request.setUrl(QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger"));
-    networkManager->post(request, multipart);
+    apiAzure->post(request, multipart);
 
     qDebug() << "Request sent";
 }
 
-void NetworkManager::managerDone(QNetworkReply *reply) {
+void NetworkManager::azureReply(QNetworkReply *reply) {
     // Close the file after finished signal
     if (sentImage != nullptr) {
         sentImage->close();

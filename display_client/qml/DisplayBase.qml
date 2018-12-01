@@ -25,7 +25,7 @@ Item {
         color: "#FF0000"
 
         onButtonPressed: {
-            networkManager.debugPostMethod()
+            networkManager.postImage()
         }
     }
 

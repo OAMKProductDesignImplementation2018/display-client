@@ -17,20 +17,24 @@ public:
     NetworkManager();
     ~NetworkManager();
 
-    Q_INVOKABLE void debugFunction();
-    Q_INVOKABLE void debugPostMethod();
+    // Sends latest image captured by camera
+    Q_INVOKABLE void postImage();
+    // Sends Einstein's photo
+    Q_INVOKABLE void postEinsteinImage();
 
 private:
-    QNetworkAccessManager *networkManager;
+    JSONHandler *jsonHandler;
     QNetworkRequest request;
 
-    JSONHandler *jsonHandler;
+    // Network connector for Azure
+    QNetworkAccessManager *apiAzure;
 
     // To close the image after sending it
     QFile *sentImage;
 
 private slots:
-    void managerDone(QNetworkReply *reply);
+    // Reply from Azure
+    void azureReply(QNetworkReply *reply);
 };
 
 #endif // NETWORKMANAGER_H

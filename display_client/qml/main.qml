@@ -207,7 +207,7 @@ Window {
                 }
 
                 onButtonPressed: {
-                    networkManager.debugFunction()
+                    networkManager.postEinsteinImage()
                 }
             }
         }
