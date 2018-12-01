@@ -28,6 +28,7 @@ public:
 
 signals:
     void jsonDataSent(QMap<QString, QString>);
+    void scheduleUrlReceived(const QString);
 
 private:
     // JSON data members
@@ -53,7 +54,6 @@ private:
     const QString notesDay = "day";
     const QString notesStart = "start";
     const QString notesEnd = "end";
-
 };
 
 #endif // JSONHANDLER_H

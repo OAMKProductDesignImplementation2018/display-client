@@ -21,6 +21,8 @@ public:
     Q_INVOKABLE void postImage();
     // Sends Einstein's photo
     Q_INVOKABLE void postEinsteinImage();
+    // Gets schedule
+    void getSchedule(const QString scheduleUrl);
 
 private:
     JSONHandler *jsonHandler;
@@ -28,13 +30,19 @@ private:
 
     // Network connector for Azure
     QNetworkAccessManager *apiAzure;
+    // Network connector for schedule
+    QNetworkAccessManager *apiSchedule;
 
     // To close the image after sending it
     QFile *sentImage;
 
+    const QUrl apiAzureUrl = QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger");
+
 private slots:
     // Reply from Azure
     void azureReply(QNetworkReply *reply);
+    // Reply from schedule api
+    void scheduleReply(QNetworkReply *reply);
 };
 
 #endif // NETWORKMANAGER_H

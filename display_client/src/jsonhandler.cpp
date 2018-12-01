@@ -14,13 +14,9 @@ JSONHandler* JSONHandler::getInstance() {
 }
 
 void JSONHandler::checkPersonData(const QJsonObject data) {
-    if (!data.contains(firstName) ||
-        !data.contains(lastName) ||
-        !data.contains(schedule) ||
-        !data.contains(foodMenu) ||
-        !data.contains(notes)) {
+    if (data.contains("error")) {
         // Person was not detected
-        // TODO: implement better error check and handling
+        // TODO: implement better error handling
         qDebug() << "Error in detection: " << data;
     } else {
         // Person was successfully detected
@@ -39,21 +35,9 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
     emit jsonDataSent(map);
     map.clear();
 
-    // Schedule
-    for (const auto schelude : data.value(schedule).toArray()) {
-        QJsonObject scheludeObj = schelude.toObject();
-
-        map["target"] = "scheduleData";
-        map["sDay"] = scheludeObj.value(scheduleDay).toString();
-        map["sName"] = scheludeObj.value(scheduleName).toString();
-        map["sTeacher"] = scheludeObj.value(scheduleTeacher).toString();
-        map["sRoom"] = scheludeObj.value(scheduleRoom).toString();
-        map["sStart"] = scheludeObj.value(scheduleStart).toString();
-        map["sEnd"] = scheludeObj.value(scheduleEnd).toString();
-
-        emit jsonDataSent(map);
-        map.clear();
-    }
+    // Schedule url is sent to NetworkManager via signal
+    if (!data.value(schedule).isNull())
+        emit scheduleUrlReceived(data.value(schedule).toString());
 
     // Food menu
     for (const auto foodMenu : data.value(foodMenu).toArray()) {

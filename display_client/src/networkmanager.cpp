@@ -9,6 +9,7 @@
 NetworkManager::NetworkManager()
 {
     apiAzure = new QNetworkAccessManager();
+    apiSchedule = new QNetworkAccessManager();
 
     jsonHandler = JSONHandler::getInstance();
 
@@ -16,6 +17,11 @@ NetworkManager::NetworkManager()
 
     QObject::connect(apiAzure, &QNetworkAccessManager::finished,
         this, &NetworkManager::azureReply);
+    QObject::connect(apiSchedule, &QNetworkAccessManager::finished,
+        this, &NetworkManager::scheduleReply);
+
+    QObject::connect(JSONHandler::getInstance(), &JSONHandler::scheduleUrlReceived,
+        this, &NetworkManager::getSchedule);
 
     qDebug() << "OpenSSL-version:";
     qDebug() << QSslSocket::sslLibraryVersionString();
@@ -24,41 +30,9 @@ NetworkManager::NetworkManager()
 
 NetworkManager::~NetworkManager() {
     delete apiAzure;
+    delete apiSchedule;
     delete jsonHandler;
     delete sentImage;
-}
-
-// Sends Einstein's image to face detection API
-void NetworkManager::postEinsteinImage() {
-    const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
-    if (!pathToPictures.exists()) {
-        qDebug() << "Picture directory does not exist!";
-        return;
-    }
-
-    sentImage = new QFile(pathToPictures.path() + "/einstein.jpg");
-    if (!sentImage->exists()) {
-        qDebug() << "Einstein's picture does not exist!";
-        return;
-    }
-
-    // Send image in QHttpMultiPart
-    const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-
-    // Append image to multipart as QHttpPart
-    QHttpPart imagePart;
-    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
-    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
-    sentImage->open(QIODevice::ReadOnly);
-    imagePart.setBodyDevice(sentImage);
-    sentImage->setParent(multipart);
-
-    multipart->append(imagePart);
-
-    request.setUrl(QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger"));
-    apiAzure->post(request, multipart);
-
-    qDebug() << "Request sent";
 }
 
 void NetworkManager::postImage() {
@@ -100,10 +74,46 @@ void NetworkManager::postImage() {
 
     multipart->append(imagePart);
 
-    request.setUrl(QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger"));
+    request.setUrl(apiAzureUrl);
     apiAzure->post(request, multipart);
 
     qDebug() << "Request sent";
+}
+
+void NetworkManager::postEinsteinImage() {
+    const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
+    if (!pathToPictures.exists()) {
+        qDebug() << "Picture directory does not exist!";
+        return;
+    }
+
+    sentImage = new QFile(pathToPictures.path() + "/einstein.jpg");
+    if (!sentImage->exists()) {
+        qDebug() << "Einstein's picture does not exist!";
+        return;
+    }
+
+    // Send image in QHttpMultiPart
+    const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+    // Append image to multipart as QHttpPart
+    QHttpPart imagePart;
+    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
+    sentImage->open(QIODevice::ReadOnly);
+    imagePart.setBodyDevice(sentImage);
+    sentImage->setParent(multipart);
+
+    multipart->append(imagePart);
+
+    request.setUrl(apiAzureUrl);
+    apiAzure->post(request, multipart);
+
+    qDebug() << "Request sent";
+}
+
+void NetworkManager::getSchedule(const QString scheduleUrl) {
+    qDebug() << "Schedule: " << scheduleUrl;
 }
 
 void NetworkManager::azureReply(QNetworkReply *reply) {
@@ -136,4 +146,8 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
 
     // Send it as QJsonObject
     jsonHandler->checkPersonData(jsonDocument.object());
+}
+
+void NetworkManager::scheduleReply(QNetworkReply *reply) {
+
 }
