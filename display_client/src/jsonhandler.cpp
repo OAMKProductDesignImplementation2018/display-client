@@ -73,22 +73,27 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
 }
 
 void JSONHandler::parseScheduleData(const QJsonArray data) {
+    // Since schedule API returns all upcoming lectures for current period,
+    // just get lectures for current week
+    const QDate dateNow = QDate::currentDate();
+
     // Loop through array
     for (const auto val : data) {
         const QJsonObject obj = val.toObject();
 
-        qDebug() << "Item: " << obj.value(scheduleRawRoom).toString();
-        qDebug() << "Room is: " << obj.value(scheduleRawRoom).toString();
-        qDebug() << "Teacher is: " << obj.value(scheduleRawTeacher).toString();
-
-        // Convert unix time fields to "readable" date
-        QDateTime startDate = QDateTime();
-        QDateTime endDate = QDateTime();
-
-        unsigned int rawStart = obj.value(scheduleRawStart).toString().toUInt();
-        unsigned int rawEnd = obj.value(scheduleRawEnd).toString().toUInt();
+        // Convert unix time fields to QDateTime
+        QDateTime startDate, endDate = QDateTime();
+        const unsigned int rawStart = obj.value(scheduleRawStart).toString().toUInt();
+        const unsigned int rawEnd = obj.value(scheduleRawEnd).toString().toUInt();
         startDate.setTime_t(rawStart);
         endDate.setTime_t(rawEnd);
+        // Skip lectures from other weeks
+        if (dateNow.weekNumber() != startDate.date().weekNumber())
+            continue;
+
+        qDebug() << "Item: " << obj.value(scheduleRawName).toString();
+        qDebug() << "Room is: " << obj.value(scheduleRawRoom).toString();
+        qDebug() << "Teacher is: " << obj.value(scheduleRawTeacher).toString();
 
         qDebug() << "Start time: " << startDate;
         qDebug() << "End time: " << endDate;
