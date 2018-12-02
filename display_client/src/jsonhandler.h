@@ -9,15 +9,12 @@
 
 #include "dataupdate.h"
 
-class JSONHandler : public QObject
+class JSONHandler final : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(JSONHandler)
 
 public:
-    JSONHandler();
-    ~JSONHandler();
-
     // Reads JSON from Azure, checks for errors and checks if person is recognized
     void checkPersonData(const QJsonObject data);
     // Parses person's data from JSON if person was recognized
@@ -25,8 +22,7 @@ public:
     // Parses schedule from JSON
     void parseScheduleData(const QJsonArray data);
 
-    static JSONHandler* getInstance();
-    static JSONHandler *_instance;
+    static JSONHandler& getInstance();
 
 signals:
     void jsonDataSent(QMap<QString, QString>);
@@ -63,6 +59,9 @@ private:
     const QString notesDay = "day";
     const QString notesStart = "start";
     const QString notesEnd = "end";
+
+    JSONHandler() = default;
+    ~JSONHandler() = default;
 };
 
 #endif // JSONHANDLER_H

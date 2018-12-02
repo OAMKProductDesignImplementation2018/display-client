@@ -6,8 +6,8 @@ DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
     _firstName = "Averell";
     _lastName = "Dalton";
 
-    QObject::connect(JSONHandler::getInstance(), SIGNAL(jsonDataSent(QMap<QString, QString>)),
-                     this, SLOT(jsonDataReceived(QMap<QString, QString>)));
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::jsonDataSent,
+                     this, &DataUpdate::jsonDataReceived);
 }
 
 

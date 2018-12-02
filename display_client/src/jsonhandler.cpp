@@ -4,14 +4,9 @@
 #include <QDateTime>
 #include <QFile>
 
-JSONHandler::JSONHandler() { }
-JSONHandler::~JSONHandler() { }
-
-JSONHandler* JSONHandler::_instance = nullptr;
-JSONHandler* JSONHandler::getInstance() {
-    if(!_instance)
-        _instance = new JSONHandler();
-    return _instance;
+JSONHandler& JSONHandler::getInstance() {
+    static JSONHandler instance;
+    return instance;
 }
 
 void JSONHandler::checkPersonData(const QJsonObject data) {

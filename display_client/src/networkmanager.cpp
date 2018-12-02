@@ -11,8 +11,6 @@ NetworkManager::NetworkManager()
     apiAzure = new QNetworkAccessManager();
     apiSchedule = new QNetworkAccessManager();
 
-    jsonHandler = JSONHandler::getInstance();
-
     sentImage = nullptr;
 
     QObject::connect(apiAzure, &QNetworkAccessManager::finished,
@@ -20,7 +18,7 @@ NetworkManager::NetworkManager()
     QObject::connect(apiSchedule, &QNetworkAccessManager::finished,
         this, &NetworkManager::scheduleReply);
 
-    QObject::connect(JSONHandler::getInstance(), &JSONHandler::scheduleUrlReceived,
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::scheduleUrlReceived,
         this, &NetworkManager::getSchedule);
 
     qDebug() << "OpenSSL-version:";
@@ -31,7 +29,6 @@ NetworkManager::NetworkManager()
 NetworkManager::~NetworkManager() {
     delete apiAzure;
     delete apiSchedule;
-    delete jsonHandler;
     delete sentImage;
 }
 
@@ -146,7 +143,7 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
     }
 
     // Send it as QJsonObject
-    jsonHandler->checkPersonData(jsonDocument.object());
+    JSONHandler::getInstance().checkPersonData(jsonDocument.object());
 }
 
 void NetworkManager::scheduleReply(QNetworkReply *reply) {
@@ -171,5 +168,5 @@ void NetworkManager::scheduleReply(QNetworkReply *reply) {
     }
 
     // Send it as QJsonArray
-    jsonHandler->parseScheduleData(jsonDocument.array());
+    JSONHandler::getInstance().parseScheduleData(jsonDocument.array());
 }

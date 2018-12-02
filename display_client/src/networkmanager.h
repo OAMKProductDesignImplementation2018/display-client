@@ -25,7 +25,6 @@ public:
     void getSchedule(const QString scheduleUrl);
 
 private:
-    JSONHandler *jsonHandler;
     QNetworkRequest request;
 
     // Network connector for Azure
