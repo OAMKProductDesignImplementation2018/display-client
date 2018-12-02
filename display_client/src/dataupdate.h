@@ -5,11 +5,13 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QTimer>
 
 class DataUpdate : public QObject {
     Q_OBJECT
 public:
     explicit DataUpdate(QObject *parent = nullptr);
+    ~DataUpdate();
 
     Q_INVOKABLE void updateUI();
 
@@ -127,9 +129,10 @@ public:
 
 public slots:
     void jsonDataReceived(QMap<QString, QString>);
+    void showPersonalState();
+    void stateExpired();
 
 signals:
-
     void scheduleVisibleChanged(bool value);
     void foodMenuVisibleChanged(bool value);
     void notesVisibleChanged(bool value);
@@ -144,7 +147,6 @@ signals:
 
     void foodMenuClear();
     void foodMenuAdd(QString type, QString name);
-
 
 private:
     bool _scheduleVisible = true;
@@ -164,6 +166,8 @@ private:
     QString _lastName;
     QString _groupID;
 
+    QTimer *stateTimer;
+    const int stateTimerInMSecs = 20000; // 20 secs
 };
 
 #endif // DATAUPDATE_H

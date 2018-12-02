@@ -15,7 +15,8 @@ void JSONHandler::checkPersonData(const QJsonObject data) {
         // TODO: implement better error handling
         qDebug() << "Error in detection: " << data;
     } else {
-        // Person was successfully detected
+        // Person was successfully detected, update state
+        emit personRecognized();
         parsePersonData(data);
     }
 }
@@ -27,7 +28,6 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
     map["target"] = "personData";
     map["firstName"] = data.value(firstName).toString();
     map["lastName"] = data.value(lastName).toString();
-
     emit jsonDataSent(map);
     map.clear();
 

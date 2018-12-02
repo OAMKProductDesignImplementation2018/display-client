@@ -6,10 +6,20 @@ DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
     _firstName = "Averell";
     _lastName = "Dalton";
 
+    stateTimer = new QTimer(this);
+
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::jsonDataSent,
                      this, &DataUpdate::jsonDataReceived);
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::personRecognized,
+                     this, &DataUpdate::showPersonalState);
+
+    QObject::connect(stateTimer, &QTimer::timeout,
+                     this, &DataUpdate::stateExpired);
 }
 
+DataUpdate::~DataUpdate() {
+    delete stateTimer;
+}
 
 void DataUpdate::updateUI() {
     qDebug() << "DataUpdate::updateUI() responds";
@@ -193,6 +203,20 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
                 qDebug() << map.value("nEnd");
         }
     }
+}
+
+void DataUpdate::showPersonalState() {
+    setDisplayState("Personal");
+    stateTimer->start(stateTimerInMSecs);
+}
+
+void DataUpdate::stateExpired() {
+    stateTimer->stop();
+    qDebug() << "State has expired";
+
+    // Reset to idle state
+    // TODO: user's data must be removed!
+    setDisplayState("Default");
 }
 
 

@@ -27,6 +27,7 @@ public:
 signals:
     void jsonDataSent(QMap<QString, QString>);
     void scheduleUrlReceived(const QString);
+    void personRecognized();
 
 private:
     // JSON data members
