@@ -9,6 +9,16 @@
 
 #include "dataupdate.h"
 
+static const QVector<QString> weekDays {
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+};
+
 class JSONHandler final : public QObject
 {
     Q_OBJECT

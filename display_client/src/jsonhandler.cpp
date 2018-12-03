@@ -73,6 +73,7 @@ void JSONHandler::parseScheduleData(const QJsonArray data) {
     const QDate dateNow = QDate::currentDate();
 
     // Loop through array
+    QMap<QString, QString> map;
     for (const auto val : data) {
         const QJsonObject obj = val.toObject();
 
@@ -86,11 +87,17 @@ void JSONHandler::parseScheduleData(const QJsonArray data) {
         if (dateNow.weekNumber() != startDate.date().weekNumber())
             continue;
 
-        qDebug() << "Item: " << obj.value(scheduleRawName).toString();
-        qDebug() << "Room is: " << obj.value(scheduleRawRoom).toString();
-        qDebug() << "Teacher is: " << obj.value(scheduleRawTeacher).toString();
+        // Put values into QMap
+        map["target"] = "scheduleData";
+        map["sDay"] = weekDays[startDate.date().dayOfWeek() - 1];
+        map["sName"] = obj.value(scheduleRawName).toString();
+        map["sTeacher"] = obj.value(scheduleRawTeacher).toString();
+        map["sRoom"] = obj.value(scheduleRawRoom).toString();
+        map["sStart"] = startDate.toString("HH:mm");
+        map["sEnd"] = endDate.toString("HH:mm");
 
-        qDebug() << "Start time: " << startDate;
-        qDebug() << "End time: " << endDate;
+        // Send QMap to DataUpdate class which sends them to QML
+        emit jsonDataSent(map);
+        map.clear();
     }
 }
