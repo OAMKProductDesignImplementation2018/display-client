@@ -10,8 +10,38 @@ Item {
     Connections {
         target: dataUpdate
 
-        // onNewScheduleEvent: {
-        // tableRoot.createEvent(...)
+         onNewScheduleEvent: {
+             var day = ""
+             var name = ""
+             var teacher = ""
+             var room = ""
+             var startH = ""
+             var startM = ""
+             var endH = ""
+             var endM = ""
+
+             // Received QVariantMap vMap
+             for (var item in vMap) {
+                 if (item === "day")
+                     day = vMap[item]
+                 else if (item === "name")
+                     name = vMap[item]
+                 else if (item === "teacher")
+                     teacher = vMap[item]
+                 else if (item === "room")
+                     room = vMap[item]
+                 else if (item === "startH")
+                     startH = vMap[item]
+                 else if (item === "startM")
+                     startM = vMap[item]
+                 else if (item === "endH")
+                     endH = vMap[item]
+                 else if (item === "endM")
+                     endM = vMap[item]
+             }
+
+             tableRoot.createEvent(day, startH, startM, endH, endM, name, teacher, room)
+         }
     }
 
     DebugButton {
@@ -24,7 +54,7 @@ Item {
         borderColor: "#404040"
 
         onButtonPressed: {
-            tableRoot.createEvent("Wed", 17, 30, 19, 00, "Course name", "Teacher", "Room")
+            dataUpdate.debugAddScheduleItem()
         }
     }
 

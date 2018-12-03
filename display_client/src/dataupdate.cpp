@@ -75,49 +75,6 @@ void DataUpdate::setDisplayState(QString state) {
 
 
 
-
-QStringList DataUpdate::getScheduleMonday() {
-    return _scheduleMon;
-}
-
-void DataUpdate::setScheduleMonday(QStringList monday) {
-    _scheduleMon = monday;
-}
-
-
-QStringList DataUpdate::getScheduleTuesday() {
-    return _scheduleTue;
-}
-
-void DataUpdate::setScheduleTuesday(QStringList tuesday) {
-    _scheduleTue = tuesday;
-}
-
-QStringList DataUpdate::getScheduleWednesday() {
-    return _scheduleWed;
-}
-
-void DataUpdate::setScheduleWednesday(QStringList wednesday) {
-    _scheduleWed = wednesday;
-}
-
-QStringList DataUpdate::getScheduleThursday() {
-    return _scheduleThu;
-}
-
-void DataUpdate::setScheduleThursday(QStringList thursday) {
-    _scheduleWed = thursday;
-}
-
-QStringList DataUpdate::getScheduleFriday() {
-    return _scheduleFri;
-}
-
-void DataUpdate::setScheduleFriday(QStringList friday) {
-    _scheduleWed = friday;
-}
-
-
 QString DataUpdate::firstName() {
     return _firstName;
 }
@@ -162,18 +119,33 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
         }
 
         else if (map.value("target") == "scheduleData") {
+            QVariantMap vMap;
             if (map.contains("sDay"))
-                qDebug() << map.value("sDay");
+                vMap.insert("day", map.value("sDay"));
+                // qDebug() << map.value("sDay");
             if (map.contains("sName"))
-                qDebug() << map.value("sName");
+                vMap.insert("name", map.value("sName"));
+                // qDebug() << map.value("sName");
             if (map.contains("sTeacher"))
-                qDebug() << map.value("sTeacher");
+                vMap.insert("teacher", map.value("sTeacher"));
+                // qDebug() << map.value("sTeacher");
             if (map.contains("sRoom"))
-                qDebug() << map.value("sRoom");
-            if (map.contains("sStart"))
-                qDebug() << map.value("sStart");
-            if (map.contains("sEnd"))
-                qDebug() << map.value("sEnd");
+                vMap.insert("room", map.value("sRoom"));
+                // qDebug() << map.value("sRoom");
+            if (map.contains("sStart")) {
+                QStringList timeParts = map.value("sStart").split(":");
+                vMap.insert("startH", timeParts.at(0));
+                vMap.insert("startM", timeParts.at(1));
+                // qDebug() << map.value("sStart");
+            }
+            if (map.contains("sEnd")) {
+                QStringList timeParts = map.value("sEnd").split(":");
+                vMap.insert("endH", timeParts.at(0));
+                vMap.insert("endM", timeParts.at(1));
+                // qDebug() << map.value("sEnd");
+            }
+
+            emit newScheduleEvent(vMap);
         }
 
         else if (map.value("target") == "foodData") {
@@ -202,6 +174,8 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
             if (map.contains("nEnd"))
                 qDebug() << map.value("nEnd");
         }
+
+
     }
 }
 
@@ -221,6 +195,22 @@ void DataUpdate::stateExpired() {
 
 
 // Debug functions
+
+void DataUpdate::debugAddScheduleItem() {
+    QVariantMap vMap;
+    vMap.insert("day", "Mon");
+    vMap.insert("name", "Name");
+    vMap.insert("teacher", "Teacher");
+    vMap.insert("room", "Room");
+    vMap.insert("startH", "10");
+    vMap.insert("startM", "30");
+    vMap.insert("endH", "12");
+    vMap.insert("endM", "15");
+
+    emit newScheduleEvent(vMap);
+
+    qDebug() << "newScheduleEvent emitted";
+}
 
 void DataUpdate::debugDisplayStateDefault() {
     setDisplayState("Default");

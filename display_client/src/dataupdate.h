@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTimer>
+#include <QVariantMap>
 
 class DataUpdate : public QObject {
     Q_OBJECT
@@ -56,47 +57,6 @@ public:
     void setDisplayState(QString state);
 
 
-    Q_PROPERTY (QStringList scheduleMonday
-                MEMBER _scheduleMon
-                READ getScheduleMonday
-                WRITE setScheduleMonday
-                NOTIFY scheduleChanged)
-    QStringList getScheduleMonday();
-    void setScheduleMonday(QStringList scheduleMonday);
-
-    Q_PROPERTY (QStringList scheduleTuesday
-                MEMBER _scheduleTue
-                READ getScheduleTuesday
-                WRITE setScheduleTuesday
-                NOTIFY scheduleChanged)
-    QStringList getScheduleTuesday();
-    void setScheduleTuesday(QStringList scheduleTuesday);
-
-    Q_PROPERTY (QStringList scheduleWednesday
-                MEMBER _scheduleWed
-                READ getScheduleWednesday
-                WRITE setScheduleWednesday
-                NOTIFY scheduleChanged)
-    QStringList getScheduleWednesday();
-    void setScheduleWednesday(QStringList scheduleWednesday);
-
-    Q_PROPERTY (QStringList scheduleThursday
-                MEMBER _scheduleThu
-                READ getScheduleThursday
-                WRITE setScheduleThursday
-                NOTIFY scheduleChanged)
-    QStringList getScheduleThursday();
-    void setScheduleThursday(QStringList scheduleThursday);
-
-    Q_PROPERTY (QStringList scheduleFriday
-                MEMBER _scheduleFri
-                READ getScheduleFriday
-                WRITE setScheduleFriday
-                NOTIFY scheduleChanged)
-    QStringList getScheduleFriday();
-    void setScheduleFriday(QStringList scheduleFriday);
-
-
     Q_PROPERTY (QString firstName
                 READ firstName
                 WRITE setFirstName
@@ -127,6 +87,8 @@ public:
     Q_INVOKABLE void debugFunction();
     Q_INVOKABLE void debugFunction2();
 
+    Q_INVOKABLE void debugAddScheduleItem();
+
 public slots:
     void jsonDataReceived(QMap<QString, QString>);
     void showPersonalState();
@@ -139,7 +101,7 @@ signals:
     void newsVisibleChanged(bool value);
     void displayStateChanged(QString state);
 
-    void scheduleChanged();
+    void newScheduleEvent(QVariantMap vMap);
 
     void firstNameChanged();
     void lastNameChanged();
@@ -155,12 +117,6 @@ private:
     bool _newsVisible = true;
 
     QString _displayState = "Default";
-
-    QStringList _scheduleMon;
-    QStringList _scheduleTue;
-    QStringList _scheduleWed;
-    QStringList _scheduleThu;
-    QStringList _scheduleFri;
 
     QString _firstName;
     QString _lastName;
