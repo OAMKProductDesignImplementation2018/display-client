@@ -35,8 +35,17 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
     if (!data.value(schedule).isNull())
         emit scheduleUrlReceived(data.value(schedule).toString());
 
-    // Food menu
-    for (const auto foodMenu : data.value(foodMenu).toArray()) {
+    // Lunch menu
+    if (!data.value(foodMenu).isNull()) {
+        // Cast array to QJsonObject (there is only one child in the array)
+        const auto foodObj = data.value(foodMenu).toArray().at(0).toObject();
+
+        // Allergies etc here
+
+        // Lunch menu url is sent to NetworkManager via signal
+        emit lunchMenuUrlReceived(foodObj.value(foodMenuUrl).toString());
+    }
+    /*for (const auto foodMenu : data.value(foodMenu).toArray()) {
         QJsonObject menuObj = foodMenu.toObject();
 
         map["target"] = "foodData";
@@ -49,7 +58,7 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
 
         emit jsonDataSent(map);
         map.clear();
-    }
+    }*/
 
     // Notes
     for (const auto notes : data.value(notes).toArray()) {
@@ -100,4 +109,8 @@ void JSONHandler::parseScheduleData(const QJsonArray data) {
         emit jsonDataSent(map);
         map.clear();
     }
+}
+
+void JSONHandler::parseLunchMenuData(const QJsonObject data) {
+    qDebug() << data;
 }

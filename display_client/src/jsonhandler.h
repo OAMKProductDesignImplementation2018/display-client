@@ -31,12 +31,15 @@ public:
     void parsePersonData(const QJsonObject data);
     // Parses schedule from JSON
     void parseScheduleData(const QJsonArray data);
+    // Parses lunch menu from JSON
+    void parseLunchMenuData(const QJsonObject data);
 
     static JSONHandler& getInstance();
 
 signals:
     void jsonDataSent(QMap<QString, QString>);
     void scheduleUrlReceived(const QString);
+    void lunchMenuUrlReceived(const QString);
     void personRecognized();
 
 private:
@@ -52,6 +55,9 @@ private:
     const QString scheduleStart = "start";
     const QString scheduleEnd = "end";
 
+    const QString foodMenu = "foodMenu";
+    const QString foodMenuUrl = "url";
+
     // From schedule API
     const QString scheduleRawName = "varaus";
     const QString scheduleRawStart = "alku"; // in unix time
@@ -59,10 +65,7 @@ private:
     const QString scheduleRawTeacher = "opettaja";
     const QString scheduleRawRoom = "tila";
 
-    const QString foodMenu = "foodMenu";
-    const QString foodMenuItems = "menuItems";
-    const QString foodType = "type";
-    const QString foodName = "name";
+    // From lunch menu API
 
     const QString notes = "notes";
     const QString notesTitle = "title";

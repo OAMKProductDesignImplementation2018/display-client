@@ -10,6 +10,7 @@ NetworkManager::NetworkManager()
 {
     apiAzure = new QNetworkAccessManager();
     apiSchedule = new QNetworkAccessManager();
+    apiLunchMenu = new QNetworkAccessManager();
 
     sentImage = nullptr;
 
@@ -17,9 +18,13 @@ NetworkManager::NetworkManager()
         this, &NetworkManager::azureReply);
     QObject::connect(apiSchedule, &QNetworkAccessManager::finished,
         this, &NetworkManager::scheduleReply);
+    QObject::connect(apiLunchMenu, &QNetworkAccessManager::finished,
+        this, &NetworkManager::lunchMenuReply);
 
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::scheduleUrlReceived,
         this, &NetworkManager::getSchedule);
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::lunchMenuUrlReceived,
+        this, &NetworkManager::getLunchMenu);
 
     qDebug() << "OpenSSL-version:";
     qDebug() << QSslSocket::sslLibraryVersionString();
@@ -29,6 +34,7 @@ NetworkManager::NetworkManager()
 NetworkManager::~NetworkManager() {
     delete apiAzure;
     delete apiSchedule;
+    delete apiLunchMenu;
     delete sentImage;
 }
 
@@ -114,6 +120,11 @@ void NetworkManager::getSchedule(const QString scheduleUrl) {
     apiSchedule->get(request);
 }
 
+void NetworkManager::getLunchMenu(const QString lunchMenuUrl) {
+    request.setUrl(QUrl(lunchMenuUrl));
+    apiLunchMenu->get(request);
+}
+
 void NetworkManager::azureReply(QNetworkReply *reply) {
     // Close the file after finished signal
     if (sentImage != nullptr) {
@@ -150,6 +161,7 @@ void NetworkManager::scheduleReply(QNetworkReply *reply) {
     // Check for network errors
     if (reply->error()) {
         qDebug() << "Error: " << reply->errorString();
+        return;
     }
 
     // Read reply
@@ -169,4 +181,30 @@ void NetworkManager::scheduleReply(QNetworkReply *reply) {
 
     // Send it as QJsonArray
     JSONHandler::getInstance().parseScheduleData(jsonDocument.array());
+}
+
+void NetworkManager::lunchMenuReply(QNetworkReply *reply) {
+    // Check for network errors
+    if (reply->error()) {
+        qDebug() << "Error: " << reply->errorString();
+        return;
+    }
+
+    // Read reply
+    const QByteArray answer = reply->readAll();
+
+    // Cast it to QJsonDocument
+    const auto jsonDocument = QJsonDocument::fromJson(answer);
+    if (jsonDocument.isNull()) {
+        qDebug() << "Document is empty!";
+        return;
+    }
+
+    if (!jsonDocument.isObject()) {
+        qDebug() << "Document is not a JSON object!";
+        return;
+    }
+
+    // Send it as QJsonObject
+    JSONHandler::getInstance().parseLunchMenuData(jsonDocument.object());
 }
