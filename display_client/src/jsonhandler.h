@@ -41,6 +41,7 @@ signals:
     void scheduleUrlReceived(const QString);
     void lunchMenuUrlReceived(const QString);
     void personRecognized();
+    void newLunchMenuDataReceived(); // to clear previous entries
 
 private:
     // JSON data members

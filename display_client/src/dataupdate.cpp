@@ -12,6 +12,8 @@ DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
                      this, &DataUpdate::jsonDataReceived);
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::personRecognized,
                      this, &DataUpdate::showPersonalState);
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::newLunchMenuDataReceived,
+                     this, &DataUpdate::clearLunchMenu);
 
     QObject::connect(stateTimer, &QTimer::timeout,
                      this, &DataUpdate::stateExpired);
@@ -182,6 +184,10 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
 void DataUpdate::showPersonalState() {
     setDisplayState("Personal");
     stateTimer->start(stateTimerInMSecs);
+}
+
+void DataUpdate::clearLunchMenu() {
+    emit foodMenuClear();
 }
 
 void DataUpdate::stateExpired() {

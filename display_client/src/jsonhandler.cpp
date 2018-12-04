@@ -116,6 +116,9 @@ void JSONHandler::parseLunchMenuData(const QJsonObject data) {
     if (data.contains(lunchMenuRaw)) {
         const QJsonArray lunchArr = data.value(lunchMenuRaw).toObject().value(lunchSetMenusRaw).toArray();
 
+        // Clear (possible) previous entries from lunch menu
+        emit newLunchMenuDataReceived();
+
         // Loop through meal types
         QMap<QString, QString> map;
         for (const auto mealType : lunchArr) {

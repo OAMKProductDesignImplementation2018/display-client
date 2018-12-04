@@ -89,10 +89,11 @@ public:
 
     Q_INVOKABLE void debugAddScheduleItem();
 
-public slots:
+private slots:
     void jsonDataReceived(QMap<QString, QString>);
     void showPersonalState();
     void stateExpired();
+    void clearLunchMenu();
 
 signals:
     void scheduleVisibleChanged(bool value);
