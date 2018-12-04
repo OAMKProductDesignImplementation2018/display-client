@@ -113,24 +113,32 @@ void JSONHandler::parseScheduleData(const QJsonArray data) {
 
 void JSONHandler::parseLunchMenuData(const QJsonObject data) {
     // Parse lunch menu object
-    if (data.contains("LunchMenu")) {
-        const QJsonArray lunchArr = data.value("LunchMenu").toObject().value("SetMenus").toArray();
+    if (data.contains(lunchMenuRaw)) {
+        const QJsonArray lunchArr = data.value(lunchMenuRaw).toObject().value(lunchSetMenusRaw).toArray();
 
         // Loop through meal types
+        QMap<QString, QString> map;
         for (const auto mealType : lunchArr) {
             const QJsonObject mealTypeObj = mealType.toObject();
-            qDebug() << "Meal type: " << mealTypeObj.value("Name").toString();
+            map["target"] = "foodData";
+            map["fType"] = mealTypeObj.value(lunchNameRaw).toString();
 
-            for (const auto meal : mealTypeObj.value("Meals").toArray()) {
-                const QJsonObject mealObj = meal.toObject();
+            // Check if there are actually meals in the meal type before emiting the signal
+            const QJsonArray mealArray = mealTypeObj.value(lunchMealsRaw).toArray();
+            if (!mealArray.isEmpty()) {
+                for (const auto meal : mealArray) {
+                    const QJsonObject mealObj = meal.toObject();
 
-                // For future reference, diets are here
-                /*for (const auto diet : mealObj.value("Diets").toArray()) {
-                    qDebug() << "Diet: " << diet.toString();
-                }*/
+                    // For future reference, diets are available here
+                    /*for (const auto diet : mealObj.value(lunchDietsRaw).toArray()) {
+                        qDebug() << "Diet: " << diet.toString();
+                    }*/
 
-                qDebug() << "Actual meal: " << mealObj.value("Name").toString();
+                    map.insertMulti("fName", mealObj.value(lunchNameRaw).toString());
+                }
+                emit jsonDataSent(map);
             }
+            map.clear();
         }
     }
 }

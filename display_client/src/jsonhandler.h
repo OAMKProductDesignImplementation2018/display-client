@@ -66,6 +66,11 @@ private:
     const QString scheduleRawRoom = "tila";
 
     // From lunch menu API
+    const QString lunchMenuRaw = "LunchMenu";
+    const QString lunchSetMenusRaw = "SetMenus";
+    const QString lunchNameRaw = "Name";
+    const QString lunchMealsRaw = "Meals";
+    const QString lunchDietsRaw = "Diets";
 
     const QString notes = "notes";
     const QString notesTitle = "title";
