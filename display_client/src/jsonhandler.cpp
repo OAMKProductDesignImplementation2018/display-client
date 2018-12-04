@@ -112,5 +112,25 @@ void JSONHandler::parseScheduleData(const QJsonArray data) {
 }
 
 void JSONHandler::parseLunchMenuData(const QJsonObject data) {
-    qDebug() << data;
+    // Parse lunch menu object
+    if (data.contains("LunchMenu")) {
+        const QJsonArray lunchArr = data.value("LunchMenu").toObject().value("SetMenus").toArray();
+
+        // Loop through meal types
+        for (const auto mealType : lunchArr) {
+            const QJsonObject mealTypeObj = mealType.toObject();
+            qDebug() << "Meal type: " << mealTypeObj.value("Name").toString();
+
+            for (const auto meal : mealTypeObj.value("Meals").toArray()) {
+                const QJsonObject mealObj = meal.toObject();
+
+                // For future reference, diets are here
+                /*for (const auto diet : mealObj.value("Diets").toArray()) {
+                    qDebug() << "Diet: " << diet.toString();
+                }*/
+
+                qDebug() << "Actual meal: " << mealObj.value("Name").toString();
+            }
+        }
+    }
 }
