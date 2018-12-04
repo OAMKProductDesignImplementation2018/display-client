@@ -40,25 +40,11 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
         // Cast array to QJsonObject (there is only one child in the array)
         const auto foodObj = data.value(foodMenu).toArray().at(0).toObject();
 
-        // Allergies etc here
+        // Diets/allergies etc here
 
         // Lunch menu url is sent to NetworkManager via signal
         emit lunchMenuUrlReceived(foodObj.value(foodMenuUrl).toString());
     }
-    /*for (const auto foodMenu : data.value(foodMenu).toArray()) {
-        QJsonObject menuObj = foodMenu.toObject();
-
-        map["target"] = "foodData";
-        map["fType"] = menuObj.value(foodType).toString();
-
-        // Foods for menu type
-        for (const auto foods : menuObj.value(foodMenuItems).toArray()) {
-            map.insertMulti("fName", foods.toObject().value(foodName).toString());
-        }
-
-        emit jsonDataSent(map);
-        map.clear();
-    }*/
 
     // Notes
     for (const auto notes : data.value(notes).toArray()) {
