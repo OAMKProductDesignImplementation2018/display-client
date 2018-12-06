@@ -1,3 +1,4 @@
+#include "camera.h"
 #include "dataupdate.h"
 #include "jsonhandler.h"
 #include <QDebug>
@@ -184,6 +185,7 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
 void DataUpdate::showPersonalState() {
     setDisplayState("Personal");
     stateTimer->start(stateTimerInMSecs);
+    Camera::enableCapturing(false);
 }
 
 void DataUpdate::clearLunchMenu() {
@@ -197,6 +199,7 @@ void DataUpdate::stateExpired() {
     // Reset to idle state
     // TODO: user's data must be removed!
     setDisplayState("Default");
+    Camera::enableCapturing(true);
 }
 
 

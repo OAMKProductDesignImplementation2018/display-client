@@ -18,11 +18,14 @@ public:
     ~Camera();
 
     static QString getPathToSavedPictures();
+    static void enableCapturing(const bool);
     void removeAllImages();
 
 private:
     QTimer *cameraTimer;
     const int cameraDelay = 5000; // 5 secs
+
+    static volatile bool running;
 
 signals:
     void captureImage();

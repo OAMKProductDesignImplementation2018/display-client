@@ -1,6 +1,8 @@
 #include "camera.h"
 #include <QCameraViewfinder>
 
+volatile bool Camera::running = true;
+
 Camera::Camera() {
     // Initialize and start capture timer
     cameraTimer = new QTimer(this);
@@ -18,6 +20,10 @@ Camera::~Camera() {
 
 QString Camera::getPathToSavedPictures() {
     return QCoreApplication::applicationDirPath() + "/" + directoryName;
+}
+
+void Camera::enableCapturing(const bool enable) {
+    running = enable;
 }
 
 void Camera::removeAllImages() {
@@ -68,6 +74,9 @@ void Camera::moveImage(const QString path) {
 }
 
 void Camera::capture() {
+    if (!running)
+        return;
+
     // Emit capture signal to QML
     qDebug() << "capture";
     emit captureImage();
