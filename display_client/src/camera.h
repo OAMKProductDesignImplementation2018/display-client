@@ -4,6 +4,7 @@
 #include <QCamera>
 #include <QDir>
 #include <QImageReader>
+#include <QTimer>
 #include <QWidget>
 
 const QString directoryName = "CameraImages";
@@ -19,8 +20,16 @@ public:
     static QString getPathToSavedPictures();
     void removeAllImages();
 
+private:
+    QTimer *cameraTimer;
+    const int cameraDelay = 5000; // 5 secs
+
+signals:
+    void captureImage();
+
 public slots:
     void moveImage(const QString path);
+    void capture();
 };
 
 #endif // CAMERA_H

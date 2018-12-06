@@ -4,6 +4,10 @@ import QtMultimedia 5.9
 Item {
     Connections {
         target: captureImage
+
+        onCaptureImage: {
+            webcam.imageCapture.capture()
+        }
     }
 
     Camera {
@@ -18,13 +22,5 @@ Item {
                 captureImage.moveImage(path)
             }
         }
-    }
-
-    Timer {
-        // For the sake of debugging, interval is set to 5 seconds, change this to proper interval later
-        interval: 5000
-        running: true
-        repeat: true
-        onTriggered: webcam.imageCapture.capture()
     }
 }

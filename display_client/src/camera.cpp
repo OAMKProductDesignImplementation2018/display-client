@@ -2,11 +2,22 @@
 #include <QCameraViewfinder>
 
 Camera::Camera() {
+    // Initialize and start capture timer
+    cameraTimer = new QTimer(this);
+    QObject::connect(cameraTimer, &QTimer::timeout,
+                     this, &Camera::capture);
+    cameraTimer->start(cameraDelay);
 }
 
 Camera::~Camera() {
     // Remove all captured pictures when program is closed
     removeAllImages();
+
+    delete cameraTimer;
+}
+
+QString Camera::getPathToSavedPictures() {
+    return QCoreApplication::applicationDirPath() + "/" + directoryName;
 }
 
 void Camera::removeAllImages() {
@@ -56,6 +67,8 @@ void Camera::moveImage(const QString path) {
         qDebug() << "Rename failed! Image is stored in the default location (" << path << ").";
 }
 
-QString Camera::getPathToSavedPictures() {
-    return QCoreApplication::applicationDirPath() + "/" + directoryName;
+void Camera::capture() {
+    // Emit capture signal to QML
+    qDebug() << "capture";
+    emit captureImage();
 }

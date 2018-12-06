@@ -52,26 +52,6 @@ Item {
 
     ListModel {
         id: menuListModel
-        /*ListElement {
-            type: "Vegetable lunch"
-            name: "Chili sin carnea"
-        }
-
-        ListElement {
-            type: "Soup"
-            name: "Moose meat soup, light Edam cheese"
-        }
-
-        ListElement {
-            type: "Vegetable Soup"
-            name: "Vegetable soy soup, organic Gouda cheese"
-        }
-
-        ListElement {
-            type: "Lunch"
-            name: "Ryed herring"
-        }*/
-
     }
 
     ListView {
