@@ -4,10 +4,8 @@
 #include <QDebug>
 
 DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
-    _firstName = "Averell";
-    _lastName = "Dalton";
-
     stateTimer = new QTimer(this);
+    clockTimer = new QTimer(this);
 
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::jsonDataSent,
                      this, &DataUpdate::jsonDataReceived);
@@ -18,15 +16,21 @@ DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
 
     QObject::connect(stateTimer, &QTimer::timeout,
                      this, &DataUpdate::stateExpired);
+    QObject::connect(clockTimer, &QTimer::timeout,
+                     this, &DataUpdate::updateTime);
+
+    clockTimer->start(1000);
 }
 
 DataUpdate::~DataUpdate() {
     delete stateTimer;
+    delete clockTimer;
 }
 
 void DataUpdate::updateUI() {
     qDebug() << "DataUpdate::updateUI() responds";
 }
+
 
 
 bool DataUpdate::getScheduleVisible() {
@@ -76,8 +80,6 @@ void DataUpdate::setDisplayState(QString state) {
 
 
 
-
-
 QString DataUpdate::firstName() {
     return _firstName;
 }
@@ -102,13 +104,32 @@ void DataUpdate::setGroupID(QString groupID) {
     _groupID = groupID;
 }
 
+QString DataUpdate::organizationName() const {
+    return _organizationName;
+}
+
+QString DataUpdate::timeString() const {
+    return _timeString;
+}
+
+void DataUpdate::setTimeString(const QString timeString) {
+    _timeString = timeString;
+    emit timeUpdated();
+}
+
+QString DataUpdate::dateString() const {
+    return _dateString;
+}
+
+void DataUpdate::setDateString(const QString dateString) {
+    _dateString = dateString;
+    emit dateUpdated();
+}
 
 
 
-// Public slots
-
+// Slots
 void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
-
     if (map.contains("target")) {
         if (map.value("target") == "personData") {
             if (map.contains("firstName")) {
@@ -188,10 +209,6 @@ void DataUpdate::showPersonalState() {
     Camera::enableCapturing(false);
 }
 
-void DataUpdate::clearLunchMenu() {
-    emit foodMenuClear();
-}
-
 void DataUpdate::stateExpired() {
     stateTimer->stop();
     qDebug() << "State has expired";
@@ -202,9 +219,21 @@ void DataUpdate::stateExpired() {
     Camera::enableCapturing(true);
 }
 
+void DataUpdate::clearLunchMenu() {
+    emit foodMenuClear();
+}
+
+void DataUpdate::updateTime() {
+    setTimeString(QDateTime::currentDateTime().toString("hh:mm:ss"));
+
+    const auto dateStr = QDateTime::currentDateTime().toString("dd.MM.yyyy");
+    if (!dateString().contains(dateStr))
+        setDateString(dateStr);
+}
+
+
 
 // Debug functions
-
 void DataUpdate::debugAddScheduleItem() {
     QVariantMap vMap;
     vMap.insert("day", "Mon");

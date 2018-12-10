@@ -1,6 +1,7 @@
 #ifndef DATAUPDATE_H
 #define DATAUPDATE_H
 
+#include <QDateTime>
 #include <QMap>
 #include <QObject>
 #include <QString>
@@ -78,9 +79,27 @@ public:
     QString groupID();
     void setGroupID(QString groupID);
 
+    Q_PROPERTY (QString organizationName
+                READ organizationName
+                CONSTANT)
+    QString organizationName() const;
+
+    Q_PROPERTY (QString timeString
+                READ timeString
+                WRITE setTimeString
+                NOTIFY timeUpdated)
+    QString timeString() const;
+    void setTimeString(const QString timeString);
+
+    Q_PROPERTY (QString dateString
+                READ dateString
+                WRITE setDateString
+                NOTIFY dateUpdated)
+    QString dateString() const;
+    void setDateString(const QString dateString);
+
 
     // Debug functions
-
     Q_INVOKABLE void debugDisplayStateDefault();
     Q_INVOKABLE void debugDisplayStatePersonal();
 
@@ -95,6 +114,8 @@ private slots:
     void stateExpired();
     void clearLunchMenu();
 
+    void updateTime();
+
 signals:
     void scheduleVisibleChanged(bool value);
     void foodMenuVisibleChanged(bool value);
@@ -107,6 +128,8 @@ signals:
     void firstNameChanged();
     void lastNameChanged();
     void groupIDChanged();
+    void timeUpdated();
+    void dateUpdated();
 
     void foodMenuClear();
     void foodMenuAdd(QString type, QString name);
@@ -122,9 +145,16 @@ private:
     QString _firstName;
     QString _lastName;
     QString _groupID;
+    QString _timeString;
+    QString _dateString;
 
     QTimer *stateTimer;
     const int stateTimerInMSecs = 20000; // 20 secs
+
+    QTimer *clockTimer;
+
+    // Organization data
+    const QString _organizationName = "OAMK";
 };
 
 #endif // DATAUPDATE_H

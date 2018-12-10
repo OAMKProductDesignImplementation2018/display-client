@@ -1,7 +1,6 @@
 #include "jsonhandler.h"
 
 #include <QCoreApplication>
-#include <QDateTime>
 #include <QFile>
 
 JSONHandler& JSONHandler::getInstance() {

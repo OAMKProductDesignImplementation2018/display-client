@@ -18,7 +18,8 @@ Item {
 
         Text {
             font.pixelSize: 21
-            text: "Organization name"
+            text: (dataUpdate.displayState === "Default") ?
+                   dataUpdate.organizationName : dataUpdate.firstName + " " + dataUpdate.lastName
             color: "black"
 
             // Dynamic font size
@@ -45,7 +46,7 @@ Item {
         Text {
             font.pixelSize: 28
             font.bold: true
-            text: "13:45"
+            text: dataUpdate.timeString
             color: "black"
 
             // Dynamic font size
@@ -71,7 +72,7 @@ Item {
 
         Text {
             font.pixelSize: 21
-            text: "13.11.2018"
+            text: dataUpdate.dateString
             color: "black"
 
             // Dynamic font size
