@@ -78,6 +78,5 @@ void Camera::capture() {
         return;
 
     // Emit capture signal to QML
-    qDebug() << "capture";
     emit captureImage();
 }

@@ -23,7 +23,7 @@ public:
     Q_INVOKABLE void postEinsteinImage();
 
 private:
-    QNetworkRequest request;
+    volatile bool waitingForReply;
 
     // Network connector for Azure
     QNetworkAccessManager *apiAzure;
@@ -35,7 +35,7 @@ private:
     // To close the image after sending it
     QFile *sentImage;
 
-    const QUrl apiAzureUrl = QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger");
+    const QUrl apiAzureUrl = QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger?code=K2r/oiVCg8r75br2zaP8SQ5rz83oVOwzk49epoBL22IYK51BamQSSQ==");
 
 private slots:
     // Gets schedule

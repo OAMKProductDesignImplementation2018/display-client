@@ -13,6 +13,7 @@ NetworkManager::NetworkManager()
     apiLunchMenu = new QNetworkAccessManager();
 
     sentImage = nullptr;
+    waitingForReply = false;
 
     QObject::connect(apiAzure, &QNetworkAccessManager::finished,
         this, &NetworkManager::azureReply);
@@ -39,6 +40,12 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::postImage() {
+    // Wait for current request to finish before creating a new request
+    if (waitingForReply) {
+        qDebug() << "Canceling request";
+        return;
+    }
+
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
         qDebug() << "Picture directory does not exist!";
@@ -77,12 +84,12 @@ void NetworkManager::postImage() {
 
     multipart->append(imagePart);
 
-    request.setUrl(apiAzureUrl);
-    apiAzure->post(request, multipart);
-
+    apiAzure->post(QNetworkRequest(apiAzureUrl), multipart);
+    waitingForReply = true;
     qDebug() << "Request sent";
 }
 
+// Only for debugging
 void NetworkManager::postEinsteinImage() {
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
@@ -109,20 +116,17 @@ void NetworkManager::postEinsteinImage() {
 
     multipart->append(imagePart);
 
-    request.setUrl(apiAzureUrl);
-    apiAzure->post(request, multipart);
-
+    apiAzure->post(QNetworkRequest(apiAzureUrl), multipart);
+    waitingForReply = true;
     qDebug() << "Request sent";
 }
 
 void NetworkManager::getSchedule(const QString scheduleUrl) {
-    request.setUrl(QUrl(scheduleUrl));
-    apiSchedule->get(request);
+    apiSchedule->get(QNetworkRequest(QUrl(scheduleUrl)));
 }
 
 void NetworkManager::getLunchMenu(const QString lunchMenuUrl) {
-    request.setUrl(QUrl(lunchMenuUrl));
-    apiLunchMenu->get(request);
+    apiLunchMenu->get(QNetworkRequest(QUrl(lunchMenuUrl)));
 }
 
 void NetworkManager::azureReply(QNetworkReply *reply) {
@@ -131,6 +135,9 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
         sentImage->close();
         delete sentImage;
     }
+
+    // Allow creating new requests when current request has replied
+    waitingForReply = false;
 
     // Check for network errors
     if (reply->error()) {
