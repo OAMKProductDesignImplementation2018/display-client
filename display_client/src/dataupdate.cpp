@@ -33,74 +33,74 @@ void DataUpdate::updateUI() {
 
 
 
-bool DataUpdate::getScheduleVisible() {
+bool DataUpdate::getScheduleVisible() const {
     return _scheduleVisible;
 }
 
-void DataUpdate::setScheduleVisible(bool value) {
+void DataUpdate::setScheduleVisible(const bool value) {
     _scheduleVisible = value;
     emit scheduleVisibleChanged(value);
 }
 
-bool DataUpdate::getFoodMenuVisible() {
+bool DataUpdate::getFoodMenuVisible() const {
     return _foodMenuVisible;
 }
 
-void DataUpdate::setFoodMenuVisible(bool value) {
+void DataUpdate::setFoodMenuVisible(const bool value) {
     _foodMenuVisible = value;
     emit foodMenuVisibleChanged(value);
 }
 
-bool DataUpdate::getNotesVisible() {
+bool DataUpdate::getNotesVisible() const {
     return _notesVisible;
 }
 
-void DataUpdate::setNotesVisible(bool value) {
+void DataUpdate::setNotesVisible(const bool value) {
     _notesVisible = value;
     emit notesVisibleChanged(value);
 }
 
-bool DataUpdate::getNewsVisible() {
+bool DataUpdate::getNewsVisible() const {
     return _newsVisible;
 }
 
-void DataUpdate::setNewsVisible(bool value) {
+void DataUpdate::setNewsVisible(const bool value) {
     _newsVisible = value;
     emit newsVisibleChanged(value);
 }
 
-QString DataUpdate::getDisplayState() {
+QString DataUpdate::getDisplayState() const {
     return _displayState;
 }
 
-void DataUpdate::setDisplayState(QString state) {
+void DataUpdate::setDisplayState(const QString state) {
     _displayState = state;
     emit displayStateChanged(_displayState);
 }
 
 
 
-QString DataUpdate::firstName() {
+QString DataUpdate::firstName() const {
     return _firstName;
 }
 
-void DataUpdate::setFirstName(QString name) {
+void DataUpdate::setFirstName(const QString name) {
     _firstName = name;
 }
 
-QString DataUpdate::lastName() {
+QString DataUpdate::lastName() const {
     return _lastName;
 }
 
-void DataUpdate::setLastName(QString name) {
+void DataUpdate::setLastName(const QString name) {
     _lastName = name;
 }
 
-QString DataUpdate::groupID() {
+QString DataUpdate::groupID() const {
     return _groupID;
 }
 
-void DataUpdate::setGroupID(QString groupID) {
+void DataUpdate::setGroupID(const QString groupID) {
     _groupID = groupID;
 }
 

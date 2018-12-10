@@ -22,62 +22,62 @@ public:
                 READ getScheduleVisible
                 WRITE setScheduleVisible
                 NOTIFY scheduleVisibleChanged)
-    bool getScheduleVisible();
-    void setScheduleVisible(bool value);
+    bool getScheduleVisible() const;
+    void setScheduleVisible(const bool value);
 
     Q_PROPERTY (bool foodMenuVisible
                 MEMBER _foodMenuVisible
                 READ getFoodMenuVisible
                 WRITE setFoodMenuVisible
                 NOTIFY foodMenuVisibleChanged)
-    bool getFoodMenuVisible();
-    void setFoodMenuVisible(bool value);
+    bool getFoodMenuVisible() const;
+    void setFoodMenuVisible(const bool value);
 
     Q_PROPERTY (bool notesVisible
                 MEMBER _notesVisible
                 READ getNotesVisible
                 WRITE setNotesVisible
                 NOTIFY notesVisibleChanged)
-    bool getNotesVisible();
-    void setNotesVisible(bool value);
+    bool getNotesVisible() const;
+    void setNotesVisible(const bool value);
 
     Q_PROPERTY (bool newsVisible
                 MEMBER _newsVisible
                 READ getNewsVisible
                 WRITE setNewsVisible
                 NOTIFY newsVisibleChanged)
-    bool getNewsVisible();
-    void setNewsVisible(bool value);
+    bool getNewsVisible() const;
+    void setNewsVisible(const bool value);
 
     Q_PROPERTY (QString displayState
                 MEMBER _displayState
                 READ getDisplayState
                 WRITE setDisplayState
                 NOTIFY displayStateChanged)
-    QString getDisplayState();
-    void setDisplayState(QString state);
+    QString getDisplayState() const;
+    void setDisplayState(const QString state);
 
 
     Q_PROPERTY (QString firstName
                 READ firstName
                 WRITE setFirstName
                 NOTIFY firstNameChanged)
-    QString firstName();
-    void setFirstName(QString firstName);
+    QString firstName() const;
+    void setFirstName(const QString firstName);
 
     Q_PROPERTY (QString lastName
                 READ lastName
                 WRITE setLastName
                 NOTIFY lastNameChanged)
-    QString lastName();
-    void setLastName(QString lastName);
+    QString lastName() const;
+    void setLastName(const QString lastName);
 
     Q_PROPERTY (QString groupID
                 READ groupID
                 WRITE setGroupID
                 NOTIFY groupIDChanged)
-    QString groupID();
-    void setGroupID(QString groupID);
+    QString groupID() const;
+    void setGroupID(const QString groupID);
 
     Q_PROPERTY (QString organizationName
                 READ organizationName
