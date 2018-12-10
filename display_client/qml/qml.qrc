@@ -12,5 +12,6 @@
         <file>DisplayPersonal.qml</file>
         <file>Advertisement.qml</file>
         <file>ComponentEvent.qml</file>
+        <file>GreeterBar.qml</file>
     </qresource>
 </RCC>

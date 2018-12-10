@@ -44,20 +44,6 @@ Item {
          }
     }
 
-    DebugButton {
-        x: -50
-        y: 0
-        width: 30
-        height: 30
-
-        color: "#00000000"
-        borderColor: "#404040"
-
-        onButtonPressed: {
-            dataUpdate.debugAddScheduleItem()
-        }
-    }
-
     Row {
         id: daysRoot
         anchors.left: timesRoot.right

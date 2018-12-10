@@ -7,42 +7,11 @@ Item {
         anchors.fill: parent
         border.color: "#000000"
 
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#FAFAFA" }
-            GradientStop { position: 1.0; color: "#b3def5" }
-
-        }
+        color: "white"
     }
 
-    Item {
+    GreeterBar {
         id: greeterBar
-
-        x: 50
-        y: 50
-        width: parent.width - 100
-        height: 40
-
-        Text {
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 21
-            text: "Hello, " + dataUpdate.firstName + "!"
-        }
-
-        Text {
-            y: 0
-            anchors.centerIn: parent
-            text: "13:45"
-            font.pixelSize: 28
-        }
-
-        Text {
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 21
-            text: "13.11.2018"
-            color: "#000000"
-        }
     }
 
     Item {

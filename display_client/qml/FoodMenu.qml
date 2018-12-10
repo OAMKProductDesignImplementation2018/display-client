@@ -7,13 +7,6 @@ Item {
 
         border.color: "#000000"
         color: "#FFFFFF"
-
-//        Text {
-//            anchors.centerIn: parent
-//            font.pixelSize: 24
-//            text: "FoodMenu Item"
-//            horizontalAlignment: Text.AlignHCenter
-//        }
     }
 
     Connections {
@@ -25,28 +18,6 @@ Item {
 
         onFoodMenuAdd: {
             menuListModel.append( { "type": type, "name": name })
-        }
-    }
-
-    DebugButton {
-        x: -50
-        y: 0
-        width: 30
-        height: 30
-
-        onButtonPressed: {
-            dataUpdate.debugFunction()
-        }
-    }
-
-    DebugButton {
-        x: -50
-        y: 50
-        width: 30
-        height: 30
-
-        onButtonPressed: {
-            dataUpdate.debugFunction2()
         }
     }
 
