@@ -19,7 +19,7 @@ Item {
         anchors.right: parent.right
         anchors.rightMargin: 50
         anchors.top: greeterBar.bottom
-        anchors.topMargin: 2
+        anchors.topMargin: 10
         height: 540
 
         Schedule {

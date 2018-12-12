@@ -19,8 +19,12 @@ public:
 
     // Sends latest image captured by camera
     Q_INVOKABLE void postImage();
+
+    // Debug methods
     // Sends Einstein's photo
     Q_INVOKABLE void postEinsteinImage();
+    // Gets TVT18SMO schedule
+    Q_INVOKABLE void debugGetSchedule() { getSchedule("https://oiva.oamk.fi/_lukkarikone/kalenteri/json/varaukset.php?ryhma=TVT18SPO"); }
 
 private:
     volatile bool waitingForReply;

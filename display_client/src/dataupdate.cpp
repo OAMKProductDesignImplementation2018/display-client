@@ -146,27 +146,21 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
             QVariantMap vMap;
             if (map.contains("sDay"))
                 vMap.insert("day", map.value("sDay"));
-                // qDebug() << map.value("sDay");
             if (map.contains("sName"))
                 vMap.insert("name", map.value("sName"));
-                // qDebug() << map.value("sName");
             if (map.contains("sTeacher"))
                 vMap.insert("teacher", map.value("sTeacher"));
-                // qDebug() << map.value("sTeacher");
             if (map.contains("sRoom"))
                 vMap.insert("room", map.value("sRoom"));
-                // qDebug() << map.value("sRoom");
             if (map.contains("sStart")) {
                 QStringList timeParts = map.value("sStart").split(":");
                 vMap.insert("startH", timeParts.at(0));
                 vMap.insert("startM", timeParts.at(1));
-                // qDebug() << map.value("sStart");
             }
             if (map.contains("sEnd")) {
                 QStringList timeParts = map.value("sEnd").split(":");
                 vMap.insert("endH", timeParts.at(0));
                 vMap.insert("endM", timeParts.at(1));
-                // qDebug() << map.value("sEnd");
             }
 
             emit newScheduleEvent(vMap);
@@ -224,9 +218,10 @@ void DataUpdate::clearLunchMenu() {
 }
 
 void DataUpdate::updateTime() {
-    setTimeString(QDateTime::currentDateTime().toString("hh:mm:ss"));
+    const auto dateNow = QDateTime::currentDateTime();
+    setTimeString(dateNow.toString("hh:mm:ss"));
 
-    const auto dateStr = QDateTime::currentDateTime().toString("dd.MM.yyyy");
+    const auto dateStr = dateNow.toString("dd.MM.yyyy");
     if (!dateString().contains(dateStr))
         setDateString(dateStr);
 }
@@ -236,13 +231,13 @@ void DataUpdate::updateTime() {
 // Debug functions
 void DataUpdate::debugAddScheduleItem() {
     QVariantMap vMap;
-    vMap.insert("day", "Mon");
-    vMap.insert("name", "Name");
-    vMap.insert("teacher", "Teacher");
-    vMap.insert("room", "Room");
+    vMap.insert("day", "Ti");
+    vMap.insert("name", "Product Design and Implementation");
+    vMap.insert("teacher", "Lasse Haverinen");
+    vMap.insert("room", "Adobe Connect");
     vMap.insert("startH", "10");
     vMap.insert("startM", "30");
-    vMap.insert("endH", "12");
+    vMap.insert("endH", "11");
     vMap.insert("endM", "15");
 
     emit newScheduleEvent(vMap);

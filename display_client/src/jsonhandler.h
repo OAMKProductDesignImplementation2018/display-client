@@ -10,13 +10,13 @@
 #include "dataupdate.h"
 
 static const QVector<QString> weekDays {
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat",
-    "Sun"
+    "Ma",
+    "Ti",
+    "Ke",
+    "To",
+    "Pe",
+    "La",
+    "Su"
 };
 
 class JSONHandler final : public QObject
@@ -65,6 +65,7 @@ private:
     const QString scheduleRawEnd = "loppu"; // in unix time
     const QString scheduleRawTeacher = "opettaja";
     const QString scheduleRawRoom = "tila";
+    const QString scheduleRawId = "toteutus";
 
     // From lunch menu API
     const QString lunchMenuRaw = "LunchMenu";

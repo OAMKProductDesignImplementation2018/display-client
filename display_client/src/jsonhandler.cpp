@@ -81,10 +81,13 @@ void JSONHandler::parseScheduleData(const QJsonArray data) {
         if (dateNow.weekNumber() != startDate.date().weekNumber())
             continue;
 
+        // Parse course ID from course name
+        const auto scheduleCourseName = obj.value(scheduleRawName).toString().remove(" " + obj.value(scheduleRawId).toString());
+
         // Put values into QMap
         map["target"] = "scheduleData";
         map["sDay"] = weekDays[startDate.date().dayOfWeek() - 1];
-        map["sName"] = obj.value(scheduleRawName).toString();
+        map["sName"] = scheduleCourseName;
         map["sTeacher"] = obj.value(scheduleRawTeacher).toString();
         map["sRoom"] = obj.value(scheduleRawRoom).toString();
         map["sStart"] = startDate.toString("HH:mm");

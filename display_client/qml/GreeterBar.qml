@@ -59,6 +59,14 @@ Item {
 
             anchors.centerIn: parent
         }
+
+        MouseArea {
+            anchors.fill: parent
+
+            onReleased: {
+                dataUpdate.debugAddScheduleItem()
+            }
+        }
     }
 
     Rectangle {
@@ -84,6 +92,14 @@ Item {
             verticalAlignment: Text.AlignVCenter
 
             anchors.centerIn: parent
+        }
+
+        MouseArea {
+            anchors.fill: parent
+
+            onReleased: {
+                networkManager.debugGetSchedule()
+            }
         }
     }
 }
