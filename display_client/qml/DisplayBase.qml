@@ -25,7 +25,8 @@ Item {
         color: "#FF0000"
 
         onButtonPressed: {
-            networkManager.postImage()
+            // Logout
+            dataUpdate.stateExpired();
         }
     }
 

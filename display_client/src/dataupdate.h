@@ -9,6 +9,8 @@
 #include <QTimer>
 #include <QVariantMap>
 
+#include "organization.h"
+
 class DataUpdate : public QObject {
     Q_OBJECT
 public:
@@ -16,6 +18,7 @@ public:
     ~DataUpdate();
 
     Q_INVOKABLE void updateUI();
+    Q_INVOKABLE void stateExpired();
 
     Q_PROPERTY (bool scheduleVisible
                 MEMBER _scheduleVisible
@@ -111,7 +114,6 @@ public:
 private slots:
     void jsonDataReceived(QMap<QString, QString>);
     void showPersonalState();
-    void stateExpired();
     void clearLunchMenu();
 
     void updateTime();
