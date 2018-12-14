@@ -65,7 +65,7 @@ Item {
                     color: "#3465A4"
 
                     Text {
-                        font.pixelSize: 21
+                        font.pixelSize: 28
                         font.capitalization: Font.AllUppercase
                         text: modelData
                         color: "white"
@@ -137,7 +137,7 @@ Item {
                     height: timesRoot.height / 13
 
                     Text {
-                        font.pixelSize: 21
+                        font.pixelSize: 28
                         text: (index + firstHour) + "-" + (index + firstHour + 1) // modelData
                         color: "white"
 
