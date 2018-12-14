@@ -19,7 +19,7 @@ public:
 
     static QString getPathToSavedPictures();
     static void enableCapturing(const bool);
-    void removeAllImages();
+    static void removeAllImages();
 
 private:
     QTimer *cameraTimer;

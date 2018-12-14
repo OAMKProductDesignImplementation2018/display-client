@@ -1,3 +1,4 @@
+#include "camera.h"
 #include "jsonhandler.h"
 
 #include <QCoreApplication>
@@ -14,7 +15,8 @@ void JSONHandler::checkPersonData(const QJsonObject data) {
         // TODO: implement better error handling
         qDebug() << "Error in detection: " << data;
     } else {
-        // Person was successfully detected, update state
+        // Person was successfully detected, remove old pictures and update state
+        Camera::removeAllImages();
         emit personRecognized();
         parsePersonData(data);
     }
