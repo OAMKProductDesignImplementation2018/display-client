@@ -84,13 +84,26 @@ void NetworkManager::postImage() {
 
     multipart->append(imagePart);
 
-    apiAzure->post(QNetworkRequest(apiAzureUrl), multipart);
+    // Add apikey and device id into network request
+    QNetworkRequest networkRequest;
+    networkRequest.setRawHeader(organizationIdField, Organization::getInstance().id.toUtf8());
+    networkRequest.setRawHeader(apiKeyField, Organization::getInstance().apiKey.toUtf8());
+    networkRequest.setRawHeader(deviceIdField, Organization::getInstance().deviceName.toUtf8());
+    networkRequest.setUrl(apiAzureUrl);
+
+    apiAzure->post(networkRequest, multipart);
     waitingForReply = true;
     qDebug() << "Request sent";
 }
 
 // Only for debugging
 void NetworkManager::postEinsteinImage() {
+    // Wait for current request to finish before creating a new request
+    if (waitingForReply) {
+        qDebug() << "Canceling request";
+        return;
+    }
+
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
         qDebug() << "Picture directory does not exist!";
@@ -116,7 +129,14 @@ void NetworkManager::postEinsteinImage() {
 
     multipart->append(imagePart);
 
-    apiAzure->post(QNetworkRequest(apiAzureUrl), multipart);
+    // Add organization id, apikey and device id into network request
+    QNetworkRequest networkRequest;
+    networkRequest.setRawHeader(organizationIdField, Organization::getInstance().id.toUtf8());
+    networkRequest.setRawHeader(apiKeyField, Organization::getInstance().apiKey.toUtf8());
+    networkRequest.setRawHeader(deviceIdField, Organization::getInstance().deviceName.toUtf8());
+    networkRequest.setUrl(apiAzureUrl);
+
+    apiAzure->post(networkRequest, multipart);
     waitingForReply = true;
     qDebug() << "Request sent";
 }

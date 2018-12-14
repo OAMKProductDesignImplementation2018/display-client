@@ -16,14 +16,16 @@ HEADERS += \
     src/dataupdate.h \
     src/camera.h \
     src/networkmanager.h \
-    src/jsonhandler.h
+    src/jsonhandler.h \
+    src/organization.h
 
 SOURCES += \
     src/main.cpp \
     src/camera.cpp \
     src/dataupdate.cpp \
     src/networkmanager.cpp \
-    src/jsonhandler.cpp
+    src/jsonhandler.cpp \
+    src/organization.cpp
 
 RESOURCES += \
     qml/qml.qrc

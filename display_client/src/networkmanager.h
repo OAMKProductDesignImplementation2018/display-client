@@ -46,6 +46,12 @@ private:
 
     const QUrl apiAzureUrl = QUrl("https://appinterfaceface.azurewebsites.net/api/ScreenTrigger?code=K2r/oiVCg8r75br2zaP8SQ5rz83oVOwzk49epoBL22IYK51BamQSSQ==");
 
+    // Azure api data fields
+    const QByteArray organizationIdField = "organizationid";
+    const QByteArray apiKeyField = "apikey";
+    const QByteArray deviceIdField = "deviceid";
+
+
 private slots:
     // Gets schedule
     void getSchedule(const QString scheduleUrl);
