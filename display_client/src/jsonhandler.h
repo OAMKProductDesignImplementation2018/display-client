@@ -44,16 +44,13 @@ signals:
 
 private:
     // JSON data members
+    // From Azure api
+    const QString tokenId = "token";
+
     const QString firstName = "firstname";
     const QString lastName = "lastname";
 
     const QString schedule = "schedule";
-    const QString scheduleDay = "day";
-    const QString scheduleName = "name";
-    const QString scheduleTeacher = "teacher";
-    const QString scheduleRoom = "room";
-    const QString scheduleStart = "start";
-    const QString scheduleEnd = "end";
 
     const QString foodMenu = "foodMenu";
     const QString foodMenuUrl = "url";

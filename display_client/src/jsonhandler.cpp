@@ -14,7 +14,15 @@ void JSONHandler::checkPersonData(const QJsonObject data) {
         // Person was not detected
         // TODO: implement better error handling
         qDebug() << "Error in detection: " << data;
-    } else {
+    }
+    else if (data.contains("token")) {
+        // When program starts, the software gets token key from the interface
+        // If token is invalid, or there is no token for the device,
+        // the api won't return valid data for this device
+        qDebug() << "Token received from API";
+        Organization::getInstance().apiKey = data.value(tokenId).toString();
+    }
+    else {
         // Person was successfully detected, remove old pictures and update state
         Camera::removeAllImages();
         emit personRecognized();
