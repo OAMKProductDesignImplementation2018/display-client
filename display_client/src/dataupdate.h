@@ -126,6 +126,7 @@ signals:
     void displayStateChanged(QString state);
 
     void newScheduleEvent(QVariantMap vMap);
+    void clearSchedule();
 
     void firstNameChanged();
     void lastNameChanged();

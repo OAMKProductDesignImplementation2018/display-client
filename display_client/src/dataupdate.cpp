@@ -192,8 +192,6 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
             if (map.contains("nEnd"))
                 qDebug() << map.value("nEnd");
         }
-
-
     }
 }
 
@@ -207,8 +205,15 @@ void DataUpdate::stateExpired() {
     stateTimer->stop();
     qDebug() << "State has expired";
 
+    // Remove user's data
+    setFirstName("");
+    setLastName("");
+    setGroupID("");
+    // TODO: Clear news
+    emit clearSchedule();
+    emit foodMenuClear();
+
     // Reset to idle state
-    // TODO: user's data must be removed!
     setDisplayState("Default");
     Camera::enableCapturing(true);
 }

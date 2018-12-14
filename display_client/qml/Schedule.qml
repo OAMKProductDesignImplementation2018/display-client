@@ -43,6 +43,10 @@ Item {
 
              tableRoot.createEvent(day, startH, startM, endH, endM, name, teacher, room)
          }
+
+         onClearSchedule: {
+             tableRoot.clearScheduleItems()
+         }
     }
 
     Rectangle {
@@ -189,6 +193,8 @@ Item {
             anchors.top: daysRoot.bottom
             anchors.bottom: parent.bottom
 
+            property var scheduleContainer : []
+
             function createEvent(day, startH, startM, endH, endM,
                                  name, teacher, room)
             {
@@ -207,6 +213,21 @@ Item {
                         // Error Handling
                         console.log("Error creating object");
                     }
+
+                // Add schedule item to container for later Accessible
+                scheduleContainer.push(sprite);
+            }
+
+            function clearScheduleItems()
+            {
+                // Destroy QML objects from array
+                for (var i = 0; i < scheduleContainer.length; ++i) {
+                    if (scheduleContainer[i] === null)
+                        continue
+                    scheduleContainer[i].destroy()
+                }
+                // Delete items from array
+                scheduleContainer = []
             }
 
             function getX(day) {
