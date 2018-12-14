@@ -23,8 +23,13 @@ public:
     // Debug methods
     // Sends Einstein's photo
     Q_INVOKABLE void postEinsteinImage();
-    // Gets TVT18SMO schedule
+    // Gets TVT18SPO schedule
     Q_INVOKABLE void debugGetSchedule() { getSchedule("https://oiva.oamk.fi/_lukkarikone/kalenteri/json/varaukset.php?ryhma=TVT18SPO"); }
+    // Gets OAMK's lunch menu
+    Q_INVOKABLE void debugGetLunchMenu() {
+        const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=" + QDateTime::currentDateTime().toString("yyyy-MM-dd") + "&language=fi&restaurantPageId=66287";
+        getLunchMenu(lunchUrl);
+    }
 
 private:
     volatile bool waitingForReply;

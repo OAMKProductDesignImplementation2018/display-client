@@ -99,6 +99,7 @@ Item {
 
             onReleased: {
                 networkManager.debugGetSchedule()
+                networkManager.debugGetLunchMenu()
             }
         }
     }

@@ -1,12 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.11
 
 Item {
     Rectangle {
-        id: debugBox
         anchors.fill: parent
 
-        border.color: "#000000"
-        color: "#FFFFFF"
+        border.color: "#3465A4"
+        color: "white"
     }
 
     Connections {
@@ -21,13 +20,42 @@ Item {
         }
     }
 
+    property string borderColor: "#3465A4"
+
+    Rectangle {
+        id: restaurantNameRect
+        width: parent.width
+        height: parent.height / 13
+        color: borderColor
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+
+        Text {
+            font.pixelSize: 28
+            text: "Amica Kotkantie"
+            color: "white"
+
+            // Dynamic font size
+            fontSizeMode: Text.Fit
+            width: parent.width
+            height: parent.height
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
+
     ListModel {
         id: menuListModel
     }
 
     ListView {
         id: menuListView
-        anchors.fill: parent
+        anchors.top: restaurantNameRect.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         orientation: ListView.Vertical
         model: menuListModel
         interactive: false
@@ -35,15 +63,53 @@ Item {
         delegate: Rectangle {
             width: parent.width
             height: menuListView.height / menuListModel.count
-            color: index % 2 ? "#FFDCA2" : "#FFEFD5"
-            border.color: "#4d3000"
+            color: "white"
 
-            Text {
+            property int paddingSize: 15
+
+            Rectangle {
                 id: foodType
-                x: 6
-                y: 4
-                text: type
-                font.pixelSize: 14
+                width: foodTypeText.paintedWidth + (paddingSize * 2)
+                height: foodTypeText.paintedHeight * 1.5
+
+                color: "#729FCF"
+
+                anchors.top: parent.top
+                anchors.left: parent.left
+
+                Text {
+                    id: foodTypeText
+                    text: type
+                    font.pixelSize: 12
+
+                    leftPadding: paddingSize
+                    rightPadding: paddingSize
+
+                    // Dynamic font size
+                    fontSizeMode: Text.Fit
+                    width: parent.width
+                    height: parent.height
+
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                // Bottom border
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: borderColor
+
+                    anchors.bottom: parent.bottom
+                }
+
+                // Right border
+                Rectangle {
+                    width: 1
+                    height: parent.height
+                    color: borderColor
+
+                    anchors.right: parent.right
+                }
             }
 
             Text {
@@ -67,14 +133,37 @@ Item {
                 }
 
                 text: name
-            }
-        }
 
-        Rectangle {
-            id: menuListViewBG
-            z: -1
-            anchors.fill: parent
-            color: "#FFDCA2"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            // Left border
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: borderColor
+
+                anchors.left: parent.left
+            }
+
+            // Right border
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: borderColor
+
+                anchors.right: parent.right
+            }
+
+            // Bottom border
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: borderColor
+
+                anchors.bottom: parent.bottom
+            }
         }
     }
 }
