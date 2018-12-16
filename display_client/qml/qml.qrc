@@ -13,5 +13,6 @@
         <file>Advertisement.qml</file>
         <file>ComponentEvent.qml</file>
         <file>GreeterBar.qml</file>
+        <file>LoadingItem.qml</file>
     </qresource>
 </RCC>

@@ -57,4 +57,9 @@ Item {
             }
         }
     ]
+
+    LoadingItem {
+        id: loadingItem
+        anchors.fill: parent
+    }
 }

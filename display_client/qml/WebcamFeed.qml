@@ -22,7 +22,7 @@ Item {
                 // Moves image to accessible path
                 captureImage.moveImage(path)
                 // Posts image to Azure
-                networkManager.postImage()
+                networkManager.getImage()
             }
         }
     }
