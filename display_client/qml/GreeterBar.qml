@@ -10,13 +10,13 @@ Item {
     Rectangle {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
+        anchors.leftMargin: 5
+        anchors.rightMargin: 5
         border.color: "#E1E8F1"
         color: "transparent"
 
-        width: parent.width * 0.3
+        width: parent.width * 0.3 - 10
         height: parent.height
-
-
 
         Text {
             font.pixelSize: 21
