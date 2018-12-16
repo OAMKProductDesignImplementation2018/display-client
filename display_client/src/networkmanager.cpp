@@ -6,8 +6,7 @@
 #include "camera.h"
 #include "networkmanager.h"
 
-NetworkManager::NetworkManager()
-{
+NetworkManager::NetworkManager() {
     apiAzure = new QNetworkAccessManager();
     apiSchedule = new QNetworkAccessManager();
     apiLunchMenu = new QNetworkAccessManager();

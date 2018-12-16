@@ -7,7 +7,8 @@ Item {
     width: parent.width
     height: parent.height
 
-    visible: networkManager.waitingForReply
+    //visible: networkManager.waitingForReply
+    visible: false
 
     Rectangle {
         width: parent.width
