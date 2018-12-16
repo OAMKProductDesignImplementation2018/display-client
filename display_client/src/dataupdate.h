@@ -101,6 +101,13 @@ public:
     QString dateString() const;
     void setDateString(const QString dateString);
 
+    Q_PROPERTY (int newsCount
+                READ newsCount
+                WRITE setNewsCount
+                NOTIFY newsUpdated)
+    int newsCount() const;
+    void setNewsCount(const int news);
+
 
     // Debug functions
     Q_INVOKABLE void debugDisplayStateDefault();
@@ -115,6 +122,7 @@ private slots:
     void jsonDataReceived(QMap<QString, QString>);
     void showPersonalState();
     void clearLunchMenu();
+    void newsDataReceived();
 
     void updateTime();
 
@@ -133,9 +141,12 @@ signals:
     void groupIDChanged();
     void timeUpdated();
     void dateUpdated();
+    void newsUpdated();
 
     void foodMenuClear();
     void foodMenuAdd(QString type, QString name);
+    void newsClear();
+    void newsAdd(QString title, QString desc, QString date);
 
 private:
     bool _scheduleVisible = true;
@@ -150,6 +161,7 @@ private:
     QString _groupID;
     QString _timeString;
     QString _dateString;
+    int _newsCount;
 
     QTimer *stateTimer;
     const int stateTimerInMSecs = 20000; // 20 secs

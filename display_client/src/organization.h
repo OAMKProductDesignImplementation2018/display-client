@@ -15,6 +15,11 @@ public:
     QString deviceName = "nayttolaite";
     QString apiKey = "null";
 
+    const QString newsUrl = "https://news.yahoo.com/rss/europe";
+
+    // News container
+    QVector<QStringList> newsContainer;
+
 private:
     Organization() = default;
     ~Organization() = default;

@@ -3,6 +3,8 @@
 
 #include <QCoreApplication>
 #include <QFile>
+#include <QTextDocumentFragment>
+#include <QXmlStreamReader>
 
 JSONHandler& JSONHandler::getInstance() {
     static JSONHandler instance;
@@ -142,4 +144,57 @@ void JSONHandler::parseLunchMenuData(const QJsonObject data) {
             map.clear();
         }
     }
+}
+
+void JSONHandler::parseNewsFeed(const QByteArray data) {
+    QXmlStreamReader xml;
+    xml.addData(data);
+
+    QString titleString;
+    QString contentString;
+    QString dateString;
+    QString curTag;
+
+    Organization::getInstance().newsContainer.clear();
+    while (!xml.atEnd()) {
+        xml.readNext();
+
+        if (xml.isStartElement()) {
+            if (xml.name() == "item")
+                contentString = xml.attributes().value("rss:about").toString();
+
+            curTag = xml.name().toString();
+        }
+        else if (xml.isEndElement()) {
+            if (xml.name() == "item") {
+                if (contentString.length() >= 5 && !titleString.contains("Yahoo News", Qt::CaseInsensitive))
+                    Organization::getInstance().newsContainer.append(QStringList{titleString, contentString, dateString});
+
+                titleString.clear();
+                contentString.clear();
+                dateString.clear();
+            }
+        }
+        else if (xml.isCharacters() && !xml.isWhitespace()) {
+            if (curTag == "title")
+                // Parse HTML tags and remove first character from string
+                titleString += QTextDocumentFragment::fromHtml(xml.text().toString()).toPlainText();
+            else if (curTag == "description")
+                // Parse HTML tags and remove first character from string
+                contentString += QTextDocumentFragment::fromHtml(xml.text().toString()).toPlainText().remove(0, 1);
+            else if (curTag == "pubDate") {
+                // Convert pubDate string to DateTime and then back to string
+                // Yahoo news are in USA locale
+                QLocale dateLocale(QLocale("en_US"));
+                QDateTime dateTime = dateLocale.toDateTime(xml.text().toString().split("-").value(0), "ddd, dd MMM yyyy hh:mm:ss ");
+                dateString += "(Yahoo, " + dateTime.toString("dd.MM") + ".)";
+            }
+        }
+    }
+
+    if (xml.error() && xml.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
+        qDebug() << "XML Error with news feed: " << xml.lineNumber() << " : " << xml.errorString();
+    }
+
+    emit newsDataReceived();
 }

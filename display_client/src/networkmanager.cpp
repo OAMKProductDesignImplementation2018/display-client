@@ -11,6 +11,7 @@ NetworkManager::NetworkManager()
     apiAzure = new QNetworkAccessManager();
     apiSchedule = new QNetworkAccessManager();
     apiLunchMenu = new QNetworkAccessManager();
+    apiNews = new QNetworkAccessManager();
 
     sentImage = nullptr;
     waitingForReply = false;
@@ -21,6 +22,8 @@ NetworkManager::NetworkManager()
         this, &NetworkManager::scheduleReply);
     QObject::connect(apiLunchMenu, &QNetworkAccessManager::finished,
         this, &NetworkManager::lunchMenuReply);
+    QObject::connect(apiNews, &QNetworkAccessManager::finished,
+        this, &NetworkManager::newsReply);
 
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::scheduleUrlReceived,
         this, &NetworkManager::getSchedule);
@@ -36,6 +39,7 @@ NetworkManager::~NetworkManager() {
     delete apiAzure;
     delete apiSchedule;
     delete apiLunchMenu;
+    delete apiNews;
     delete sentImage;
 }
 
@@ -94,6 +98,10 @@ void NetworkManager::postImage() {
     apiAzure->post(networkRequest, multipart);
     waitingForReply = true;
     qDebug() << "Request sent";
+}
+
+void NetworkManager::getNewsFeed() {
+    apiNews->get(QNetworkRequest(QUrl(Organization::getInstance().newsUrl)));
 }
 
 // Only for debugging
@@ -234,4 +242,17 @@ void NetworkManager::lunchMenuReply(QNetworkReply *reply) {
 
     // Send it as QJsonObject
     JSONHandler::getInstance().parseLunchMenuData(jsonDocument.object());
+}
+
+void NetworkManager::newsReply(QNetworkReply *reply) {
+    // Check for network errors
+    if (reply->error()) {
+        qDebug() << "Error: " << reply->errorString();
+        return;
+    }
+
+    // Read reply
+    const QByteArray answer = reply->readAll();
+
+    JSONHandler::getInstance().parseNewsFeed(answer);
 }

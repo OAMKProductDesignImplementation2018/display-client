@@ -19,6 +19,8 @@ public:
 
     // Sends latest image captured by camera
     Q_INVOKABLE void postImage();
+    // Gets news RSS feed
+    Q_INVOKABLE void getNewsFeed();
 
     // Debug methods
     // Sends Einstein's photo
@@ -40,6 +42,8 @@ private:
     QNetworkAccessManager *apiSchedule;
     // Network connector for lunch menu
     QNetworkAccessManager *apiLunchMenu;
+    // Network connector for news
+    QNetworkAccessManager *apiNews;
 
     // To close the image after sending it
     QFile *sentImage;
@@ -64,6 +68,8 @@ private slots:
     void scheduleReply(QNetworkReply *reply);
     // Reply from lunch menu api
     void lunchMenuReply(QNetworkReply *reply);
+    // Reply from news
+    void newsReply(QNetworkReply *reply);
 };
 
 #endif // NETWORKMANAGER_H

@@ -32,6 +32,8 @@ public:
     void parseScheduleData(const QJsonArray data);
     // Parses lunch menu from JSON
     void parseLunchMenuData(const QJsonObject data);
+    // Parses news feed from RSS/XML
+    void parseNewsFeed(const QByteArray data);
 
     static JSONHandler& getInstance();
 
@@ -41,6 +43,7 @@ signals:
     void lunchMenuUrlReceived(const QString);
     void personRecognized();
     void newLunchMenuDataReceived(); // to clear previous entries
+    void newsDataReceived();
 
 private:
     // JSON data members

@@ -13,6 +13,8 @@ DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
                      this, &DataUpdate::showPersonalState);
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::newLunchMenuDataReceived,
                      this, &DataUpdate::clearLunchMenu);
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::newsDataReceived,
+                     this, &DataUpdate::newsDataReceived);
 
     QObject::connect(stateTimer, &QTimer::timeout,
                      this, &DataUpdate::stateExpired);
@@ -126,6 +128,15 @@ void DataUpdate::setDateString(const QString dateString) {
     emit dateUpdated();
 }
 
+int DataUpdate::newsCount() const {
+    return _newsCount;
+}
+
+void DataUpdate::setNewsCount(const int news) {
+    _newsCount = news;
+    emit newsUpdated();
+}
+
 
 
 // Slots
@@ -209,7 +220,7 @@ void DataUpdate::stateExpired() {
     setFirstName("");
     setLastName("");
     setGroupID("");
-    // TODO: Clear news
+    emit newsClear();
     emit clearSchedule();
     emit foodMenuClear();
 
@@ -220,6 +231,18 @@ void DataUpdate::stateExpired() {
 
 void DataUpdate::clearLunchMenu() {
     emit foodMenuClear();
+}
+
+void DataUpdate::newsDataReceived() {
+    // Clear previous entries
+    emit newsClear();
+    // Let QML know how many news there are
+    setNewsCount(Organization::getInstance().newsContainer.size());
+    // Emit each news to QML
+    for (int i = 0; i < Organization::getInstance().newsContainer.size(); ++i) {
+        const auto news = Organization::getInstance().newsContainer[i];
+        emit newsAdd(news.value(0), news.value(1), news.value(2));
+    }
 }
 
 void DataUpdate::updateTime() {
