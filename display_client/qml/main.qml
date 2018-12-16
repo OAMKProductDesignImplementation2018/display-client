@@ -223,7 +223,7 @@ Window {
                 }
 
                 onButtonPressed: {
-                    networkManager.postEinsteinImage()
+                    networkManager.getEinsteinImage()
                 }
             }
         }

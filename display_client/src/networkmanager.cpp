@@ -14,7 +14,7 @@ NetworkManager::NetworkManager()
     apiNews = new QNetworkAccessManager();
 
     sentImage = nullptr;
-    waitingForReply = false;
+    setWaitingForReply(false);
 
     QObject::connect(apiAzure, &QNetworkAccessManager::finished,
         this, &NetworkManager::azureReply);
@@ -29,6 +29,8 @@ NetworkManager::NetworkManager()
         this, &NetworkManager::getSchedule);
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::lunchMenuUrlReceived,
         this, &NetworkManager::getLunchMenu);
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::personRecognized,
+        this, &NetworkManager::getNewsFeed);
 
     qDebug() << "OpenSSL-version:";
     qDebug() << QSslSocket::sslLibraryVersionString();
@@ -45,11 +47,37 @@ NetworkManager::~NetworkManager() {
 
 void NetworkManager::postImage() {
     // Wait for current request to finish before creating a new request
-    if (waitingForReply) {
+    if (waitingForReply()) {
         qDebug() << "Canceling request";
         return;
     }
 
+    // Send image in QHttpMultiPart
+    const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+    // Append image to multipart as QHttpPart
+    QHttpPart imagePart;
+    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
+    sentImage->open(QIODevice::ReadOnly);
+    imagePart.setBodyDevice(sentImage);
+    sentImage->setParent(multipart);
+
+    multipart->append(imagePart);
+
+    // Add apikey and device id into network request
+    QNetworkRequest networkRequest;
+    networkRequest.setRawHeader(organizationIdField, Organization::getInstance().id.toUtf8());
+    networkRequest.setRawHeader(apiKeyField, Organization::getInstance().apiKey.toUtf8());
+    networkRequest.setRawHeader(deviceIdField, Organization::getInstance().deviceName.toUtf8());
+    networkRequest.setUrl(apiAzureUrl);
+
+    apiAzure->post(networkRequest, multipart);
+    setWaitingForReply(true);
+    qDebug() << "Request sent";
+}
+
+void NetworkManager::getImage() {
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
         qDebug() << "Picture directory does not exist!";
@@ -75,43 +103,24 @@ void NetworkManager::postImage() {
     // Get the newest picture
     sentImage = new QFile(pathToPictures.path() + "/" + pictureList.at(pictureList.size() - 1));
 
-    // Send image in QHttpMultiPart
-    const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-
-    // Append image to multipart as QHttpPart
-    QHttpPart imagePart;
-    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
-    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
-    sentImage->open(QIODevice::ReadOnly);
-    imagePart.setBodyDevice(sentImage);
-    sentImage->setParent(multipart);
-
-    multipart->append(imagePart);
-
-    // Add apikey and device id into network request
-    QNetworkRequest networkRequest;
-    networkRequest.setRawHeader(organizationIdField, Organization::getInstance().id.toUtf8());
-    networkRequest.setRawHeader(apiKeyField, Organization::getInstance().apiKey.toUtf8());
-    networkRequest.setRawHeader(deviceIdField, Organization::getInstance().deviceName.toUtf8());
-    networkRequest.setUrl(apiAzureUrl);
-
-    apiAzure->post(networkRequest, multipart);
-    waitingForReply = true;
-    qDebug() << "Request sent";
+    postImage();
 }
 
 void NetworkManager::getNewsFeed() {
     apiNews->get(QNetworkRequest(QUrl(Organization::getInstance().newsUrl)));
 }
 
-// Only for debugging
-void NetworkManager::postEinsteinImage() {
-    // Wait for current request to finish before creating a new request
-    if (waitingForReply) {
-        qDebug() << "Canceling request";
-        return;
-    }
+bool NetworkManager::waitingForReply() const {
+    return _waitingForReply;
+}
 
+void NetworkManager::setWaitingForReply(const bool waiting) {
+    _waitingForReply = waiting;
+    emit waitingUpdated();
+}
+
+// Only for debugging
+void NetworkManager::getEinsteinImage() {
     const auto pathToPictures = QDir(Camera::getPathToSavedPictures());
     if (!pathToPictures.exists()) {
         qDebug() << "Picture directory does not exist!";
@@ -124,29 +133,7 @@ void NetworkManager::postEinsteinImage() {
         return;
     }
 
-    // Send image in QHttpMultiPart
-    const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-
-    // Append image to multipart as QHttpPart
-    QHttpPart imagePart;
-    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
-    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
-    sentImage->open(QIODevice::ReadOnly);
-    imagePart.setBodyDevice(sentImage);
-    sentImage->setParent(multipart);
-
-    multipart->append(imagePart);
-
-    // Add organization id, apikey and device id into network request
-    QNetworkRequest networkRequest;
-    networkRequest.setRawHeader(organizationIdField, Organization::getInstance().id.toUtf8());
-    networkRequest.setRawHeader(apiKeyField, Organization::getInstance().apiKey.toUtf8());
-    networkRequest.setRawHeader(deviceIdField, Organization::getInstance().deviceName.toUtf8());
-    networkRequest.setUrl(apiAzureUrl);
-
-    apiAzure->post(networkRequest, multipart);
-    waitingForReply = true;
-    qDebug() << "Request sent";
+    postImage();
 }
 
 void NetworkManager::getSchedule(const QString scheduleUrl) {
@@ -165,7 +152,7 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
     }
 
     // Allow creating new requests when current request has replied
-    waitingForReply = false;
+    setWaitingForReply(false);
 
     // Check for network errors
     if (reply->error()) {

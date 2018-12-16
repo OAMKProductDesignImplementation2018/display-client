@@ -18,23 +18,29 @@ public:
     ~NetworkManager();
 
     // Sends latest image captured by camera
-    Q_INVOKABLE void postImage();
-    // Gets news RSS feed
-    Q_INVOKABLE void getNewsFeed();
+    Q_INVOKABLE void getImage();
+
+    Q_PROPERTY (bool waitingForReply
+                READ waitingForReply
+                WRITE setWaitingForReply
+                NOTIFY waitingUpdated)
+    bool waitingForReply() const;
+    void setWaitingForReply(const bool waiting);
 
     // Debug methods
     // Sends Einstein's photo
-    Q_INVOKABLE void postEinsteinImage();
+    Q_INVOKABLE void getEinsteinImage();
     // Gets TVT18SPO schedule
     Q_INVOKABLE void debugGetSchedule() { getSchedule("https://oiva.oamk.fi/_lukkarikone/kalenteri/json/varaukset.php?ryhma=TVT18SPO"); }
     // Gets OAMK's lunch menu
     Q_INVOKABLE void debugGetLunchMenu() {
-        const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=" + QDateTime::currentDateTime().toString("yyyy-MM-dd") + "&language=fi&restaurantPageId=66287";
+        //const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=" + QDateTime::currentDateTime().toString("yyyy-MM-dd") + "&language=fi&restaurantPageId=66287";
+        const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=2018-12-18&language=fi&restaurantPageId=66287";
         getLunchMenu(lunchUrl);
     }
 
 private:
-    volatile bool waitingForReply;
+    bool _waitingForReply;
 
     // Network connector for Azure
     QNetworkAccessManager *apiAzure;
@@ -55,12 +61,18 @@ private:
     const QByteArray apiKeyField = "apikey";
     const QByteArray deviceIdField = "deviceid";
 
+signals:
+    void waitingUpdated();
 
 private slots:
+    // Posts selected picture
+    void postImage();
     // Gets schedule
     void getSchedule(const QString scheduleUrl);
     // Gets lunch menu
     void getLunchMenu(const QString lunchMenuUrl);
+    // Gets news RSS feed
+    void getNewsFeed();
 
     // Reply from Azure
     void azureReply(QNetworkReply *reply);
