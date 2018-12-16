@@ -115,6 +115,7 @@ Item {
             onReleased: {
                 networkManager.debugGetSchedule()
                 networkManager.debugGetLunchMenu()
+                networkManager.debugGetNews()
             }
         }
     }

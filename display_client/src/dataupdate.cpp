@@ -15,6 +15,10 @@ DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
                      this, &DataUpdate::clearLunchMenu);
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::newsDataReceived,
                      this, &DataUpdate::newsDataReceived);
+    QObject::connect(&Organization::getInstance(), &Organization::restaurantNameUpdated,
+                     this, &DataUpdate::setRestaurantName);
+    QObject::connect(&Organization::getInstance(), &Organization::organizationNameUpdated,
+                     this, &DataUpdate::setOrganizationName);
 
     QObject::connect(stateTimer, &QTimer::timeout,
                      this, &DataUpdate::stateExpired);
@@ -110,6 +114,11 @@ QString DataUpdate::organizationName() const {
     return _organizationName;
 }
 
+void DataUpdate::setOrganizationName(const QString name) {
+    _organizationName = name;
+    emit organizationNameChanged();
+}
+
 QString DataUpdate::timeString() const {
     return _timeString;
 }
@@ -148,6 +157,15 @@ void DataUpdate::enableDeveloperMode(const bool enable) {
 
 void DataUpdate::toggleDeveloperMode() {
     enableDeveloperMode(!developerMode());
+}
+
+QString DataUpdate::restaurantName() const {
+    return _restaurantName;
+}
+
+void DataUpdate::setRestaurantName(const QString name) {
+    _restaurantName = name;
+    emit restaurantNameChanged();
 }
 
 
@@ -204,7 +222,7 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
             }
         }
 
-        else if (map.value("target") == "notesData") {
+        /*else if (map.value("target") == "notesData") {
             if (map.contains("nTitle"))
                 qDebug() << map.value("nTitle");
             if (map.contains("nContents"))
@@ -215,7 +233,7 @@ void DataUpdate::jsonDataReceived(QMap<QString, QString> map) {
                 qDebug() << map.value("nStart");
             if (map.contains("nEnd"))
                 qDebug() << map.value("nEnd");
-        }
+        }*/
     }
 }
 
@@ -240,6 +258,8 @@ void DataUpdate::stateExpired() {
     // Reset to idle state
     setDisplayState("Default");
     Camera::enableCapturing(true);
+
+    emit JSONHandler::getInstance().updateIdleStateData();
 }
 
 void DataUpdate::clearLunchMenu() {

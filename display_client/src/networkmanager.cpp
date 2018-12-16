@@ -31,10 +31,15 @@ NetworkManager::NetworkManager()
         this, &NetworkManager::getLunchMenu);
     QObject::connect(&JSONHandler::getInstance(), &JSONHandler::personRecognized,
         this, &NetworkManager::getNewsFeed);
+    QObject::connect(&JSONHandler::getInstance(), &JSONHandler::updateIdleStateData,
+        this, &NetworkManager::updateIdleState);
 
     qDebug() << "OpenSSL-version:";
     qDebug() << QSslSocket::sslLibraryVersionString();
     qDebug() << "- should be 1.0.2p";
+
+    // On create, send API request to Azure to get API token and organization data
+    postImage();
 }
 
 NetworkManager::~NetworkManager() {
@@ -56,14 +61,16 @@ void NetworkManager::postImage() {
     const auto multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
     // Append image to multipart as QHttpPart
-    QHttpPart imagePart;
-    imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
-    imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
-    sentImage->open(QIODevice::ReadOnly);
-    imagePart.setBodyDevice(sentImage);
-    sentImage->setParent(multipart);
+    if (sentImage != nullptr) {
+        QHttpPart imagePart;
+        imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
+        imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
+        sentImage->open(QIODevice::ReadOnly);
+        imagePart.setBodyDevice(sentImage);
+        sentImage->setParent(multipart);
 
-    multipart->append(imagePart);
+        multipart->append(imagePart);
+    }
 
     // Add apikey and device id into network request
     QNetworkRequest networkRequest;
@@ -108,6 +115,11 @@ void NetworkManager::getImage() {
 
 void NetworkManager::getNewsFeed() {
     apiNews->get(QNetworkRequest(QUrl(Organization::getInstance().newsUrl)));
+}
+
+void NetworkManager::updateIdleState() {
+    getNewsFeed();
+    getLunchMenu(Organization::getInstance().lunchUrl);
 }
 
 bool NetworkManager::waitingForReply() const {

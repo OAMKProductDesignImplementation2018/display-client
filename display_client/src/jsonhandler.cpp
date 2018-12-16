@@ -18,11 +18,10 @@ void JSONHandler::checkPersonData(const QJsonObject data) {
         qDebug() << "Error in detection: " << data;
     }
     else if (data.contains("token")) {
-        // When program starts, the software gets token key from the interface
+        // When program starts, the software gets token key from Azure api
         // If token is invalid, or there is no token for the device,
         // the api won't return valid data for this device
-        qDebug() << "Token received from API";
-        Organization::getInstance().apiKey = data.value(tokenId).toString();
+        parseOrganizationData(data);
     }
     else {
         // Person was successfully detected, remove old pictures and update state
@@ -30,6 +29,27 @@ void JSONHandler::checkPersonData(const QJsonObject data) {
         emit personRecognized();
         parsePersonData(data);
     }
+}
+
+void JSONHandler::parseOrganizationData(const QJsonObject data) {
+    qDebug() << "Token received from API";
+
+    // API token
+    if (!data.value(tokenId).isNull())
+        Organization::getInstance().apiKey = data.value(tokenId).toString();
+    // Organization name
+    if (!data.value(organizationName).isNull())
+        Organization::getInstance().setOrganizationName(data.value(organizationName).toString());
+    // Lunch menu data
+    if (!data.value(foodMenu).isNull()) {
+        // Cast QJsonArray to QJsonObject (there is only one child in the array)
+        const auto foodMenuObj = data.value(foodMenu).toArray().at(0).toObject();
+        Organization::getInstance().setRestaurantName(foodMenuObj.value(lunchMenuName).toString());
+        Organization::getInstance().lunchUrl = foodMenuObj.value(foodMenuUrl).toString();
+    }
+
+    // Update idle state
+    emit updateIdleStateData();
 }
 
 void JSONHandler::parsePersonData(const QJsonObject data) {
@@ -155,7 +175,9 @@ void JSONHandler::parseNewsFeed(const QByteArray data) {
     QString dateString;
     QString curTag;
 
+    // Clear previous news entries first
     Organization::getInstance().newsContainer.clear();
+    // Loop through the XML content
     while (!xml.atEnd()) {
         xml.readNext();
 

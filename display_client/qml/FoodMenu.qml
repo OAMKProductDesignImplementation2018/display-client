@@ -33,7 +33,7 @@ Item {
 
         Text {
             font.pixelSize: 28
-            text: "Amica Kotkantie"
+            text: dataUpdate.restaurantName
             color: "white"
 
             // Dynamic font size

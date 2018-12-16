@@ -28,10 +28,7 @@ Item {
 
         onButtonPressed: {
             // Logout
-            //dataUpdate.stateExpired();
-
-            // News
-            networkManager.getNewsFeed();
+            dataUpdate.stateExpired();
         }
     }
 

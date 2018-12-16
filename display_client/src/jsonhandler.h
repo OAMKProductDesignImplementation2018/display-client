@@ -26,6 +26,8 @@ class JSONHandler final : public QObject
 public:
     // Reads JSON from Azure, checks for errors and checks if person is recognized
     void checkPersonData(const QJsonObject data);
+    // Parses organization data and token from JSON
+    void parseOrganizationData(const QJsonObject data);
     // Parses person's data from JSON if person was recognized
     void parsePersonData(const QJsonObject data);
     // Parses schedule from JSON
@@ -42,13 +44,17 @@ signals:
     void scheduleUrlReceived(const QString);
     void lunchMenuUrlReceived(const QString);
     void personRecognized();
+    void apiTokenDataReceived();
     void newLunchMenuDataReceived(); // to clear previous entries
     void newsDataReceived();
+    void updateIdleStateData();
 
 private:
     // JSON data members
     // From Azure api
     const QString tokenId = "token";
+    const QString organizationName = "organization";
+    const QString lunchMenuName = "name";
 
     const QString firstName = "firstname";
     const QString lastName = "lastname";

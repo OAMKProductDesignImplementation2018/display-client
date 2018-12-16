@@ -38,6 +38,8 @@ public:
         const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=2018-12-18&language=fi&restaurantPageId=66287";
         getLunchMenu(lunchUrl);
     }
+    // Gets Yahoo news
+    Q_INVOKABLE void debugGetNews() { getNewsFeed(); }
 
 private:
     bool _waitingForReply;
@@ -73,6 +75,8 @@ private slots:
     void getLunchMenu(const QString lunchMenuUrl);
     // Gets news RSS feed
     void getNewsFeed();
+    // Gets news and lunch menu to idle screen
+    void updateIdleState();
 
     // Reply from Azure
     void azureReply(QNetworkReply *reply);

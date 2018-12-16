@@ -84,8 +84,10 @@ public:
 
     Q_PROPERTY (QString organizationName
                 READ organizationName
-                CONSTANT)
+                WRITE setOrganizationName
+                NOTIFY organizationNameChanged)
     QString organizationName() const;
+    void setOrganizationName(const QString name);
 
     Q_PROPERTY (QString timeString
                 READ timeString
@@ -109,12 +111,20 @@ public:
     void setNewsCount(const int news);
 
     Q_PROPERTY (bool developerMode
+                MEMBER _developerMode
                 READ developerMode
                 WRITE enableDeveloperMode
                 NOTIFY developerModeChanged)
     bool developerMode() const;
     void enableDeveloperMode(const bool enable);
     Q_INVOKABLE void toggleDeveloperMode();
+
+    Q_PROPERTY (QString restaurantName
+                READ restaurantName
+                WRITE setRestaurantName
+                NOTIFY restaurantNameChanged)
+    QString restaurantName() const;
+    void setRestaurantName(const QString name);
 
 
     // Debug functions
@@ -147,10 +157,12 @@ signals:
     void firstNameChanged();
     void lastNameChanged();
     void groupIDChanged();
+    void organizationNameChanged();
     void timeUpdated();
     void dateUpdated();
     void newsUpdated();
     void developerModeChanged();
+    void restaurantNameChanged();
 
     void foodMenuClear();
     void foodMenuAdd(QString type, QString name);
@@ -172,14 +184,13 @@ private:
     QString _timeString;
     QString _dateString;
     int _newsCount;
+    QString _restaurantName;
+    QString _organizationName;
 
     QTimer *stateTimer;
     const int stateTimerInMSecs = 20000; // 20 secs
 
     QTimer *clockTimer;
-
-    // Organization data
-    const QString _organizationName = "OAMK";
 };
 
 #endif // DATAUPDATE_H
