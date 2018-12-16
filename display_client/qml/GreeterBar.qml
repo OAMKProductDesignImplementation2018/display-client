@@ -16,6 +16,8 @@ Item {
         width: parent.width * 0.3
         height: parent.height
 
+
+
         Text {
             font.pixelSize: 21
             text: (dataUpdate.displayState === "Default") ?
@@ -31,6 +33,19 @@ Item {
             verticalAlignment: Text.AlignVCenter
 
             anchors.centerIn: parent
+        }
+
+        MouseArea {
+            anchors.fill: parent
+
+            property int counter: 0;
+            onReleased: {
+                ++counter
+                if (counter >= 3) {
+                    dataUpdate.toggleDeveloperMode()
+                    counter = 0
+                }
+            }
         }
     }
 

@@ -137,6 +137,19 @@ void DataUpdate::setNewsCount(const int news) {
     emit newsUpdated();
 }
 
+bool DataUpdate::developerMode() const {
+    return _developerMode;
+}
+
+void DataUpdate::enableDeveloperMode(const bool enable) {
+    _developerMode = enable;
+    emit developerModeChanged();
+}
+
+void DataUpdate::toggleDeveloperMode() {
+    enableDeveloperMode(!developerMode());
+}
+
 
 
 // Slots

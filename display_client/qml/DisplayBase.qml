@@ -24,9 +24,14 @@ Item {
 
         color: "#FF0000"
 
+        visible: dataUpdate.developerMode
+
         onButtonPressed: {
             // Logout
-            dataUpdate.stateExpired();
+            //dataUpdate.stateExpired();
+
+            // News
+            networkManager.getNewsFeed();
         }
     }
 

@@ -9,8 +9,8 @@ import NetworkManager 0.1
 Window {
     id: mainWindowRoot
     visible: true
-    width: 900
-    height: 1600
+    width: 1080
+    height: 1920
     flags: Qt.FramelessWindowHint
     visibility: Window.Windowed
 
@@ -67,6 +67,8 @@ Window {
                 width: 50
                 height: 50
 
+                visible: dataUpdate.developerMode
+
                 Text {
                     anchors.centerIn: parent
                     text: "X"
@@ -85,6 +87,8 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 height: 50
                 width: 160
+
+                visible: dataUpdate.developerMode
 
                 Text {
                     anchors.centerIn: parent
@@ -105,6 +109,8 @@ Window {
                 height: 50
                 width: 160
 
+                visible: dataUpdate.developerMode
+
                 Text {
                     anchors.centerIn: parent
                     text: "State: Personal"
@@ -123,6 +129,8 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 height: 50
                 width: 50
+
+                visible: dataUpdate.developerMode
 
                 Text {
                     anchors.centerIn: parent
@@ -143,6 +151,8 @@ Window {
                 height: 50
                 width: 50
 
+                visible: dataUpdate.developerMode
+
                 Text {
                     anchors.centerIn: parent
                     text: "F"
@@ -154,13 +164,15 @@ Window {
                 }
             }
 
-            DebugButton {
+            /*DebugButton {
                 id: showNotesButton
                 anchors.left: showFoodMenuButton.right
                 anchors.leftMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
                 height: 50
                 width: 50
+
+                visible: dataUpdate.developerMode
 
                 Text {
                     anchors.centerIn: parent
@@ -171,15 +183,17 @@ Window {
                 onButtonPressed: {
                     dataUpdate.notesVisible = !dataUpdate.notesVisible
                 }
-            }
+            }*/
 
             DebugButton {
                 id: showNewsButton
-                anchors.left: showNotesButton.right
+                anchors.left: showFoodMenuButton.right
                 anchors.leftMargin: 8
                 anchors.verticalCenter: parent.verticalCenter
                 height: 50
                 width: 50
+
+                visible: dataUpdate.developerMode
 
                 Text {
                     anchors.centerIn: parent
@@ -199,6 +213,8 @@ Window {
                 height: 50
                 color: "#00000000"
                 borderColor: "#000000"
+
+                visible: dataUpdate.developerMode
 
                 Text {
                     anchors.centerIn: parent

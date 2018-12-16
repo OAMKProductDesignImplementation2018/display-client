@@ -102,11 +102,10 @@ Item {
                             width: parent.width / 2
                             height: newsTitle.height / 2
                             anchors.top: newsTitle.bottom
-                            //anchors.topMargin: 5
                             anchors.right: parent.right
                             anchors.rightMargin: 10
 
-                            visible: dataUpdate.displayState == "Personal"
+                            visible: true
 
                             Text {
                                 font.pixelSize: 16

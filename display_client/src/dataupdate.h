@@ -108,6 +108,14 @@ public:
     int newsCount() const;
     void setNewsCount(const int news);
 
+    Q_PROPERTY (bool developerMode
+                READ developerMode
+                WRITE enableDeveloperMode
+                NOTIFY developerModeChanged)
+    bool developerMode() const;
+    void enableDeveloperMode(const bool enable);
+    Q_INVOKABLE void toggleDeveloperMode();
+
 
     // Debug functions
     Q_INVOKABLE void debugDisplayStateDefault();
@@ -142,6 +150,7 @@ signals:
     void timeUpdated();
     void dateUpdated();
     void newsUpdated();
+    void developerModeChanged();
 
     void foodMenuClear();
     void foodMenuAdd(QString type, QString name);
@@ -153,6 +162,7 @@ private:
     bool _foodMenuVisible = true;
     bool _notesVisible = true;
     bool _newsVisible = true;
+    bool _developerMode = false;
 
     QString _displayState = "Default";
 
