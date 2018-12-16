@@ -1,10 +1,10 @@
-#include "camera.h"
-#include "jsonhandler.h"
-
 #include <QCoreApplication>
 #include <QFile>
 #include <QTextDocumentFragment>
 #include <QXmlStreamReader>
+
+#include "camera.h"
+#include "jsonhandler.h"
 
 JSONHandler& JSONHandler::getInstance() {
     static JSONHandler instance;

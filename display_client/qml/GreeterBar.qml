@@ -74,14 +74,6 @@ Item {
 
             anchors.centerIn: parent
         }
-
-        MouseArea {
-            anchors.fill: parent
-
-            onReleased: {
-                dataUpdate.debugAddScheduleItem()
-            }
-        }
     }
 
     Rectangle {

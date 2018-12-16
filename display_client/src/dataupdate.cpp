@@ -1,7 +1,8 @@
+#include <QDebug>
+
 #include "camera.h"
 #include "dataupdate.h"
 #include "jsonhandler.h"
-#include <QDebug>
 
 DataUpdate::DataUpdate(QObject *parent) : QObject(parent) {
     stateTimer = new QTimer(this);
@@ -280,7 +281,7 @@ void DataUpdate::newsDataReceived() {
 
 void DataUpdate::updateTime() {
     const auto dateNow = QDateTime::currentDateTime();
-    setTimeString(dateNow.toString("hh:mm:ss"));
+    setTimeString(dateNow.toString("hh:mm"));
 
     const auto dateStr = dateNow.toString("dd.MM.yyyy");
     if (!dateString().contains(dateStr))
@@ -312,12 +313,4 @@ void DataUpdate::debugDisplayStateDefault() {
 
 void DataUpdate::debugDisplayStatePersonal() {
     setDisplayState("Personal");
-}
-
-void DataUpdate::debugFunction() {
-    emit foodMenuClear();
-}
-
-void DataUpdate::debugFunction2() {
-    emit foodMenuAdd("Lunch", "Oolated Squiggs");
 }

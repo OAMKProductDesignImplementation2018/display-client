@@ -1,5 +1,6 @@
-#include "camera.h"
 #include <QCameraViewfinder>
+
+#include "camera.h"
 
 volatile bool Camera::running = true;
 

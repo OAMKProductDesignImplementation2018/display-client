@@ -10,6 +10,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
+    // Window title
+    QCoreApplication::setApplicationName("NoticeMe!");
+
     // Initialize multithreading
     QThreadPool::globalInstance() -> setMaxThreadCount(QThread::idealThreadCount());
     QGuiApplication app(argc, argv);

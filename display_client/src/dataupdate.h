@@ -130,10 +130,6 @@ public:
     // Debug functions
     Q_INVOKABLE void debugDisplayStateDefault();
     Q_INVOKABLE void debugDisplayStatePersonal();
-
-    Q_INVOKABLE void debugFunction();
-    Q_INVOKABLE void debugFunction2();
-
     Q_INVOKABLE void debugAddScheduleItem();
 
 private slots:
