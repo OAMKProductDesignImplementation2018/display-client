@@ -20,7 +20,7 @@ Item {
         anchors.rightMargin: 50
         anchors.top: greeterBar.bottom
         anchors.topMargin: 10
-        height: 540
+        height: 760
 
         Schedule {
             anchors.fill: parent
@@ -35,7 +35,8 @@ Item {
         anchors.rightMargin: 50
         anchors.top: topItem.bottom
         anchors.topMargin: 20
-        height: 480
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 50
 
         FoodMenu {
             anchors.left: parent.left
@@ -50,22 +51,6 @@ Item {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-        }
-    }
-
-    Item {
-        id: bottomItem
-        anchors.left: parent.left
-        anchors.leftMargin: 50
-        anchors.right: parent.right
-        anchors.rightMargin: 50
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 50
-        anchors.top: centerItem.bottom
-        anchors.topMargin: 20
-
-        Advertisement {
-            anchors.fill: parent
         }
     }
 }

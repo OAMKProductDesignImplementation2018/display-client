@@ -1,88 +1,177 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.4
 
 Item {
+    property string borderColor: "#3465A4"
+
     Rectangle {
-        id: debugBox
         anchors.fill: parent
 
-        border.color: "#000000"
-        color: "#FFFFFF"
+        border.color: borderColor
+        color: "white"
 
-//        Text {
-//            id: newsItemText
-//            anchors.centerIn: parent
-//            font.pixelSize: 24
-//            text: "News Item"
-//            horizontalAlignment: Text.AlignHCenter
-//        }
-    }
+        Connections {
+            target: dataUpdate
 
-    ListModel {
-        id: newsListModel
-
-        ListElement {
-            title: "News Item 1"
-            contents: "Yhteinen kampus - kaksi itsenäistä korkeakoulua"
-        }
-
-        ListElement {
-            title: "News Item 2"
-            contents: "OAMK on merkittävä alueellinen työ- ja elinkeinoelämän kumppani ja uudistaja"
-        }
-
-        ListElement {
-            title: "News Item 3"
-            contents: "Yhteiskampus on mahdollisuus Oamkille ja koko Oululle"
-        }
-
-        ListElement {
-            title: "News Item 4"
-            contents: "Jäitä hattuun kampusselvityksessä!"
-        }
-    }
-
-    ListView {
-        id: newsList
-        anchors.fill: parent
-        orientation: ListView.Vertical
-        model: newsListModel
-        interactive: false
-
-        delegate: Rectangle {
-            width: parent.width
-            height: newsList.height / newsListModel.count
-            color: index % 2 ? "#FFDCA2" : "#FFEFD5"
-            border.color: "#4d3000"
-
-            Text {
-                id: newsTitle
-                x: 6
-                y: 4
-                font.pixelSize: 21
-                text: title
+            onNewsClear: {
+                newsListModel.clear()
             }
 
-            Text {
-                id: newsContent
-                x: 4
-                anchors.top: newsTitle.bottom
-                anchors.topMargin: 4
-                width: parent.width - 4
-                clip: true
-                maximumLineCount: {
-                    if (newsListModel.count > 6) { 1 }
-                    else if (newsListModel.count > 4) { 2 }
-                    else { 3 }
-                }
-                elide: Text.ElideRight
-                wrapMode: Text.WordWrap
-                font.pixelSize: {
-                    if (newsListModel.count > 6) { 14 }
-                    else if (newsListModel.count > 4) { 16 }
-                    else { 18 }
-                }
+            onNewsAdd: {
+                newsListModel.append({"title": title, "desc": desc, "date": date})
+            }
+        }
 
-                text: contents
+        Rectangle {
+            id: newsTitleRect
+            width: parent.width
+            height: parent.height / 13
+            color: borderColor
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+
+            Text {
+                font.pixelSize: 28
+                text: "Uutissyötteet"
+                color: "white"
+
+                // Dynamic font size
+                fontSizeMode: Text.Fit
+                width: parent.width
+                height: parent.height
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+
+        ListModel {
+            id: newsListModel
+        }
+
+        SwipeView {
+            id: newsSlides
+            anchors.top: newsTitleRect.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
+            anchors.bottomMargin: 5
+
+            width: parent.width
+            height: parent.height - newsTitleRect.height
+
+            interactive: false
+
+            Repeater {
+                model: newsListModel.count
+
+                Loader {
+                    active: newsSlides.currentIndex == index
+                    sourceComponent: Item {
+                        // News title
+                        Rectangle {
+                            id: newsTitle
+                            width: parent.width
+                            height: newsTitleRect.height
+                            anchors.top: parent.top
+
+                            Text {
+                                font.pixelSize: 26
+                                text: newsListModel.get(index).title
+                                font.bold: true
+                                wrapMode: Text.WordWrap
+
+                                // Dynamic font size
+                                fontSizeMode: Text.Fit
+                                width: parent.width
+                                height: parent.height
+
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
+
+                        // News date
+                        Rectangle {
+                            id: newsDate
+                            width: parent.width / 2
+                            height: newsTitle.height / 2
+                            anchors.top: newsTitle.bottom
+                            //anchors.topMargin: 5
+                            anchors.right: parent.right
+                            anchors.rightMargin: 10
+
+                            visible: dataUpdate.displayState == "Personal"
+
+                            Text {
+                                font.pixelSize: 16
+                                text: newsListModel.get(index).date
+                                wrapMode: Text.WordWrap
+                                font.italic: true
+
+                                // Dynamic font size
+                                fontSizeMode: Text.Fit
+                                width: parent.width
+                                height: parent.height
+
+                                horizontalAlignment: Text.AlignRight
+                            }
+                        }
+
+                        // News content
+                        Rectangle {
+                            width: parent.width
+                            height: {
+                                if (newsDate.visible)
+                                    parent.height - newsTitle.height - 10 - newsDate.height - 5
+                                else
+                                    parent.height - newsTitle.height - 10
+                            }
+                            anchors.top: {
+                                if (newsDate.visible)
+                                    newsDate.bottom
+                                else
+                                    newsTitle.bottom
+                            }
+                            anchors.topMargin: 10
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+
+                            Text {
+                                font.pixelSize: 18
+                                text: newsListModel.get(index).desc
+                                wrapMode: Text.WordWrap
+                                maximumLineCount: 25
+                                elide: Text.ElideRight
+
+                                // Dynamic font size
+                                fontSizeMode: Text.Fit
+                                width: parent.width
+                                height: parent.height
+
+                                horizontalAlignment: Text.AlignHCenter
+                            }
+                        }
+                    }
+                }
+            }
+
+            Timer {
+                id: timerId
+                interval: 15000
+                running: true
+                repeat: true
+                onTriggered: {
+                    newsSlides.setCurrentIndex(newsSlides.currentIndex + 1)
+
+                    if (newsSlides.currentIndex >= dataUpdate.newsCount)
+                        newsSlides.setCurrentIndex(0)
+                }
             }
         }
     }

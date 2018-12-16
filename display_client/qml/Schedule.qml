@@ -214,7 +214,7 @@ Item {
                         console.log("Error creating object");
                     }
 
-                // Add schedule item to container for later Accessible
+                // Add schedule item to container for later access
                 scheduleContainer.push(sprite);
             }
 

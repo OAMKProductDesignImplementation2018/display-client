@@ -1,10 +1,12 @@
 import QtQuick 2.11
 
 Item {
+    property string borderColor: "#3465A4"
+
     Rectangle {
         anchors.fill: parent
 
-        border.color: "#3465A4"
+        border.color: borderColor
         color: "white"
     }
 
@@ -19,8 +21,6 @@ Item {
             menuListModel.append( { "type": type, "name": name })
         }
     }
-
-    property string borderColor: "#3465A4"
 
     Rectangle {
         id: restaurantNameRect
