@@ -255,6 +255,7 @@ void DataUpdate::stateExpired() {
     emit newsClear();
     emit clearSchedule();
     emit foodMenuClear();
+    JSONHandler::getInstance().foodFilterMap.clear();
 
     // Reset to idle state
     setDisplayState("Default");

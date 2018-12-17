@@ -44,7 +44,7 @@ void JSONHandler::parseOrganizationData(const QJsonObject data) {
     if (!data.value(foodMenu).isNull()) {
         // Cast QJsonArray to QJsonObject (there is only one child in the array)
         const auto foodMenuObj = data.value(foodMenu).toArray().at(0).toObject();
-        Organization::getInstance().setRestaurantName(foodMenuObj.value(lunchMenuName).toString());
+        Organization::getInstance().setRestaurantName(foodMenuObj.value(foodMenuName).toString());
         Organization::getInstance().lunchUrl = foodMenuObj.value(foodMenuUrl).toString();
     }
 
@@ -71,7 +71,12 @@ void JSONHandler::parsePersonData(const QJsonObject data) {
         // Cast array to QJsonObject (there is only one child in the array)
         const auto foodObj = data.value(foodMenu).toArray().at(0).toObject();
 
-        // Diets/allergies etc here
+        // Save diets/allergies to QMap
+        foodFilterMap.clear();
+        const QJsonObject foodFilterObj = foodObj.value(foodFilters).toArray().at(0).toObject();
+        for (const auto &key : foodFilterObj.keys()) {
+            foodFilterMap.insert(key, foodFilterObj.value(key).toBool());
+        }
 
         // Lunch menu url is sent to NetworkManager via signal
         emit lunchMenuUrlReceived(foodObj.value(foodMenuUrl).toString());
@@ -142,6 +147,7 @@ void JSONHandler::parseLunchMenuData(const QJsonObject data) {
         // Loop through meal types
         QMap<QString, QString> map;
         for (const auto mealType : lunchArr) {
+            map.clear();
             const QJsonObject mealTypeObj = mealType.toObject();
             map["target"] = "foodData";
             map["fType"] = mealTypeObj.value(lunchNameRaw).toString();
@@ -151,17 +157,39 @@ void JSONHandler::parseLunchMenuData(const QJsonObject data) {
             if (!mealArray.isEmpty()) {
                 for (const auto meal : mealArray) {
                     const QJsonObject mealObj = meal.toObject();
+                    bool mealSkipped = false;
 
-                    // For future reference, diets are available here
-                    /*for (const auto diet : mealObj.value(lunchDietsRaw).toArray()) {
-                        qDebug() << "Diet: " << diet.toString();
-                    }*/
+                    // Get user's diets / allergies
+                    for (const auto &diet : foodFilterMap.keys())
+                    {
+                        // Check if the meal has this diet/allergic type set
+                        bool found = false;
+                        for (const auto mealDiet : mealObj.value(lunchDietsRaw).toArray()) {
+                            if (diet == mealDiet.toString().toUpper()) {
+                                found = true;
+                                break;
+                            }
+                        }
 
-                    map.insertMulti("fName", mealObj.value(lunchNameRaw).toString());
+                        // If the type is set and found, the meal can be shown
+                        // unless it wasn't found, check user's choice
+                        if (!found) {
+                            // False means that the meal will be skipped
+                            if (!foodFilterMap.value(diet)) {
+                                mealSkipped = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!mealSkipped)
+                        map.insertMulti("fName", mealObj.value(lunchNameRaw).toString());
                 }
-                emit jsonDataSent(map);
+
+                // Don't create empty meal types in the GUI
+                if (map.contains("fName"))
+                    emit jsonDataSent(map);
             }
-            map.clear();
         }
     }
 }

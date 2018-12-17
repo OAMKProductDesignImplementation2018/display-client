@@ -37,6 +37,8 @@ public:
     // Parses news feed from RSS/XML
     void parseNewsFeed(const QByteArray data);
 
+    QMap<QString, bool> foodFilterMap;
+
     static JSONHandler& getInstance();
 
 signals:
@@ -54,7 +56,6 @@ private:
     // From Azure api
     const QString tokenId = "token";
     const QString organizationName = "organization";
-    const QString lunchMenuName = "name";
 
     const QString firstName = "firstname";
     const QString lastName = "lastname";
@@ -62,7 +63,9 @@ private:
     const QString schedule = "schedule";
 
     const QString foodMenu = "foodMenu";
+    const QString foodMenuName = "name";
     const QString foodMenuUrl = "url";
+    const QString foodFilters = "filters";
 
     // From schedule API
     const QString scheduleRawName = "varaus";

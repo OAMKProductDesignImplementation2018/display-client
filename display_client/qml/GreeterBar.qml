@@ -105,9 +105,11 @@ Item {
             anchors.fill: parent
 
             onReleased: {
-                networkManager.debugGetSchedule()
-                networkManager.debugGetLunchMenu()
-                networkManager.debugGetNews()
+                if (dataUpdate.developerMode) {
+                    networkManager.debugGetSchedule()
+                    networkManager.debugGetLunchMenu()
+                    networkManager.debugGetNews()
+                }
             }
         }
     }
