@@ -13,7 +13,8 @@ NetworkManager::NetworkManager() {
     apiNews = new QNetworkAccessManager();
 
     sentImage = nullptr;
-    setWaitingForReply(false);
+    waitingForReply = false;
+    setWaitingForApiToken(true);
 
     QObject::connect(apiAzure, &QNetworkAccessManager::finished,
         this, &NetworkManager::azureReply);
@@ -51,7 +52,7 @@ NetworkManager::~NetworkManager() {
 
 void NetworkManager::postImage() {
     // Wait for current request to finish before creating a new request
-    if (waitingForReply()) {
+    if (waitingForReply) {
         qDebug() << "Canceling request";
         return;
     }
@@ -79,7 +80,7 @@ void NetworkManager::postImage() {
     networkRequest.setUrl(apiAzureUrl);
 
     apiAzure->post(networkRequest, multipart);
-    setWaitingForReply(true);
+    waitingForReply = true;
     qDebug() << "Request sent";
 }
 
@@ -121,12 +122,12 @@ void NetworkManager::updateIdleState() {
     getLunchMenu(Organization::getInstance().lunchUrl);
 }
 
-bool NetworkManager::waitingForReply() const {
-    return _waitingForReply;
+bool NetworkManager::waitingForApiToken() const {
+    return _waitingForApiToken;
 }
 
-void NetworkManager::setWaitingForReply(const bool waiting) {
-    _waitingForReply = waiting;
+void NetworkManager::setWaitingForApiToken(const bool waiting) {
+    _waitingForApiToken = waiting;
     emit waitingUpdated();
 }
 
@@ -163,7 +164,8 @@ void NetworkManager::azureReply(QNetworkReply *reply) {
     }
 
     // Allow creating new requests when current request has replied
-    setWaitingForReply(false);
+    waitingForReply = false;
+    setWaitingForApiToken(false);
 
     // Check for network errors
     if (reply->error()) {

@@ -20,12 +20,12 @@ public:
     // Sends latest image captured by camera
     Q_INVOKABLE void getImage();
 
-    Q_PROPERTY (bool waitingForReply
-                READ waitingForReply
-                WRITE setWaitingForReply
+    Q_PROPERTY (bool waitingForApiToken
+                READ waitingForApiToken
+                WRITE setWaitingForApiToken
                 NOTIFY waitingUpdated)
-    bool waitingForReply() const;
-    void setWaitingForReply(const bool waiting);
+    bool waitingForApiToken() const;
+    void setWaitingForApiToken(const bool waiting);
 
     // Debug methods
     // Sends Einstein's photo
@@ -35,14 +35,15 @@ public:
     // Gets OAMK's lunch menu
     Q_INVOKABLE void debugGetLunchMenu() {
         //const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=" + QDateTime::currentDateTime().toString("yyyy-MM-dd") + "&language=fi&restaurantPageId=66287";
-        const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=2018-12-18&language=fi&restaurantPageId=66287";
+        const QString lunchUrl = "https://www.amica.fi/api/restaurant/menu/day?date=2018-12-20&language=fi&restaurantPageId=66287";
         getLunchMenu(lunchUrl);
     }
     // Gets Yahoo news
     Q_INVOKABLE void debugGetNews() { getNewsFeed(); }
 
 private:
-    bool _waitingForReply;
+    volatile bool waitingForReply;
+    bool _waitingForApiToken;
 
     // Network connector for Azure
     QNetworkAccessManager *apiAzure;
